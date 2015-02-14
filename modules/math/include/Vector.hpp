@@ -40,10 +40,14 @@ public:
 	/// Component-wise division between vectors
 	Vector operator/(const Vector& vec) const;
 	
+	/// Component-wise multiplication between vectors
+	Vector& operator*=(const Vector& vec);
+	
+	/// Component-wise division between vectors
+	Vector& operator/=(const Vector& vec);
+	
 	Vector& operator+=(const Vector& vec);
 	Vector& operator-=(const Vector& vec);
-	
-	Vector& operator*=(const Vector& vec);
 	Vector& operator*=(const Real& real);
 	Vector& operator/=(const Real& real);
 	
@@ -54,6 +58,9 @@ public:
 	
 	/// The dot product of a vector with another vector
 	Real dot(const Vector& vec) const;
+	
+	/// Returns the dot product of a vector with itself
+	Real dotself(const Vector& vec) const;
 	
 	/// Returns the length of a vector
 	Real length() const;
