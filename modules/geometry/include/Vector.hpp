@@ -1,9 +1,12 @@
 #pragma once
 
 #include <math/Real>
-using namespace math;
+
+namespace geometry {
 
 class Vector {
+    using math::Real;
+    
 public:
 
     Vector(Real x, Real y, Real z) : _x(x), _y(y), _z(z) {
@@ -20,4 +23,6 @@ private:
     Real _z;
 
 };
+
+}
 
