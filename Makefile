@@ -6,19 +6,23 @@ all: prepare
 	@:
 
 prepare: $(addprefix prepare-,$(MODULES))
+	@:
+
+prepare-%:
+	$(call PROCESS_CPP_MODULE,prepare)
 
 clean: $(addprefix clean-,$(MODULES))
 	@rm -rf build
 
-prepare-%:
-	$(eval $@_TASK := prepare)
-	$(eval $@_MOD := $(subst $($@_TASK)-,,$@))
-	@echo [$($@_TASK)] $($@_MOD)
-	@$(MAKE_CPP) -C modules/$($@_MOD) $($@_TASK) MODULE=$($@_MOD)
-
 clean-%:
-	$(eval $@_TASK := clean)
-	$(eval $@_MOD := $(subst $($@_TASK)-,,$@))
-	@echo [$($@_TASK)] $($@_MOD)
-	@$(MAKE_CPP) -C modules/$($@_MOD) $($@_TASK) MODULE=$($@_MOD)
+	$(call PROCESS_CPP_MODULE,clean)
+
+
+
+define PROCESS_CPP_MODULE
+$(eval $@_TASK := $1)
+$(eval $@_MOD := $(subst $($@_TASK)-,,$@))
+@echo [$($@_TASK)] $($@_MOD)
+@$(MAKE_CPP) -C modules/$($@_MOD) $($@_TASK) MODULE=$($@_MOD)
+endef
 
