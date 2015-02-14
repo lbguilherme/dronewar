@@ -21,15 +21,24 @@ private:
     Real _z;
 
 public:
+	Real x() const;
+	Real y() const;
+	Real z() const;
+
 	Vector operator+(const Vector& vec) const;
 	Vector operator-(const Vector& vec) const;
 	
 	Vector operator+() const;
 	Vector operator-() const;
 	
-	Vector operator*(const Vector& vec) const;
 	Vector operator*(const Real& real) const;
 	Vector operator/(const Real& real) const;
+	
+	/// Component-wise multiplication between vectors
+	Vector operator*(const Vector& vec) const;
+	
+	/// Component-wise division between vectors
+	Vector operator/(const Vector& vec) const;
 	
 	Vector& operator+=(const Vector& vec);
 	Vector& operator-=(const Vector& vec);
@@ -42,6 +51,15 @@ public:
 	bool operator<(const Vector& vec) const;
 	bool operator>=(const Vector& vec) const;
 	bool operator<=(const Vector& vec) const;
+	
+	/// The dot product of a vector with another vector
+	Real dot(const Vector& vec) const;
+	
+	/// Returns the length of a vector
+	Real length() const;
+	
+	/// Returns the cross product of a vector
+	Vector cross(const Vector& vec) const;
 };
 
 }
