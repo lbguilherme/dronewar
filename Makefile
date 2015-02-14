@@ -1,6 +1,6 @@
 MODULES := $(notdir $(wildcard modules/*))
 
-MAKE_CPP := $(MAKE) --no-print-directory -f ../../Makefile.cpp.mk
+MAKE_CPP_MODULE := $(MAKE) --no-print-directory -f ../../mk/module.cpp.mk
 
 all: prepare
 	@:
@@ -23,6 +23,6 @@ define PROCESS_CPP_MODULE
 $(eval $@_TASK := $1)
 $(eval $@_MOD := $(subst $($@_TASK)-,,$@))
 @echo [$($@_TASK)] $($@_MOD)
-@$(MAKE_CPP) -C modules/$($@_MOD) $($@_TASK) MODULE=$($@_MOD)
+@$(MAKE_CPP_MODULE) -C modules/$($@_MOD) $($@_TASK) MODULE=$($@_MOD)
 endef
 
