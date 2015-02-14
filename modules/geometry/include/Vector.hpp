@@ -9,10 +9,9 @@ class Vector {
     
 public:
 
-    Vector(Real x, Real y, Real z) : _x(x), _y(y), _z(z) {
-    }
+    constexpr Vector(Real x, Real y, Real z) : _x(x), _y(y), _z(z) {}
     
-    bool isNan() {
+    constexpr bool isNan() const {
         return _x != _x || _y != _y || _z != _z;
     }
 
