@@ -60,7 +60,7 @@ public:
 	Real dot(const Vector& vec) const;
 	
 	/// Returns the dot product of a vector with itself
-	Real dotself(const Vector& vec) const;
+	Real dotself() const;
 	
 	/// Returns the length of a vector
 	Real length() const;
