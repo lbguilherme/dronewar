@@ -26,7 +26,7 @@ $(BUILD)/include/$(MODULE)/%.hpp: include/%.hpp
 
 $(BUILD)/deps/$(MODULE)/%.d: src/%.cpp prepare
 	@mkdir -p $(dir $@)
-	@$(CXX) -nostdinc -MF$@ -MG -MM -MP -MT$@ -MT$(@:.d=.o) $<
+	@$(CXX) -nostdinc -MF$@ -MG -MM -MP -MT$@ -MT$(patsubst $(BUILD)/deps/$(MODULE)/%.d,$(BUILD)/objs/$(MODULE)/%.o,$@) $<
 
 $(BUILD)/objs/$(MODULE)/%.o: src/%.cpp
 	@echo "Compiling  "$@" ..."
