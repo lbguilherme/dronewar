@@ -5,7 +5,7 @@
 using namespace math;
 
 Real Vector::dot(const Vector& vec) const {
-	return _x * vec.x() + _y * vec.y() + _z * vec.z();
+	return _x * vec._x + _y * vec._y + _z * vec._z;
 }
 
 Real Vector::dotself() const {
@@ -17,11 +17,11 @@ Real Vector::length() const {
 }
 
 Vector Vector::cross(const Vector& vec) const {
-	return Vector(
-		_y*vec.z() - _z * vec.y(),
-		_z*vec.x() - _x * vec.z(),
-		_x*vec.y() - _y * vec.x()
-	);
+	return {
+		_y*vec._z - _z * vec._y,
+		_z*vec._x - _x * vec._z,
+		_x*vec._y - _y * vec._x
+	};
 }
 
 Real Vector::x() const {
@@ -37,11 +37,11 @@ Real Vector::z() const {
 }
 
 Vector Vector::operator+(const Vector& vec) const {
-	return Vector(_x + vec.x(), y + vec.x(), z + vec.z());
+	return {_x + vec._x, y + vec._x, z + vec._z};
 }
 
 Vector Vector::operator-(const Vector& vec) const {
-	return Vector(_x - vec.x(), y - vec.x(), z - vec.z());
+	return {_x - vec._x, y - vec._x, z - vec._z};
 }
 
 Vector Vector::operator+() const {
@@ -49,51 +49,51 @@ Vector Vector::operator+() const {
 }
 
 Vector Vector::operator-() const {
-	return Vector(-_x, -_y, -_z);
+	return {-_x, -_y, -_z};
 }
 
 Vector Vector::operator*(const Vector& vec) const {
-	return Vector(_x * vec.x(), y * vec.x(), _z * vec.z());
+	return {_x * vec._x, y * vec._x, _z * vec._z};
 }
 
 Vector Vector::operator*(const Real& real) const {
-	return Vector(_x * real, y * real, _z * real);
+	return {_x * real, y * real, _z * real};
 }
 
 Vector Vector::operator/(const Vector& vec) const {
-	return Vector(_x / vec.x(), _y / vec.x(), _z / vec.z());
+	return {_x / vec._x, _y / vec._x, _z / vec._z};
 }
 
 
 Vector Vector::operator/(const Real& real) const {
-	return Vector(_x / real, y / real, _z / real);
+	return {_x / real, y / real, _z / real};
 }
 
 Vector& Vector::operator+=(const Vector& vec) {
-	_x += vec.x();
-	_y += vec.y();
-	_z += vec.z();
+	_x += vec._x;
+	_y += vec._y;
+	_z += vec._z;
 	return *this;
 }
 
 Vector& Vector::operator-=(const Vector& vec) {
-	_x -= vec.x();
-	_y -= vec.y();
-	_z -= vec.z();
+	_x -= vec._x;
+	_y -= vec._y;
+	_z -= vec._z;
 	return *this;
 }
 
 Vector& Vector::operator*=(const Vector& vec) {
-	_x *= vec.x();
-	_y *= vec.y();
-	_z *= vec.z();
+	_x *= vec._x;
+	_y *= vec._y;
+	_z *= vec._z;
 	return *this;
 }
 
 Vector& Vector::operator/=(const Vector& vec) {
-	_x /= vec.x();
-	_y /= vec.y();
-	_z /= vec.z();
+	_x /= vec._x;
+	_y /= vec._y;
+	_z /= vec._z;
 	return *this;
 }
 
