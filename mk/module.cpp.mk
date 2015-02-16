@@ -7,7 +7,7 @@ DEPS := $(patsubst src/%.cpp, $(BUILD)/deps/$(MODULE)/%.d, $(SRCS))
 OBJS := $(patsubst src/%.cpp, $(BUILD)/objs/$(MODULE)/%.o, $(SRCS))
 LIBRARY := $(BUILD)/lib$(MODULE).a
 
-CXX = g++ -g -std=c++1y -Wall -Wextra -I$(BUILD)/include -fdiagnostics-color=auto
+CXX = clang++ -g -std=c++14 -Wall -Wextra -I$(BUILD)/include -fdiagnostics-color=auto
 AR = ar rcs
 
 build: $(LIBRARY)
@@ -26,7 +26,7 @@ $(BUILD)/include/$(MODULE)/%.hpp: include/%.hpp
 
 $(BUILD)/deps/$(MODULE)/%.d: src/%.cpp prepare
 	@mkdir -p $(dir $@)
-	@$(CXX) -nostdinc -MF$@ -MG -MM -MP -MT$@ -MT$(patsubst $(BUILD)/deps/$(MODULE)/%.d,$(BUILD)/objs/$(MODULE)/%.o,$@) $<
+	@gcc -I$(BUILD)/include -nostdinc -MF$@ -MG -MM -MP -MT$@ -MT$(patsubst $(BUILD)/deps/$(MODULE)/%.d,$(BUILD)/objs/$(MODULE)/%.o,$@) $<
 
 $(BUILD)/objs/$(MODULE)/%.o: src/%.cpp
 	@echo "Compiling  "$@" ..."
