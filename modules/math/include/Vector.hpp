@@ -197,5 +197,5 @@ constexpr bool Vector::operator<=(const Vector& vec) const {
 	return dotself() <= vec.dotself();
 }
 
-}
+} // math namespace
 
