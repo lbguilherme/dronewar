@@ -1,7 +1,6 @@
-#pragma once
-
 #include <math/Vector>
 #include <cmath>
+
 using namespace math;
 
 Real Vector::dot(const Vector& vec) const {
@@ -37,11 +36,11 @@ Real Vector::z() const {
 }
 
 Vector Vector::operator+(const Vector& vec) const {
-	return {_x + vec._x, y + vec._x, z + vec._z};
+	return {_x + vec._x, _y + vec._y, _z + vec._z};
 }
 
 Vector Vector::operator-(const Vector& vec) const {
-	return {_x - vec._x, y - vec._x, z - vec._z};
+	return {_x - vec._x, _y - vec._y, _z - vec._z};
 }
 
 Vector Vector::operator+() const {
@@ -53,11 +52,11 @@ Vector Vector::operator-() const {
 }
 
 Vector Vector::operator*(const Vector& vec) const {
-	return {_x * vec._x, y * vec._x, _z * vec._z};
+	return {_x * vec._x, _y * vec._y, _z * vec._z};
 }
 
 Vector Vector::operator*(const Real& real) const {
-	return {_x * real, y * real, _z * real};
+	return {_x * real, _y * real, _z * real};
 }
 
 Vector Vector::operator/(const Vector& vec) const {
@@ -66,7 +65,7 @@ Vector Vector::operator/(const Vector& vec) const {
 
 
 Vector Vector::operator/(const Real& real) const {
-	return {_x / real, y / real, _z / real};
+	return {_x / real, _y / real, _z / real};
 }
 
 Vector& Vector::operator+=(const Vector& vec) {

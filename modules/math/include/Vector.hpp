@@ -5,7 +5,6 @@
 namespace math {
 
 class Vector {
-    using math::Real;
     
 public:
 
