@@ -23,7 +23,10 @@ clean: $(addprefix clean-,$(MODULES))
 clean-%:
 	$(call PROCESS_CPP_MODULE,clean)
 
-
+.PHONY: doc
+doc:
+	@rm -rf doc
+	@doxygen -s
 
 define PROCESS_CPP_MODULE
 $(eval $@_TASK := $1)
