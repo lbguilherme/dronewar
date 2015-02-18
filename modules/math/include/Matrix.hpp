@@ -8,11 +8,13 @@ class Matrix {
 	Real _data[9];
 	
 public:
-	constexpr Real& operator()(unsigned a, unsigned b) const;
-	Real& operator()(unsigned a, unsigned b);
+    constexpr Matrix();
+
+	constexpr const Real& operator()(unsigned a, unsigned b) const;
+	constexpr Real& operator()(unsigned a, unsigned b);
 	
-	constexpr Real& operator()(unsigned a) const;
-	Real& operator()(unsigned a);
+	constexpr const Real& operator()(unsigned a) const;
+	constexpr Real& operator()(unsigned a);
 
 	constexpr Matrix operator+(const Matrix& mat) const;
 	constexpr Matrix operator-(const Matrix& mat) const;
@@ -38,7 +40,11 @@ public:
 	constexpr Matrix inverse() const;
 };
 
-constexpr Real& Matrix::operator()(unsigned a, unsigned b) const {
+constexpr Matrix::Matrix() : _data{0} {
+
+}
+
+constexpr const Real& Matrix::operator()(unsigned a, unsigned b) const {
 	return _data[3*a+b];
 }
 
@@ -46,7 +52,7 @@ constexpr Real& Matrix::operator()(unsigned a, unsigned b) {
 	return _data[3*a+b];
 }
 
-constexpr Real& Matrix::operator()(unsigned a) const {
+constexpr const Real& Matrix::operator()(unsigned a) const {
 	return _data[a];
 }
 
