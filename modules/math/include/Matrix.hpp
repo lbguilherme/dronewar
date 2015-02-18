@@ -56,37 +56,35 @@ constexpr Real& Matrix::operator()(unsigned a) {
 
 constexpr Matrix Matrix::operator+(const Matrix& mat) const {
 	Matrix result;
-	for (int i = 0; i < 9; ++i) result(i) = _data[i] + mat(i);
+	for (int i = 0; i < 9; ++i) result._data[i] = _data[i] + mat(i);
 	return result;
 }	
 
 constexpr Matrix Matrix::operator-(const Matrix& mat) const {
 	Matrix result;
-	for (int i = 0; i < 9; ++i) result(i) = _data[i] - mat(i);
+	for (int i = 0; i < 9; ++i) result._data[i] = _data[i] - mat(i);
 	return result;
 }
 
 constexpr Matrix Matrix::operator+() const {
-	Matrix result;
-	for (int i = 0; i < 9; ++i) result(i) = _data[i];
-	return result;
+	return *this;
 }
 
 constexpr Matrix Matrix::operator-() const {
 	Matrix result;
-	for (int i = 0; i < 9; ++i) result(i) = -_data[i];
+	for (int i = 0; i < 9; ++i) result._data[i] = -_data[i];
 	return result;
 }
 
 constexpr Matrix Matrix::operator*(const Real& real) const {
 	Matrix result;
-	for (int i = 0; i < 9; ++i) result(i) = _data[i] * real;
+	for (int i = 0; i < 9; ++i) result._data[i] = _data[i] * real;
 	return result;
 }
 
 constexpr Matrix Matrix::operator/(const Real& real) const {
 	Matrix result;
-	for (int i = 0; i < 9; ++i) result(i) = _data[i] / real;
+	for (int i = 0; i < 9; ++i) result._data[i] = _data[i] / real;
 	return result;
 }
 
