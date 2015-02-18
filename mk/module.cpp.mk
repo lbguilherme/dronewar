@@ -30,7 +30,7 @@ $(BUILD)/include/$(MODULE)/%.hpp: include/%.hpp
 $(BUILD)/include/$(MODULE)/%.hpp_checked: include/%.hpp
 	@echo "Checking  "$<" ..."
 	@echo "#include <$(MODULE)/"$<">" > $@.cpp
-	@cd .. && $(CXX) -Wno-pragmas -fsyntax-only -I$(MODULE)/$(BUILD)/include -I. $(MODULE)/$@.cpp
+	@cd .. && $(CXX) -fsyntax-only -I$(MODULE)/$(BUILD)/include -I. $(MODULE)/$@.cpp
 	@rm $@.cpp
 	@touch $@
 
