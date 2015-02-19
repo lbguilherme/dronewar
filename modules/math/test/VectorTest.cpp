@@ -1,9 +1,14 @@
 #include <gtest/gtest.h>
+
 #include <math/Vector>
 
 using math::Vector;
 
+<<<<<<< HEAD:modules/math/test/Vector.cpp
+TEST(Vector, Length) {
+=======
 TEST(Vector, LengthComputation) {
+>>>>>>> 076c96ae92234432f387e3ecc22a968bfc0e4ca9:modules/math/test/VectorTest.cpp
 	Vector v = {3, 4, 0};
 	EXPECT_DOUBLE_EQ(5, v.length());
 	EXPECT_DOUBLE_EQ(5, (-v).length());

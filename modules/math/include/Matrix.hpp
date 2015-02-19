@@ -40,71 +40,71 @@ public:
 	constexpr Matrix inverse() const;
 };
 
-constexpr Matrix::Matrix() : _data{0} {
+inline constexpr Matrix::Matrix() : _data{0} {
 
 }
 
-constexpr const Real& Matrix::operator()(unsigned a, unsigned b) const {
+inline constexpr const Real& Matrix::operator()(unsigned a, unsigned b) const {
 	return _data[3*a+b];
 }
 
-constexpr Real& Matrix::operator()(unsigned a, unsigned b) {
+inline constexpr Real& Matrix::operator()(unsigned a, unsigned b) {
 	return _data[3*a+b];
 }
 
-constexpr const Real& Matrix::operator()(unsigned a) const {
+inline constexpr const Real& Matrix::operator()(unsigned a) const {
 	return _data[a];
 }
 
-constexpr Real& Matrix::operator()(unsigned a) {
+inline constexpr Real& Matrix::operator()(unsigned a) {
 	return _data[a];
 }
 
-constexpr Matrix Matrix::operator+(const Matrix& mat) const {
+inline constexpr Matrix Matrix::operator+(const Matrix& mat) const {
 	Matrix result;
 	for (int i = 0; i < 9; ++i) result._data[i] = _data[i] + mat(i);
 	return result;
 }	
 
-constexpr Matrix Matrix::operator-(const Matrix& mat) const {
+inline constexpr Matrix Matrix::operator-(const Matrix& mat) const {
 	Matrix result;
 	for (int i = 0; i < 9; ++i) result._data[i] = _data[i] - mat(i);
 	return result;
 }
 
-constexpr Matrix Matrix::operator+() const {
+inline constexpr Matrix Matrix::operator+() const {
 	return *this;
 }
 
-constexpr Matrix Matrix::operator-() const {
+inline constexpr Matrix Matrix::operator-() const {
 	Matrix result;
 	for (int i = 0; i < 9; ++i) result._data[i] = -_data[i];
 	return result;
 }
 
-constexpr Matrix Matrix::operator*(const Real& real) const {
+inline constexpr Matrix Matrix::operator*(const Real& real) const {
 	Matrix result;
 	for (int i = 0; i < 9; ++i) result._data[i] = _data[i] * real;
 	return result;
 }
 
-constexpr Matrix Matrix::operator/(const Real& real) const {
+inline constexpr Matrix Matrix::operator/(const Real& real) const {
 	Matrix result;
 	for (int i = 0; i < 9; ++i) result._data[i] = _data[i] / real;
 	return result;
 }
 
-constexpr Matrix& Matrix::operator*=(const Real& real) {
+inline constexpr Matrix& Matrix::operator*=(const Real& real) {
 	for (int i = 0; i < 9; ++i) _data[i] *= real;
 	return *this;
 }
 
-constexpr Matrix& Matrix::operator/=(const Real& real) {
+inline constexpr Matrix& Matrix::operator/=(const Real& real) {
 	for (int i = 0; i < 9; ++i) _data[i] /= real;
 	return *this;
 }
 
-constexpr Matrix Matrix::operator*(const Matrix& mat) const {
+inline constexpr Matrix Matrix::operator*(const Matrix& mat) const {
 	Matrix result;
 	for (int i = 0; i < 3; ++i) {
 		for (int j = 0; j < 3; ++j) {
@@ -116,7 +116,7 @@ constexpr Matrix Matrix::operator*(const Matrix& mat) const {
 	return result;
 }
 
-constexpr Real Matrix::det() const {
+inline constexpr Real Matrix::det() const {
     return + _data[0] * _data[4] * _data[8]
            + _data[1] * _data[5] * _data[6]
            + _data[2] * _data[3] * _data[7]
@@ -125,7 +125,7 @@ constexpr Real Matrix::det() const {
            - _data[0] * _data[5] * _data[7];
 }
 
-constexpr Matrix Matrix::transpost() const {
+inline constexpr Matrix Matrix::transpost() const {
 	Matrix result;
 	for (int i = 0; i < 3; ++i) {
 		for (int j = 0; j < 3; ++j) {
@@ -135,7 +135,7 @@ constexpr Matrix Matrix::transpost() const {
 	return result;
 }
 
-constexpr Matrix Matrix::inverse() const {
+inline constexpr Matrix Matrix::inverse() const {
 	Matrix result;
 	result(0) = _data[4] * _data[8] - _data[7] * _data[5];
 	result(1) = _data[2] * _data[7] - _data[8] * _data[1];
