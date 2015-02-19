@@ -2,8 +2,23 @@ MODULES := $(notdir $(wildcard modules/*))
 
 MAKE_CPP_MODULE := $(MAKE) --no-print-directory -f ../../mk/module.cpp.mk
 
+BUILD := build
+CXX := clang++ -g -std=c++14 -fdiagnostics-color=auto
+
+include mk/external.gtest.mk
+
 all: build
 	@:
+
+test: build/testrunner
+	@build/testrunner
+
+$(BUILD)/testrunner: $(addprefix build-test-,$(MODULES)) $(LIBGTEST) 
+	@mkdir -p build
+	@$(CXX) $(wildcard $(BUILD)/testobjs/**/*.o) -o $@ $(GTEST_LINK) -L$(BUILD) $(addprefix -l,$(MODULES))
+
+build-test-%:
+	$(call PROCESS_CPP_MODULE,build-test)
 
 build: $(addprefix build-,$(MODULES))
 	@:
