@@ -68,6 +68,22 @@ private:
     
 };
 
+constexpr Vector operator*(const Real& real, const Vector& vec);
+constexpr Vector& operator*=(const Real& real, const Vector& vec);
+constexpr Vector& operator/=(const Real& real, const Vector& vec);
+
+constexpr Vector operator*(const Real& real, const Vector& vec) {
+	return vec * real;
+}
+
+constexpr Vector& operator*=(const Real& real, Vector& vec) {
+	return vec *= real;
+}
+
+constexpr Vector& operator/=(const Real& real, Vector& vec) {
+	return vec /= real;
+}
+
 constexpr Vector::Vector(Real x, Real y, Real z) : _x(x), _y(y), _z(z) {
 }
 
