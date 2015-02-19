@@ -6,12 +6,12 @@
 namespace math {
 
 class Vector {
-    
+
 public:
 
-    constexpr Vector(Real x, Real y, Real z);
-    
-    constexpr bool isNan() const;
+	constexpr Vector(Real x, Real y, Real z);
+
+	constexpr bool isNan() const;
 
 	constexpr Real x() const;
 	constexpr Real y() const;
@@ -62,10 +62,10 @@ public:
 
 private:
 
-    Real _x;
-    Real _y;
-    Real _z;
-    
+	Real _x;
+	Real _y;
+	Real _z;
+
 };
 
 constexpr Vector operator*(const Real& real, const Vector& vec);
@@ -91,7 +91,7 @@ inline constexpr Vector::Vector(Real x, Real y, Real z) : _x(x), _y(y), _z(z) {
 inline constexpr bool Vector::isNan() const {
 	return _x != _x || _y != _y || _z != _z;
 }
-    
+
 inline constexpr Real Vector::dot(const Vector& vec) const {
 	return _x * vec._x + _y * vec._y + _z * vec._z;
 }

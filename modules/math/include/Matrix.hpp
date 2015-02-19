@@ -8,7 +8,7 @@ class Matrix {
 	Real _data[9];
 	
 public:
-    constexpr Matrix();
+	constexpr Matrix();
 
 	constexpr const Real& operator()(unsigned a, unsigned b) const;
 	constexpr Real& operator()(unsigned a, unsigned b);
@@ -117,12 +117,13 @@ inline constexpr Matrix Matrix::operator*(const Matrix& mat) const {
 }
 
 inline constexpr Real Matrix::det() const {
-    return + _data[0] * _data[4] * _data[8]
-           + _data[1] * _data[5] * _data[6]
-           + _data[2] * _data[3] * _data[7]
-           - _data[2] * _data[4] * _data[6]
-           - _data[1] * _data[3] * _data[8]
-           - _data[0] * _data[5] * _data[7];
+	return
+			+ _data[0] * _data[4] * _data[8]
+			+ _data[1] * _data[5] * _data[6]
+			+ _data[2] * _data[3] * _data[7]
+			- _data[2] * _data[4] * _data[6]
+			- _data[1] * _data[3] * _data[8]
+			- _data[0] * _data[5] * _data[7];
 }
 
 inline constexpr Matrix Matrix::transpost() const {
