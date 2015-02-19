@@ -1,14 +1,9 @@
 #include <gtest/gtest.h>
-
 #include <math/Vector>
 
 using math::Vector;
 
-<<<<<<< HEAD:modules/math/test/Vector.cpp
-TEST(Vector, Length) {
-=======
 TEST(Vector, LengthComputation) {
->>>>>>> 076c96ae92234432f387e3ecc22a968bfc0e4ca9:modules/math/test/VectorTest.cpp
 	Vector v = {3, 4, 0};
 	EXPECT_DOUBLE_EQ(5, v.length());
 	EXPECT_DOUBLE_EQ(5, (-v).length());
@@ -48,7 +43,7 @@ TEST(VectorAlgebra, Sum) {
 	EXPECT_DOUBLE_EQ(3, (a+c).x());
 	EXPECT_DOUBLE_EQ(-2, (a+c).x());
 	EXPECT_DOUBLE_EQ(4, (a+c).x());
-	
+
 	a += i+j+k;
 	EXPECT_DOUBLE_EQ(1, (a-b).x());
 	EXPECT_DOUBLE_EQ(1, (a-b).y());
@@ -74,7 +69,7 @@ TEST(VectorAlgebra, Multiply) {
 	EXPECT_DOUBLE_EQ(2, (a*c).x());
 	EXPECT_DOUBLE_EQ(-3, (a*c).x());
 	EXPECT_DOUBLE_EQ(5, (a*c).x());
-	
+
 	a *= c;
 	EXPECT_DOUBLE_EQ(2, a.x());
 	EXPECT_DOUBLE_EQ(-3, a.y());
