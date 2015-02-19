@@ -5,8 +5,6 @@ MAKE_CPP_MODULE := $(MAKE) --no-print-directory -f ../../mk/module.cpp.mk
 BUILD := build
 CXX := clang++ -g -std=c++14 -fdiagnostics-color=auto
 
-include mk/external.gtest.mk
-
 all: build
 	@:
 
@@ -42,6 +40,8 @@ clean-%:
 doc:
 	@rm -rf doc
 	@doxygen -s
+
+include mk/external.gtest.mk
 
 define PROCESS_CPP_MODULE
 $(eval $@_TASK := $1)
