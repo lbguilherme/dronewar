@@ -3,11 +3,15 @@
 ROOT := ../..
 BUILD := $(ROOT)/build
 INCLUDES := $(wildcard include/*.hpp)
+
 SRCS := $(wildcard src/*.cpp) $(wildcard src/**/*.cpp)
-DEPS := $(patsubst src/%.cpp, $(BUILD)/deps/$(MODULE)/%.d, $(SRCS))
 OBJS := $(patsubst src/%.cpp, $(BUILD)/objs/$(MODULE)/%.o, $(SRCS))
+
 TESTS := $(wildcard test/*.cpp) $(wildcard test/**/*.cpp)
 TESTOBJS := $(patsubst test/%.cpp, $(BUILD)/testobjs/$(MODULE)/%.o, $(TESTS))
+
+DEPS := $(patsubst src/%.cpp, $(BUILD)/deps/$(MODULE)/%.d, $(SRCS)) $(patsubst test/%.cpp, $(BUILD)/testdeps/$(MODULE)/%.d, $(TESTS))
+
 LIBRARY := $(BUILD)/lib$(MODULE).a
 
 INC := -I$(BUILD)/include -I$(BUILD)/external/include
@@ -46,6 +50,10 @@ $(BUILD)/include/$(MODULE)/%.hpp_checked: include/%.hpp
 $(BUILD)/deps/$(MODULE)/%.d: src/%.cpp prepare
 	@mkdir -p $(dir $@)
 	@gcc -I$(BUILD)/include -nostdinc -MF$@ -MG -MM -MP -MT$@ -MT$(patsubst $(BUILD)/deps/$(MODULE)/%.d,$(BUILD)/objs/$(MODULE)/%.o,$@) $<
+
+$(BUILD)/testdeps/$(MODULE)/%.d: test/%.cpp prepare
+	@mkdir -p $(dir $@)
+	@gcc -I$(BUILD)/include -nostdinc -MF$@ -MG -MM -MP -MT$@ -MT$(patsubst $(BUILD)/testdeps/$(MODULE)/%.d,$(BUILD)/testobjs/$(MODULE)/%.o,$@) $<
 
 $(BUILD)/objs/$(MODULE)/%.o: src/%.cpp
 	@echo "Compiling  "$<" ..."
