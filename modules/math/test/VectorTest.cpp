@@ -19,9 +19,10 @@ TEST(VectorAlgebra, Equality) {
 	EXPECT_DOUBLE_EQ(2, a.x());
 	EXPECT_DOUBLE_EQ(-3, a.y());
 	EXPECT_DOUBLE_EQ(5, a.z());
+
 	EXPECT_DOUBLE_EQ(2, b.x());
 	EXPECT_DOUBLE_EQ(-3, b.y());
-	EXPECT_DOUBLE_EQ(-5, b.z());
+	EXPECT_DOUBLE_EQ(5, b.z());
 }
 
 TEST(VectorAlgebra, Sum) {
@@ -41,8 +42,8 @@ TEST(VectorAlgebra, Sum) {
 	EXPECT_DOUBLE_EQ(10, (a+b).z());
 
 	EXPECT_DOUBLE_EQ(3, (a+c).x());
-	EXPECT_DOUBLE_EQ(-2, (a+c).x());
-	EXPECT_DOUBLE_EQ(4, (a+c).x());
+	EXPECT_DOUBLE_EQ(-2, (a+c).y());
+	EXPECT_DOUBLE_EQ(4, (a+c).z());
 
 	a += i+j+k;
 	EXPECT_DOUBLE_EQ(1, (a-b).x());
@@ -67,8 +68,8 @@ TEST(VectorAlgebra, Multiply) {
 	EXPECT_DOUBLE_EQ(1, (a/b).z());
 
 	EXPECT_DOUBLE_EQ(2, (a*c).x());
-	EXPECT_DOUBLE_EQ(-3, (a*c).x());
-	EXPECT_DOUBLE_EQ(5, (a*c).x());
+	EXPECT_DOUBLE_EQ(-3, (a*c).y());
+	EXPECT_DOUBLE_EQ(-5, (a*c).z());
 
 	a *= c;
 	EXPECT_DOUBLE_EQ(2, a.x());
