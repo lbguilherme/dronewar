@@ -191,7 +191,7 @@ inline constexpr Matrix Matrix::inverse() const {
 	result(5) = _data[2] * _data[3] - _data[5] * _data[0];
 	result(6) = _data[3] * _data[7] - _data[6] * _data[4];
 	result(7) = _data[1] * _data[6] - _data[7] * _data[0];
-	result(8) = _data[0] * _data[1] - _data[3] * _data[4];
+	result(8) = _data[0] * _data[4] - _data[2] * _data[3];
 	return result / d;
 }
 
