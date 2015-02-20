@@ -1,12 +1,14 @@
-#include <array>
+#pragma once
 
-#include <geometry/Vertex>
-#include <geometry/Edge>
+#include <array>
+#include <set>
 
 namespace geometry {
 
 class Mesh;
 class TriangleData;
+class Edge;
+class Vertex;
 
 class Triangle {
 	friend class Mesh;

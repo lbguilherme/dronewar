@@ -26,8 +26,6 @@ public:
 	const std::set<Triangle> triangles() const;
 	
 private:
-	
-private:
 
 	std::set<Vertex> _vertices;
 	std::set<Edge> _edges;
