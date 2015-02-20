@@ -23,7 +23,7 @@ include $(ROOT)/mk/external.gtest.mk
 build: prepare check $(LIBRARY)
 	@:
 
-build-test: build $(TESTOBJS)
+build-test: $(TESTOBJS)
 	@:
 
 prepare: $(patsubst include/%.hpp,$(BUILD)/include/$(MODULE)/%,$(INCLUDES))
@@ -58,7 +58,7 @@ $(BUILD)/objs/$(MODULE)/%.o: src/%.cpp
 	@mkdir -p $(dir $@)
 	@$(CXX) -c $< -o $@
 
-$(BUILD)/testobjs/$(MODULE)/%.o: test/%.cpp $(LIBGTEST)
+$(BUILD)/testobjs/$(MODULE)/%.o: test/%.cpp
 	@echo "Compiling  "$(MODULE)/$<" ..."
 	@mkdir -p $(dir $@)
 	@$(CXX) -c $< -o $@
@@ -69,7 +69,3 @@ $(LIBRARY): $(OBJS)
 	@$(AR) $@ $^
 
 -include $(DEPS)
-
-clean:
-	@rm -rf $(BUILD)/include/$(MODULE)
-

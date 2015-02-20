@@ -8,14 +8,19 @@ CXX := clang++ -g -std=c++14 -fdiagnostics-color=auto -DDEBUG
 all: build
 	@:
 
+include mk/external.gtest.mk
+
 test: build/testrunner
 	@build/testrunner
 
-$(BUILD)/testrunner: build $(addprefix build-test-,$(MODULES)) $(LIBGTEST)
+$(BUILD)/testrunner: build build-test
 	@mkdir -p build
 	@$(CXX) $(wildcard $(BUILD)/testobjs/**/*.o) -o $@ $(GTEST_LINK) -L$(BUILD) $(addprefix -l,$(MODULES))
 
-build-test-%:
+build-test: $(addprefix build-test-,$(MODULES))
+	@:
+
+build-test-%: $(LIBGTEST) build-%
 	$(call PROCESS_CPP_MODULE,build-test)
 
 build: $(addprefix build-,$(MODULES))
@@ -30,22 +35,16 @@ prepare: $(addprefix prepare-,$(MODULES))
 prepare-%:
 	$(call PROCESS_CPP_MODULE,prepare)
 
-clean: $(addprefix clean-,$(MODULES))
+clean:
 	@rm -rf build
-
-clean-%:
-	$(call PROCESS_CPP_MODULE,clean)
 
 .PHONY: doc
 doc:
 	@rm -rf doc
 	@doxygen -s
 
-include mk/external.gtest.mk
-
 define PROCESS_CPP_MODULE
 $(eval $@_TASK := $1)
 $(eval $@_MOD := $(subst $($@_TASK)-,,$@))
-@$(MAKE_CPP_MODULE) -C modules/$($@_MOD) $($@_TASK) MODULE=$($@_MOD)
+@+$(MAKE_CPP_MODULE) -C modules/$($@_MOD) $($@_TASK) MODULE=$($@_MOD)
 endef
-
