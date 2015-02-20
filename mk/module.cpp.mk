@@ -29,18 +29,16 @@ build-test: build $(TESTOBJS)
 prepare: $(patsubst include/%.hpp,$(BUILD)/include/$(MODULE)/%,$(INCLUDES))
 	@:
 	
-check: prepare $(patsubst include/%.hpp,$(BUILD)/include/$(MODULE)/%.hpp_checked,$(INCLUDES))
+check: prepare $(patsubst include/%.hpp,$(BUILD)/includecheck/$(MODULE)/%,$(INCLUDES))
 	@:
 
-$(BUILD)/include/$(MODULE)/%: include/%.hpp $(BUILD)/include/$(MODULE)/%.hpp
-	@echo "#pragma once" > $@
-	@echo "#include \""$(notdir $<)"\"" >> $@
-
-$(BUILD)/include/$(MODULE)/%.hpp: include/%.hpp
+$(BUILD)/include/$(MODULE)/%: include/%.hpp
 	@mkdir -p $(dir $@)
-	@cp $< $(dir $@)
+	@echo "#pragma once" > $@
+	@echo "#include \""$(ROOT)/modules/$(MODULE)/$<"\"" >> $@
 
-$(BUILD)/include/$(MODULE)/%.hpp_checked: include/%.hpp
+$(BUILD)/includecheck/$(MODULE)/%: include/%.hpp
+	@mkdir -p $(dir $@)
 	@echo "Checking   "$<" ..."
 	@echo "#include <$(MODULE)/"$<">" > $@.cpp
 	@cd .. && $(CXX) -fsyntax-only -I$(MODULE)/$(BUILD)/include -I. $(MODULE)/$@.cpp
