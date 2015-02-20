@@ -15,6 +15,7 @@ public:
 	Mesh();
 	Mesh(const Mesh&) = delete;
 	Mesh(Mesh&&) = delete;
+	~Mesh();
 
 	Vertex addVertex(math::Vector point);
 	const std::set<Vertex> vertices() const;

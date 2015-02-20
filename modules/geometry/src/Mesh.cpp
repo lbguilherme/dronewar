@@ -13,6 +13,17 @@ Mesh::Mesh() {
 	
 }
 
+Mesh::~Mesh() {
+	for (Vertex v : _vertices)
+		delete v._data;
+
+	for (Edge e : _edges)
+		delete e._data;
+
+	for (Triangle t : _triangles)
+		delete t._data;
+}
+
 Vertex Mesh::addVertex(math::Vector point) {
 	VertexData* data = nullptr;
 	try {
