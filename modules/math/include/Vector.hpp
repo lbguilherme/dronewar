@@ -72,7 +72,6 @@ private:
 
 constexpr Vector operator*(const Real& real, const Vector& vec);
 constexpr Vector& operator*=(const Real& real, const Vector& vec);
-constexpr Vector& operator/=(const Real& real, const Vector& vec);
 
 constexpr Vector operator*(const Real& real, const Vector& vec) {
 	return vec * real;
@@ -80,14 +79,6 @@ constexpr Vector operator*(const Real& real, const Vector& vec) {
 
 constexpr Vector& operator*=(const Real& real, Vector& vec) {
 	return vec *= real;
-}
-
-constexpr Vector& operator/=(const Real& real, Vector& vec) {
-	#ifdef DEBUG
-	if (real == 0) throw std::logic_error("Can't divide by zero");
-	#endif
-
-	return vec /= real;
 }
 
 inline constexpr Vector::Vector() : _x(), _y(), _z() {
