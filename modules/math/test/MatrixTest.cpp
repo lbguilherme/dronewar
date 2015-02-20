@@ -50,7 +50,7 @@ TEST_F(MatrixAlgebra, Identity) {
 	EXPECT_DOUBLE_EQ(1, identity(2, 2));
 }
 
-TEST_F(MatrixAlgebra, Equality) {
+TEST_F(MatrixAlgebra, Sum) {
 	Matrix mat = identity + one;
 
 	EXPECT_DOUBLE_EQ(2, mat(0, 0));
@@ -64,4 +64,46 @@ TEST_F(MatrixAlgebra, Equality) {
 	EXPECT_DOUBLE_EQ(1, mat(2, 0));
 	EXPECT_DOUBLE_EQ(1, mat(2, 1));
 	EXPECT_DOUBLE_EQ(2, mat(2, 2));
+}
+
+TEST_F(MatrixAlgebra, Multiplication) {
+	Matrix mat = identity * one;
+	EXPECT_DOUBLE_EQ(1, mat(0, 0));
+	EXPECT_DOUBLE_EQ(1, mat(0, 1));
+	EXPECT_DOUBLE_EQ(1, mat(0, 2));
+	
+	EXPECT_DOUBLE_EQ(1, mat(1, 0));
+	EXPECT_DOUBLE_EQ(1, mat(1, 1));
+	EXPECT_DOUBLE_EQ(1, mat(1, 2));
+	
+	EXPECT_DOUBLE_EQ(1, mat(2, 0));
+	EXPECT_DOUBLE_EQ(1, mat(2, 1));
+	EXPECT_DOUBLE_EQ(1, mat(2, 2));
+	
+	
+	mat = 2 * identity * one;
+	EXPECT_DOUBLE_EQ(2, mat(0, 0));
+	EXPECT_DOUBLE_EQ(2, mat(0, 1));
+	EXPECT_DOUBLE_EQ(2, mat(0, 2));
+	
+	EXPECT_DOUBLE_EQ(2, mat(1, 0));
+	EXPECT_DOUBLE_EQ(2, mat(1, 1));
+	EXPECT_DOUBLE_EQ(2, mat(1, 2));
+	
+	EXPECT_DOUBLE_EQ(2, mat(2, 0));
+	EXPECT_DOUBLE_EQ(2, mat(2, 1));
+	EXPECT_DOUBLE_EQ(2, mat(2, 2));
+	
+	mat *= one / 6;
+	EXPECT_DOUBLE_EQ(1, mat(0, 0));
+	EXPECT_DOUBLE_EQ(1, mat(0, 1));
+	EXPECT_DOUBLE_EQ(1, mat(0, 2));
+	
+	EXPECT_DOUBLE_EQ(1, mat(1, 0));
+	EXPECT_DOUBLE_EQ(1, mat(1, 1));
+	EXPECT_DOUBLE_EQ(1, mat(1, 2));
+	
+	EXPECT_DOUBLE_EQ(1, mat(2, 0));
+	EXPECT_DOUBLE_EQ(1, mat(2, 1));
+	EXPECT_DOUBLE_EQ(1, mat(2, 2));
 }
