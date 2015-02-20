@@ -70,6 +70,24 @@ TEST(Mesh, BuildSolidCube) {
 	EXPECT_EQ(18u, cube.edges().size());
 	EXPECT_EQ(12u, cube.triangles().size());
 
-	EXPECT_EQ(2u, e12.vertices().size());
+	for (Edge e : cube.edges())
+		EXPECT_EQ(2u, e.vertices().size());
+
 	EXPECT_EQ(5u, v1.edges().size());
+	EXPECT_EQ(4u, v2.edges().size());
+	EXPECT_EQ(5u, v3.edges().size());
+	EXPECT_EQ(4u, v4.edges().size());
+	EXPECT_EQ(5u, v5.edges().size());
+	EXPECT_EQ(4u, v6.edges().size());
+	EXPECT_EQ(5u, v7.edges().size());
+	EXPECT_EQ(4u, v8.edges().size());
+
+	EXPECT_EQ(5u, v1.triangles().size());
+	EXPECT_EQ(4u, v2.triangles().size());
+	EXPECT_EQ(5u, v3.triangles().size());
+	EXPECT_EQ(4u, v4.triangles().size());
+	EXPECT_EQ(5u, v5.triangles().size());
+	EXPECT_EQ(4u, v6.triangles().size());
+	EXPECT_EQ(5u, v7.triangles().size());
+	EXPECT_EQ(4u, v8.triangles().size());
 }
