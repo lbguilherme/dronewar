@@ -2,6 +2,7 @@
 
 #include <math/Real>
 #include <cmath>
+#include <stdexcept>
 
 namespace math {
 
@@ -83,9 +84,7 @@ constexpr Vector& operator*=(const Real& real, Vector& vec) {
 
 constexpr Vector& operator/=(const Real& real, Vector& vec) {
 	#ifdef DEBUG
-	if (vec.x() == 0) std::logic_error("Division by zero in x coordinate");
-	if (vec.y() == 0) std::logic_error("Division by zero in y coordinate");
-	if (vec.z() == 0) std::logic_error("Division by zero in z coordinate");
+	if (real == 0) throw std::logic_error("Can't divide by zero");
 	#endif
 
 	return vec /= real;
@@ -161,9 +160,7 @@ inline constexpr Vector Vector::operator*(const Real& real) const {
 
 inline constexpr Vector Vector::operator/(const Vector& vec) const {
 	#ifdef DEBUG
-	if (vec.x() == 0) std::logic_error("Division by zero in x coordinate");
-	if (vec.y() == 0) std::logic_error("Division by zero in y coordinate");
-	if (vec.z() == 0) std::logic_error("Division by zero in z coordinate");
+	if (vec.x() == 0 || vec.y() == 0 || vec.z() == 0) throw std::logic_error("Can't divide by zero");
 	#endif
 
 	return {_x / vec._x, _y / vec._y, _z / vec._z};
@@ -171,7 +168,7 @@ inline constexpr Vector Vector::operator/(const Vector& vec) const {
 
 inline constexpr Vector Vector::operator/(const Real& real) const {
 	#ifdef DEBUG
-	if (real == 0) std::logic_error("Division by zero. Invalid real number");
+	if (real == 0) throw std::logic_error("Can't divide by zero");
 	#endif
 
 	return {_x / real, _y / real, _z / real};
@@ -200,9 +197,7 @@ inline constexpr Vector& Vector::operator*=(const Vector& vec) {
 
 inline constexpr Vector& Vector::operator/=(const Vector& vec) {
 	#ifdef DEBUG
-	if (vec.x() == 0) std::logic_error("Division by zero in x coordinate");
-	if (vec.y() == 0) std::logic_error("Division by zero in y coordinate");
-	if (vec.z() == 0) std::logic_error("Division by zero in z coordinate");
+	if (vec.x() * vec.y() * vec.z() == 0) throw std::logic_error("Can't divide by zero");
 	#endif
 
 	_x /= vec._x;
@@ -220,7 +215,7 @@ inline constexpr Vector& Vector::operator*=(const Real& real) {
 
 inline constexpr Vector& Vector::operator/=(const Real& real) {
 	#ifdef DEBUG
-	if (real == 0) std::logic_error("Division by zero. Invalid real number");
+	if (real == 0) throw std::logic_error("Division by zero. Invalid real number");
 	#endif
 
 	_x /= real;
