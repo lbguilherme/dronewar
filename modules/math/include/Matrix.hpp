@@ -38,6 +38,15 @@ public:
 	
 	/// Inverse of the matrix. Assumes matrix is inversible
 	constexpr Matrix inverse() const;
+	
+	/// Fill the matrix with zeros
+	constexpr Matrix& zeros();
+	
+	/// Fill the matrix with a constant. Default is 1.
+	constexpr Matrix& ones(const Real& num = 1);
+	
+	/// Fill the main diagonal with a constant. Defailt is 1.
+	constexpr Matrix& eye(const Real& num = 1);
 };
 
 inline constexpr Matrix::Matrix() : _data{0} {
@@ -148,6 +157,21 @@ inline constexpr Matrix Matrix::inverse() const {
 	result(7) = _data[1] * _data[6] - _data[7] * _data[0];
 	result(8) = _data[0] * _data[1] - _data[3] * _data[4];
 	return result / det();
+}
+
+inline constexpr Matrix& Matrix::zeros() {
+	for (int i = 0; i < 9; ++i) _data[i] = 0;
+	return *this;
+}
+
+inline constexpr Matrix& Matrix::ones(const Real& num) {
+	for (int i = 0; i < 9; ++i) _data[i] = num;
+	return *this;
+}
+
+inline constexpr Matrix& Matrix::eye(const Real& num) {
+	for (int i = 0; i < 9; ++i) i % 4 ? _data[i] = 0 : _data[i] = num;
+	return *this;
 }
 
 }  // math namespace
