@@ -9,6 +9,7 @@ class Vector {
 
 public:
 
+	constexpr Vector();
 	constexpr Vector(Real x, Real y, Real z);
 
 	constexpr bool isNan() const;
@@ -82,6 +83,10 @@ constexpr Vector& operator*=(const Real& real, Vector& vec) {
 
 constexpr Vector& operator/=(const Real& real, Vector& vec) {
 	return vec /= real;
+}
+
+inline constexpr Vector::Vector() : _x(), _y(), _z() {
+
 }
 
 inline constexpr Vector::Vector(Real x, Real y, Real z) : _x(x), _y(y), _z(z) {
