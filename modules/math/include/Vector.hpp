@@ -154,7 +154,7 @@ inline constexpr Vector Vector::operator*(const Real& real) const {
 }
 
 inline constexpr Vector Vector::operator/(const Vector& vec) const {
-	return {_x / vec._x, _y / vec._x, _z / vec._z};
+	return {_x / vec._x, _y / vec._y, _z / vec._z};
 }
 
 inline constexpr Vector Vector::operator/(const Real& real) const {
