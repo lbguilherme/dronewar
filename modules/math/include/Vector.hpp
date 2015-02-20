@@ -71,14 +71,9 @@ private:
 };
 
 constexpr Vector operator*(const Real& real, const Vector& vec);
-constexpr Vector& operator*=(const Real& real, const Vector& vec);
 
 constexpr Vector operator*(const Real& real, const Vector& vec) {
 	return vec * real;
-}
-
-constexpr Vector& operator*=(const Real& real, Vector& vec) {
-	return vec *= real;
 }
 
 inline constexpr Vector::Vector() : _x(), _y(), _z() {
