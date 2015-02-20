@@ -9,10 +9,13 @@ TEST(Vector, LengthComputation) {
 	EXPECT_DOUBLE_EQ(5, (-v).length());
 }
 
-TEST(VectorAlgebra, Equality) {
+struct VectorAlgebra : public ::testing::Test {
 	Vector i = {1, 0, 0};
 	Vector j = {0, 1, 0};
 	Vector k = {0, 0, 1};
+};
+
+TEST_F(VectorAlgebra, Equality) {
 	Vector a = 2*i - 3*j + 5*k;
 	Vector b = a;
 
@@ -25,10 +28,7 @@ TEST(VectorAlgebra, Equality) {
 	EXPECT_DOUBLE_EQ(5, b.z());
 }
 
-TEST(VectorAlgebra, Sum) {
-	Vector i = {1, 0, 0};
-	Vector j = {0, 1, 0};
-	Vector k = {0, 0, 1};
+TEST_F(VectorAlgebra, Sum) {
 	Vector a = 2*i - 3*j + 5*k;
 	Vector b = a;
 	Vector c = i+j-k;
@@ -51,10 +51,7 @@ TEST(VectorAlgebra, Sum) {
 	EXPECT_DOUBLE_EQ(1, (a-b).z());
 }
 
-TEST(VectorAlgebra, Multiply) {
-	Vector i = {1, 0, 0};
-	Vector j = {0, 1, 0};
-	Vector k = {0, 0, 1};
+TEST_F(VectorAlgebra, Multiply) {
 	Vector a = 2*i - 3*j + 5*k;
 	Vector b = a;
 	Vector c = i+j-k;
