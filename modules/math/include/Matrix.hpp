@@ -55,18 +55,42 @@ inline constexpr Matrix::Matrix() : _data{0} {
 }
 
 inline constexpr const Real& Matrix::operator()(unsigned a, unsigned b) const {
+	#ifdef DEBUG
+	if (a >= 3) std::logic_error("Invalid size");
+	if (b >= 3) std::logic_error("Invalid size");
+	if (a < 0) std::logic_error("Invalid size");
+	if (b < 0) std::logic_error("Invalid size");
+	#endif
+	
 	return _data[3*a+b];
 }
 
 inline constexpr Real& Matrix::operator()(unsigned a, unsigned b) {
+	#ifdef DEBUG
+	if (a >= 3) std::logic_error("Invalid size");
+	if (b >= 3) std::logic_error("Invalid size");
+	if (a < 0) std::logic_error("Invalid size");
+	if (b < 0) std::logic_error("Invalid size");
+	#endif
+
 	return _data[3*a+b];
 }
 
 inline constexpr const Real& Matrix::operator()(unsigned a) const {
+	#ifdef DEBUG
+	if (a > 9) std::logic_error("Invalid size");
+	if (a < 0) std::logic_error("Invalid size");
+	#endif
+
 	return _data[a];
 }
 
 inline constexpr Real& Matrix::operator()(unsigned a) {
+	#ifdef DEBUG
+	if (a > 9) std::logic_error("Invalid size");
+	if (a < 0) std::logic_error("Invalid size");
+	#endif
+
 	return _data[a];
 }
 
@@ -110,6 +134,10 @@ inline constexpr Matrix& Matrix::operator*=(const Real& real) {
 }
 
 inline constexpr Matrix& Matrix::operator/=(const Real& real) {
+	#ifdef DEBUG
+	if (real == 0) std::logic_error("Invalid real number");
+	#endif
+
 	for (int i = 0; i < 9; ++i) _data[i] /= real;
 	return *this;
 }
@@ -148,7 +176,7 @@ inline constexpr Matrix Matrix::transpost() const {
 
 inline constexpr Matrix Matrix::inverse() const {
 	Real d = det();
-	if (!d) throw std::logic_error("Matrix is non invertible");
+	if (d == 0) throw std::logic_error("Matrix is non invertible");
 
 	Matrix result;
 	result(0) = _data[4] * _data[8] - _data[7] * _data[5];

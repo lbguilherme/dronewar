@@ -82,6 +82,12 @@ constexpr Vector& operator*=(const Real& real, Vector& vec) {
 }
 
 constexpr Vector& operator/=(const Real& real, Vector& vec) {
+	#ifdef DEBUG
+	if (vec.x() == 0) std::logic_error("Division by zero in x coordinate");
+	if (vec.y() == 0) std::logic_error("Division by zero in y coordinate");
+	if (vec.z() == 0) std::logic_error("Division by zero in z coordinate");
+	#endif
+
 	return vec /= real;
 }
 
@@ -154,10 +160,20 @@ inline constexpr Vector Vector::operator*(const Real& real) const {
 }
 
 inline constexpr Vector Vector::operator/(const Vector& vec) const {
+	#ifdef DEBUG
+	if (vec.x() == 0) std::logic_error("Division by zero in x coordinate");
+	if (vec.y() == 0) std::logic_error("Division by zero in y coordinate");
+	if (vec.z() == 0) std::logic_error("Division by zero in z coordinate");
+	#endif
+
 	return {_x / vec._x, _y / vec._y, _z / vec._z};
 }
 
 inline constexpr Vector Vector::operator/(const Real& real) const {
+	#ifdef DEBUG
+	if (real == 0) std::logic_error("Division by zero. Invalid real number");
+	#endif
+
 	return {_x / real, _y / real, _z / real};
 }
 
@@ -183,6 +199,12 @@ inline constexpr Vector& Vector::operator*=(const Vector& vec) {
 }
 
 inline constexpr Vector& Vector::operator/=(const Vector& vec) {
+	#ifdef DEBUG
+	if (vec.x() == 0) std::logic_error("Division by zero in x coordinate");
+	if (vec.y() == 0) std::logic_error("Division by zero in y coordinate");
+	if (vec.z() == 0) std::logic_error("Division by zero in z coordinate");
+	#endif
+
 	_x /= vec._x;
 	_y /= vec._y;
 	_z /= vec._z;
@@ -197,6 +219,10 @@ inline constexpr Vector& Vector::operator*=(const Real& real) {
 }
 
 inline constexpr Vector& Vector::operator/=(const Real& real) {
+	#ifdef DEBUG
+	if (real == 0) std::logic_error("Division by zero. Invalid real number");
+	#endif
+
 	_x /= real;
 	_y /= real;
 	_z /= real;
