@@ -11,7 +11,7 @@ all: build
 test: build/testrunner
 	@build/testrunner
 
-$(BUILD)/testrunner: $(addprefix build-test-,$(MODULES)) $(LIBGTEST) 
+$(BUILD)/testrunner: build $(addprefix build-test-,$(MODULES)) $(LIBGTEST)
 	@mkdir -p build
 	@$(CXX) $(wildcard $(BUILD)/testobjs/**/*.o) -o $@ $(GTEST_LINK) -L$(BUILD) $(addprefix -l,$(MODULES))
 
