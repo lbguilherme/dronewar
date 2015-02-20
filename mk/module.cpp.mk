@@ -39,7 +39,7 @@ $(BUILD)/include/$(MODULE)/%: include/%.hpp
 
 $(BUILD)/includecheck/$(MODULE)/%: include/%.hpp
 	@mkdir -p $(dir $@)
-	@echo "Checking   "$<" ..."
+	@echo "Checking   "$(MODULE)/$<" ..."
 	@echo "#include <$(MODULE)/"$<">" > $@.cpp
 	@cd .. && $(CXX) -fsyntax-only -I$(MODULE)/$(BUILD)/include -I. $(MODULE)/$@.cpp
 	@rm $@.cpp
@@ -54,12 +54,12 @@ $(BUILD)/testdeps/$(MODULE)/%.d: test/%.cpp prepare
 	@gcc -I$(BUILD)/include -nostdinc -MF$@ -MG -MM -MP -MT$@ -MT$(patsubst $(BUILD)/testdeps/$(MODULE)/%.d,$(BUILD)/testobjs/$(MODULE)/%.o,$@) $<
 
 $(BUILD)/objs/$(MODULE)/%.o: src/%.cpp
-	@echo "Compiling  "$<" ..."
+	@echo "Compiling  "$(MODULE)/$<" ..."
 	@mkdir -p $(dir $@)
 	@$(CXX) -c $< -o $@
 
 $(BUILD)/testobjs/$(MODULE)/%.o: test/%.cpp $(LIBGTEST)
-	@echo "Compiling  "$<" ..."
+	@echo "Compiling  "$(MODULE)/$<" ..."
 	@mkdir -p $(dir $@)
 	@$(CXX) -c $< -o $@
 
