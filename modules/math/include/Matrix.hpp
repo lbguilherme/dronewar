@@ -39,14 +39,14 @@ public:
 	/// Inverse of the matrix. Assumes matrix is inversible
 	constexpr Matrix inverse() const;
 	
-	/// Fill the matrix with zeros
-	constexpr Matrix& zeros();
+	/// Returns a null matrix.
+	constexpr static Matrix zeros();
 	
-	/// Fill the matrix with a constant. Default is 1.
-	constexpr Matrix& ones(const Real& num = 1);
+	/// Returns a matrix filled with ones.
+	constexpr static Matrix ones();
 	
-	/// Fill the main diagonal with a constant. Defailt is 1.
-	constexpr Matrix& eye(const Real& num = 1);
+	/// Returns identity matrix.
+	constexpr static Matrix eye();
 };
 
 inline constexpr Matrix::Matrix() : _data{0} {
@@ -159,19 +159,20 @@ inline constexpr Matrix Matrix::inverse() const {
 	return result / det();
 }
 
-inline constexpr Matrix& Matrix::zeros() {
-	for (int i = 0; i < 9; ++i) _data[i] = 0;
-	return *this;
+inline constexpr Matrix Matrix::zeros() {
+	return Matrix();
 }
 
-inline constexpr Matrix& Matrix::ones(const Real& num) {
-	for (int i = 0; i < 9; ++i) _data[i] = num;
-	return *this;
+inline constexpr Matrix Matrix::ones() {
+	Matrix result;
+	for (int i = 0; i < 9; ++i) result._data[i] = 1;
+	return result;
 }
 
-inline constexpr Matrix& Matrix::eye(const Real& num) {
-	for (int i = 0; i < 9; ++i) i % 4 ? _data[i] = 0 : _data[i] = num;
-	return *this;
+inline constexpr Matrix Matrix::eye() {
+	Matrix result;
+	for (int i = 0; i < 9; ++i) result._data[i] = (i % 4 ? 0 : 1);
+	return result;
 }
 
 }  // math namespace
