@@ -107,3 +107,26 @@ TEST_F(MatrixAlgebra, Multiplication) {
 	EXPECT_DOUBLE_EQ(1, mat(2, 1));
 	EXPECT_DOUBLE_EQ(1, mat(2, 2));
 }
+
+TEST_F(MatrixAlgebra, Determinant) {
+	EXPECT_DOUBLE_EQ(1, identity.det());
+	EXPECT_DOUBLE_EQ(8, (2*identity).det());
+	EXPECT_DOUBLE_EQ(0, one.det());
+	EXPECT_DOUBLE_EQ(0, (3*one).det());
+	EXPECT_DOUBLE_EQ(0, null.det());
+}
+
+TEST_F(MatrixAlgebra, Inverse) {
+	Matrix idiv = identity.inverse();
+	EXPECT_DOUBLE_EQ(1, idiv(0, 0));
+	EXPECT_DOUBLE_EQ(0, idiv(0, 1));
+	EXPECT_DOUBLE_EQ(0, idiv(0, 2));
+	
+	EXPECT_DOUBLE_EQ(0, idiv(1, 0));
+	EXPECT_DOUBLE_EQ(1, idiv(1, 1));
+	EXPECT_DOUBLE_EQ(0, idiv(1, 2));
+	
+	EXPECT_DOUBLE_EQ(0, idiv(2, 0));
+	EXPECT_DOUBLE_EQ(0, idiv(2, 1));
+	EXPECT_DOUBLE_EQ(1, idiv(2, 2));
+}
