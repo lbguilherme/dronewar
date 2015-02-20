@@ -147,7 +147,7 @@ inline constexpr Matrix Matrix::operator*(const Matrix& mat) const {
 	for (int i = 0; i < 3; ++i) {
 		for (int j = 0; j < 3; ++j) {
 			for (int k = 0; k < 3; ++k) {
-				result(i, j) = operator()(i, k) * mat(k, j);
+				result(i, j) += operator()(i, k) * mat(k, j);
 			}
 		}
 	}
@@ -155,17 +155,7 @@ inline constexpr Matrix Matrix::operator*(const Matrix& mat) const {
 }
 
 inline constexpr Matrix& Matrix::operator*=(const Matrix& mat) {
-	Matrix result;
-	for (int i = 0; i < 3; ++i) {
-		for (int j = 0; j < 3; ++j) {
-			for (int k = 0; k < 3; ++k) {
-				result(i, j) = operator()(i, k) * mat(k, j);
-			}
-		}
-	}
-	
-	for (int i = 0; i < 9; ++i) _data[i] = result._data[i];
-	return *this;
+	return (*this) = (*this) * mat;
 }
 
 inline constexpr Real Matrix::det() const {
