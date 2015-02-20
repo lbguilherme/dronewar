@@ -28,8 +28,10 @@ public:
 	constexpr Matrix& operator*=(const Real& real);
 	constexpr Matrix& operator/=(const Real& real);
 	
+	
 	/// Matrix multiplication
 	constexpr Matrix operator*(const Matrix& mat) const;
+	constexpr Matrix& operator*=(const Matrix& mat);
 	
 	/// Determinant of the matrix
 	constexpr Real det() const;
@@ -49,6 +51,12 @@ public:
 	/// Returns identity matrix.
 	constexpr static const Matrix eye();
 };
+
+constexpr Matrix operator*(const Real& real, const Matrix& matrix);
+
+constexpr Matrix operator*(const Real& real, const Matrix& matrix) {
+	return matrix * real;
+}
 
 inline constexpr Matrix::Matrix() : _data{0} {
 
@@ -144,6 +152,20 @@ inline constexpr Matrix Matrix::operator*(const Matrix& mat) const {
 		}
 	}
 	return result;
+}
+
+inline constexpr Matrix& Matrix::operator*=(const Matrix& mat) {
+	Matrix result;
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			for (int k = 0; k < 3; ++k) {
+				result(i, j) = operator()(i, k) * mat(k, j);
+			}
+		}
+	}
+	
+	for (int i = 0; i < 9; ++i) _data[i] = result._data[i];
+	return *this;
 }
 
 inline constexpr Real Matrix::det() const {
