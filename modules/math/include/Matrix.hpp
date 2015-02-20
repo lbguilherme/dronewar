@@ -1,6 +1,7 @@
 #pragma once
 
 #include <math/Real>
+#include <stdexcept>
 
 namespace math {
 
@@ -38,6 +39,15 @@ public:
 	
 	/// Inverse of the matrix. Assumes matrix is inversible
 	constexpr Matrix inverse() const;
+	
+	/// Returns a null matrix.
+	constexpr static const Matrix zeros();
+	
+	/// Returns a matrix filled with ones.
+	constexpr static const Matrix ones();
+	
+	/// Returns identity matrix.
+	constexpr static const Matrix eye();
 };
 
 inline constexpr Matrix::Matrix() : _data{0} {
@@ -137,6 +147,9 @@ inline constexpr Matrix Matrix::transpost() const {
 }
 
 inline constexpr Matrix Matrix::inverse() const {
+	Real d = det();
+	if (!d) throw std::logic_error("Matrix is non invertible");
+
 	Matrix result;
 	result(0) = _data[4] * _data[8] - _data[7] * _data[5];
 	result(1) = _data[2] * _data[7] - _data[8] * _data[1];
@@ -147,7 +160,23 @@ inline constexpr Matrix Matrix::inverse() const {
 	result(6) = _data[3] * _data[7] - _data[6] * _data[4];
 	result(7) = _data[1] * _data[6] - _data[7] * _data[0];
 	result(8) = _data[0] * _data[1] - _data[3] * _data[4];
-	return result / det();
+	return result / d;
+}
+
+inline constexpr const Matrix Matrix::zeros() {
+	return Matrix();
+}
+
+inline constexpr const Matrix Matrix::ones() {
+	Matrix result;
+	for (int i = 0; i < 9; ++i) result._data[i] = 1;
+	return result;
+}
+
+inline constexpr const Matrix Matrix::eye() {
+	Matrix result;
+	for (int i = 0; i < 9; ++i) result._data[i] = (i % 4 ? 0 : 1);
+	return result;
 }
 
 }  // math namespace
