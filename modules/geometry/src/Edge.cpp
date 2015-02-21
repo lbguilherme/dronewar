@@ -19,7 +19,7 @@ const std::set<Triangle>& Edge::triangles() const {
 }
 
 Vector Edge::vector() const {
-	return _data->_vertices[1].point() - _data->_vertices[0].point();
+	return _data->_vertices[1].vector() - _data->_vertices[0].vector();
 }
 
 Real Edge::length() const {
