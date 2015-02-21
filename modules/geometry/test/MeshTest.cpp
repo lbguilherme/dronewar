@@ -1,9 +1,11 @@
 #include <gtest/gtest.h>
 
+#include <math/Real>
 #include <geometry/Mesh>
 #include <geometry/Vertex>
 #include <geometry/Edge>
 
+using math::Real;
 using geometry::Mesh;
 using geometry::Vertex;
 using geometry::Edge;
@@ -90,4 +92,14 @@ TEST(Mesh, BuildSolidCube) {
 	EXPECT_EQ(4u, v6.triangles().size());
 	EXPECT_EQ(5u, v7.triangles().size());
 	EXPECT_EQ(4u, v8.triangles().size());
+
+	for (Edge e : cube.edges()) {
+		Real expected;
+		if (e == e16 || e == e27 || e == e38 || e == e45 || e == e13 || e == e57)
+			expected = sqrt(2);
+		else
+			expected = 1;
+
+		EXPECT_DOUBLE_EQ(expected, e.length());
+	}
 }
