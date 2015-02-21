@@ -18,6 +18,8 @@ public:
 	constexpr Real x() const;
 	constexpr Real y() const;
 	constexpr Real z() const;
+	constexpr const Real& operator()(unsigned i) const;
+	constexpr Real& operator()(unsigned i);
 
 	constexpr Vector operator+(const Vector& vec) const;
 	constexpr Vector operator-(const Vector& vec) const;
@@ -124,6 +126,22 @@ inline constexpr Real Vector::y() const {
 }
 
 inline constexpr Real Vector::z() const {
+	return _z;
+}
+
+inline constexpr const Real& Vector::operator()(unsigned i) const {
+	switch (i) {
+		case 0: return _x;
+		case 1: return _y;
+	}
+	return _z;
+}
+
+inline constexpr Real& Vector::operator()(unsigned i) {
+	switch (i) {
+		case 0: return _x;
+		case 1: return _y;
+	}
 	return _z;
 }
 
