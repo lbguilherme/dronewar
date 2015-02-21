@@ -45,7 +45,7 @@ Vertex Mesh::addVertex(math::Vector point) {
 	}
 }
 
-const std::set<Vertex> Mesh::vertices() const {
+const std::set<Vertex>& Mesh::vertices() const {
 	return _vertices;
 }
 
@@ -82,7 +82,7 @@ Edge Mesh::addEdge(Vertex v1, Vertex v2) {
 	}
 }
 
-const std::set<Edge> Mesh::edges() const {
+const std::set<Edge>& Mesh::edges() const {
 	return _edges;
 }
 
@@ -146,6 +146,6 @@ Triangle Mesh::addTriangle(Edge e1, Edge e2, Edge e3) {
 	}
 }
 
-const std::set<Triangle> Mesh::triangles() const {
+const std::set<Triangle>& Mesh::triangles() const {
 	return _triangles;
 }
