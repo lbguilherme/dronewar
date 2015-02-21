@@ -10,11 +10,11 @@ Edge::Edge(EdgeData* data) : _data(data) {
 
 }
 
-const std::array<Vertex, 2> Edge::vertices() const {
+const std::array<Vertex, 2>& Edge::vertices() const {
 	return _data->_vertices;
 }
 
-const std::set<Triangle> Edge::triangles() const {
+const std::set<Triangle>& Edge::triangles() const {
 	return _data->_triangles;
 }
 

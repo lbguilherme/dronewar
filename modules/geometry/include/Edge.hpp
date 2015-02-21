@@ -19,8 +19,8 @@ public:
 	bool operator<(const Edge& other) const {return _data < other._data;}
 	bool operator==(const Edge& other) const {return _data == other._data;}
 
-	const std::array<Vertex, 2> vertices() const;
-	const std::set<Triangle> triangles() const;
+	const std::array<Vertex, 2>& vertices() const;
+	const std::set<Triangle>& triangles() const;
 
 private:
 
