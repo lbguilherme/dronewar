@@ -36,7 +36,7 @@ prepare-%:
 	$(call PROCESS_CPP_MODULE,prepare)
 
 clean:
-	@rm -rf build
+	@rm -rf build doc
 
 .PHONY: doc
 doc:
