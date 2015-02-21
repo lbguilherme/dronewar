@@ -1,0 +1,51 @@
+\documentclass[10.5pt,oneside]{book}
+\addtolength{\evensidemargin}{-1.5cm}
+\addtolength{\oddsidemargin}{-1,5cm}
+\addtolength{\textwidth}{3cm}
+\addtolength{\textheight}{2cm}
+%\addtolength{\topmargin}{-1cm}
+%\addtolength{\headheight}{-2cm}
+
+\usepackage[english]{babel}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage[dvips]{graphicx}
+\usepackage{latexsym}
+%\usepackage[all]{xy}
+\usepackage{amsmath}
+\usepackage[normalem]{ulem}
+\usepackage{palatino}
+\usepackage{enumerate}
+%\usepackage{makeidx}
+\usepackage{amssymb,amsthm,amsfonts,amsmath,pifont}
+\usepackage{pstricks}
+\usepackage{graphicx}
+
+\usepackage{hyperref}
+
+\setlength{\marginparwidth}{0pt}
+
+
+%% Comandos relacionados à trigonometria e números complexos
+\renewcommand{\cot}{\,\mbox{$\rm{cotg}\,$}}
+\newcommand{\cis}{\,\mbox{$\rm{cis}\,$}}
+\newcommand{\erf}{\,\mbox{$\rm{erf}\,$}}
+\newcommand{\erfi}{\,\mbox{$\rm{erfi}\,$}}
+
+\begin{document}
+\title{The Calculations}
+\author{Phy =D}
+\maketitle
+
+\hypersetup{
+    colorlinks=false, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+}
+\tableofcontents
+
+\chapter{Math}
+\input{src/math}
+
+
+\end{document}
