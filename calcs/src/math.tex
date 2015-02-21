@@ -1,0 +1,50 @@
+\section{Solid}
+\subsection{Volume of a solid}
+Assume surface triangles defined by 3 vertexes $\mathbf r_k$ where edges are defined $\mathbf {e_{ij}} = \mathbf r_i - \mathbf r_j$. The volumetric contribution:
+$$
+V_n = \iint_{\Delta_n} F(\mathbf r)\mathbf{\hat n}\cdot\mathbf{dS} = 
+\iint_{\Delta_n} F(\mathbf r(s, t))\left|\frac{\partial\mathbf r}{\partial s}\times\frac{\partial\mathbf r}{\partial t} \right| ds\mbox{ }dt
+$$
+
+Chosing $F$:
+$$
+\sum_i \frac{\partial F}{\partial x_i}n_i = 1 \quad\Longleftarrow\quad
+\frac{\partial F}{\partial x}n_1 = 1 \quad\Longleftarrow\quad
+F(x_k) = \frac{x}{\mathbf{\hat i}\cdot\mathbf{\hat n}}
+$$
+
+
+Defining $\mathbf r(s, t) = \mathbf v_1(t) + \mathbf v_2 (s)$, and defining:
+\[
+  \begin{cases}
+   \mathbf v_1(t) = \mathbf r_1 + \mathbf e_{21}t  \\
+   \mathbf v_2(s) = \mathbf r_2 + \mathbf e_{32}s
+  \end{cases}
+  \quad\Longrightarrow\quad
+  \frac{\partial\mathbf r}{\partial t} = \frac{\partial\mathbf v_1}{\partial t} = \mathbf e_{21}, \quad\quad
+  \frac{\partial\mathbf r}{\partial t} = \frac{\partial\mathbf v_2}{\partial s} = \mathbf e_{32}
+\]
+
+Then:
+$$
+V_n = \mathbf{\hat i}\cdot\frac{\mathbf r_1 + \mathbf r_2}{\mathbf{\hat i}\cdot\mathbf{\hat n}}
+\int_0^1\int_0^1 \left(\frac{\mathbf e_{21}t + \mathbf e_{32}s}{\mathbf{\hat i}\cdot\mathbf{\hat n}}\cdot\mathbf{\hat i}\right) \frac{\left|\mathbf e_{21}\times\mathbf e_{32} \right|}{2} ds\mbox{ }dt
+$$
+$$
+V_n = \mathbf{\hat i}\cdot\frac{\mathbf r_1 + \mathbf r_2}{\mathbf{\hat i}\cdot\mathbf{\hat n}} 
+\frac{\left|\mathbf e_{21}\times\mathbf e_{32} \right|}{2 \mathbf{\hat i}\cdot\mathbf{\hat n}}\mathbf{\hat i}\cdot
+\int_0^1\int_0^1 \mathbf e_{21}t + \mathbf e_{32}s ds\mbox{ }dt
+$$
+$$
+V_n = \mathbf{\hat i}\cdot\frac{\mathbf r_1 + \mathbf r_2}{\mathbf{\hat i}\cdot\mathbf{\hat n}} 
+\frac{\left|\mathbf e_{21}\times\mathbf e_{32} \right|}{2 \mathbf{\hat i}\cdot\mathbf{\hat n}}\mathbf{\hat i}\cdot
+\left(\frac{\mathbf e_{21} + \mathbf e_{32}}{2}\right)
+$$
+
+Therefore, the volume of a solid:
+$$
+V =  \frac{1}{4} \sum_n
+\left[ \mathbf{\hat i}\cdot \left( \frac{\mathbf r_1 + \mathbf r_2}{\mathbf{\hat i}\cdot\mathbf{\hat n}}\right) \right]
+\left[ \mathbf{\hat i}\cdot \left( \frac{\mathbf e_{21} + \mathbf e_{32}}{\mathbf{\hat i}\cdot\mathbf{\hat n}}\right) \right]
+\left|\mathbf e_{21}\times\mathbf e_{32} \right|
+$$
