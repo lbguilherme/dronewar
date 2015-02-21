@@ -4,6 +4,7 @@
 #include <set>
 
 #include <math/Real>
+#include <math/Vector>
 
 namespace geometry {
 
@@ -25,6 +26,7 @@ public:
 	const std::array<Edge, 3>& edges() const;
 
 	math::Real area() const;
+	math::Vector normal() const;
 
 private:
 

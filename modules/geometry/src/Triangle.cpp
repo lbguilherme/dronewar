@@ -25,3 +25,9 @@ Real Triangle::area() const {
 	Real p = (a+b+c)/2;
 	return sqrt(p * (p-a) * (p-b) * (p-c));
 }
+
+Vector Triangle::normal() const {
+	Vector a = _data->_edges[0].vector();
+	Vector b = _data->_edges[1].vector();
+	return (b.cross(a)).unit();
+}
