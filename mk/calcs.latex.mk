@@ -1,5 +1,5 @@
 
-PDFLATEX := pdflatex -interaction nonstopmode -halt-on-error -file-line-error
+PDFLATEX := pdflatex -halt-on-error -file-line-error
 
 build/calcs.pdf: calcs/calcs.tex $(wildcard calcs/**/*.tex) mk/calcs.latex.mk
 	@echo "Producing  $@ ..."
@@ -8,5 +8,5 @@ build/calcs.pdf: calcs/calcs.tex $(wildcard calcs/**/*.tex) mk/calcs.latex.mk
 		$(PDFLATEX) -output-directory=../$(dir $@) calcs.tex && \
 		$(PDFLATEX) -output-directory=../$(dir $@) calcs.tex && \
 		$(PDFLATEX) -output-directory=../$(dir $@) calcs.tex \
-	) | grep ^! | cat
+	) | grep ^\\./ | cat
 	@rm -f `ls build/calcs.* | grep -v pdf`
