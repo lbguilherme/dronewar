@@ -112,7 +112,7 @@ inline constexpr Vector Vector::cross(const Vector& vec) const {
 }
 
 inline constexpr Vector Vector::unit() const {
-	return Vector(_x, _y, _z) / length();
+	return (*this) / length();
 }
 
 inline constexpr Real Vector::x() const {
