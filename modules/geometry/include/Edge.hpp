@@ -4,6 +4,7 @@
 #include <set>
 
 #include <math/Real>
+#include <math/Vector>
 
 namespace geometry {
 
@@ -24,6 +25,10 @@ public:
 	const std::array<Vertex, 2>& vertices() const;
 	const std::set<Triangle>& triangles() const;
 
+	/// Gets the vector reprenseting the Edge
+	math::Vector vector() const;
+
+	/// Gets the length of the Edge
 	math::Real length() const;
 
 private:
