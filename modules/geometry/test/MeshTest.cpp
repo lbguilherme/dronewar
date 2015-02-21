@@ -4,11 +4,13 @@
 #include <geometry/Mesh>
 #include <geometry/Vertex>
 #include <geometry/Edge>
+#include <geometry/Triangle>
 
 using math::Real;
 using geometry::Mesh;
 using geometry::Vertex;
 using geometry::Edge;
+using geometry::Triangle;
 
 TEST(Mesh, BuildSolidCube) {
 	Mesh cube;
@@ -102,4 +104,7 @@ TEST(Mesh, BuildSolidCube) {
 
 		EXPECT_DOUBLE_EQ(expected, e.length());
 	}
+
+	for (Triangle t : cube.triangles())
+		EXPECT_DOUBLE_EQ(0.5, t.area());
 }
