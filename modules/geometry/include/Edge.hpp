@@ -3,6 +3,8 @@
 #include <array>
 #include <set>
 
+#include <math/Real>
+
 namespace geometry {
 
 class Mesh;
@@ -21,6 +23,8 @@ public:
 
 	const std::array<Vertex, 2>& vertices() const;
 	const std::set<Triangle>& triangles() const;
+
+	math::Real length() const;
 
 private:
 
