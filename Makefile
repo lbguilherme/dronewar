@@ -44,7 +44,7 @@ clean:
 	@rm -rf build doc
 
 .PHONY: doc
-doc:
+doc: prepare
 	@rm -rf doc
 	@doxygen -s
 
