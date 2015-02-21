@@ -5,7 +5,7 @@ MAKE_CPP_MODULE := $(MAKE) --no-print-directory -f ../../mk/module.cpp.mk
 BUILD := build
 CXX := clang++ -g -std=c++14 -fdiagnostics-color=auto -DDEBUG
 
-all: build
+all: calcs build
 	@:
 
 include mk/external.gtest.mk
