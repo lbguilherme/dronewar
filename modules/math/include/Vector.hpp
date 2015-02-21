@@ -61,6 +61,9 @@ public:
 	
 	/// Returns the cross product of a vector
 	constexpr Vector cross(const Vector& vec) const;
+	
+	/// Returns the unit vector
+	constexpr Vector unit() const;
 
 private:
 
@@ -106,6 +109,10 @@ inline constexpr Vector Vector::cross(const Vector& vec) const {
 		_z*vec._x - _x * vec._z,
 		_x*vec._y - _y * vec._x
 	};
+}
+
+inline constexpr Vector Vector::unit() const {
+	return Vector(_x, _y, _z) / length();
 }
 
 inline constexpr Real Vector::x() const {
@@ -225,6 +232,8 @@ inline constexpr bool Vector::operator>=(const Vector& vec) const {
 inline constexpr bool Vector::operator<=(const Vector& vec) const {
 	return dotself() <= vec.dotself();
 }
+
+
 
 } // math namespace
 
