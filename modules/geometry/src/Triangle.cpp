@@ -33,6 +33,10 @@ Vector Triangle::normal() const {
 	return (b.cross(a)).unit();
 }
 
+Vector Triangle::vector() const {
+	return 1.0/3.0 * (_data->_edges[0].vector() + _data->_edges[1].vector() + _data->_edges[2].vector());
+}
+
 void Triangle::changeOrientation() {
 	std::swap( _data->_edges[0], _data->_edges[1]);
 }

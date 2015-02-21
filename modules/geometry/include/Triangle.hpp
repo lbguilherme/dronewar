@@ -31,6 +31,9 @@ public:
 	/// Gets a unit normal vector of the triangle
 	math::Vector normal() const;
 	
+	/// Gets the position of the triangle
+	math::Vector vector() const;
+	
 	/// Changes the sign of the orientation vectors
 	void changeOrientation();
 
