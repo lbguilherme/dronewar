@@ -23,5 +23,5 @@ Vector Edge::vector() const {
 }
 
 Real Edge::length() const {
-	return (_data->_vertices[0].point() - _data->_vertices[1].point()).length();
+	return vector().length();
 }
