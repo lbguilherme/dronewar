@@ -1,6 +1,7 @@
 #pragma once
 
 #include <math/Real>
+#include <math/Vector>
 #include <stdexcept>
 
 namespace math {
@@ -10,6 +11,7 @@ class Matrix {
 	
 public:
 	constexpr Matrix();
+	Matrix(const Vector& a, const Vector& b, const Vector& c);
 
 	constexpr const Real& operator()(unsigned a, unsigned b) const;
 	constexpr Real& operator()(unsigned a, unsigned b);
@@ -27,7 +29,6 @@ public:
 	constexpr Matrix operator/(const Real& real) const;
 	constexpr Matrix& operator*=(const Real& real);
 	constexpr Matrix& operator/=(const Real& real);
-	
 	
 	/// Matrix multiplication
 	constexpr Matrix operator*(const Matrix& mat) const;
@@ -53,13 +54,31 @@ public:
 };
 
 constexpr Matrix operator*(const Real& real, const Matrix& matrix);
+constexpr Vector operator*(const Matrix& mat, const Vector& vec);
 
 constexpr Matrix operator*(const Real& real, const Matrix& matrix) {
 	return matrix * real;
 }
 
+constexpr Vector operator*(const Matrix& mat, const Vector& vec) {
+	Vector result;
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			result(i) += mat(i, j) * vec(j);
+		}
+	}
+	
+	return result;
+}
+
 inline constexpr Matrix::Matrix() : _data{0} {
 
+}
+
+inline Matrix::Matrix(const Vector& a, const Vector& b, const Vector& c) {
+	for (int j = 0; j < 3; ++j) operator()(0, j) = a(j);
+	for (int j = 0; j < 3; ++j) operator()(1, j) = b(j);
+	for (int j = 0; j < 3; ++j) operator()(2, j) = c(j);
 }
 
 inline constexpr const Real& Matrix::operator()(unsigned a, unsigned b) const {
