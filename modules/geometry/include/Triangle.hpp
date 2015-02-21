@@ -25,8 +25,14 @@ public:
 	const std::array<Vertex, 3>& vertices() const;
 	const std::array<Edge, 3>& edges() const;
 
+	/// Gets the area of the Triangle
 	math::Real area() const;
+	
+	/// Gets a unit normal vector of the triangle
 	math::Vector normal() const;
+	
+	/// Changes the sign of the orientation vectors
+	void changeOrientation();
 
 private:
 

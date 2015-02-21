@@ -1,6 +1,7 @@
 #include <geometry/Triangle>
 #include <geometry/Edge>
 #include <geometry/Mesh>
+#include <utility>
 #include "TriangleData.hpp"
 
 using namespace math;
@@ -30,4 +31,8 @@ Vector Triangle::normal() const {
 	Vector a = _data->_edges[0].vector();
 	Vector b = _data->_edges[1].vector();
 	return (b.cross(a)).unit();
+}
+
+void Triangle::changeOrientation() {
+	std::swap( _data->_edges[0], _data->_edges[1]);
 }
