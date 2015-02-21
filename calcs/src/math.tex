@@ -48,3 +48,30 @@ V =  \frac{1}{4} \sum_n
 \left[ \mathbf{\hat i}\cdot \left( \frac{\mathbf e_{21} + \mathbf e_{32}}{\mathbf{\hat i}\cdot\mathbf{\hat n}}\right) \right]
 \left|\mathbf e_{21}\times\mathbf e_{32} \right|
 $$
+\newpage
+
+
+% ====================================================================
+
+
+
+
+\subsection{Orientation of the solid}
+A triangle $T$ has normal vector $\mathbf{\hat n}$ and a vertex $l_t$. A triangle $B$ has vertexes $\mathbf e_{ij}$ and $\mathbf e_{ik}$. Let $\mathbf p_0$ be the vertex $\mathbf r_i$ on $B$.
+$$ \mathbf l_t + \mathbf{\hat n}t = \mathbf p_0 + \mathbf e_{ij}u + \mathbf e_{ik}v $$
+$$ \mathbf l_t - \mathbf p_0 =  -\mathbf{\hat n}t + \mathbf e_{ij}u + \mathbf e_{ik}v $$
+
+In matrix notation notation:
+$$ \mathbf l_t - \mathbf p_0 = 
+ \begin{bmatrix}
+  -\mathbf{\hat n} & \mathbf e_{ij} & \mathbf e_{ik}
+ \end{bmatrix}
+ \begin{bmatrix}
+  t \\
+  u \\
+  v
+ \end{bmatrix}
+$$
+
+Therefore: $P = Ax$ and the solution: $x = A^{-1} P$
+
