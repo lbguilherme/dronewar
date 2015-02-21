@@ -9,6 +9,11 @@ all: build
 	@:
 
 include mk/external.gtest.mk
+include mk/calcs.latex.mk
+
+.PHONY: calcs
+calcs: build/calcs.pdf
+	@:
 
 test: build/testrunner
 	@build/testrunner
