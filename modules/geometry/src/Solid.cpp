@@ -7,8 +7,9 @@ using namespace geometry;
 
 void Solid::orient() {
 	for (Triangle face : triangles()) {
-	
 		unsigned counter = 0;
+		Vector nor = face.normal();
+		
 		for (Triangle triangle : triangles()) {
 			if (face == triangle) continue;
 		
@@ -16,8 +17,13 @@ void Solid::orient() {
 			Vector e1 = triangle.vertices()[1].vector() - triangle.vertices()[0].vector();
 			Vector e2 = triangle.vertices()[2].vector() - triangle.vertices()[0].vector();
 			
-			Matrix mat(-triangle.normal(), e1, e2);
-			Vector solution = mat.inverse() * p;
+			Matrix mat(-nor, e1, e2);
+			Vector solution;
+			try {
+				solution = mat.inverse() * p;
+			} catch (std::logic_error&) {
+				continue;
+			}
 			
 			if (solution.y() < 0) continue;
 			if (solution.z() < 0) continue;
