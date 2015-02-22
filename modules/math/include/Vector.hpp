@@ -135,7 +135,7 @@ inline constexpr const Real& Vector::operator()(unsigned i) const {
 		case 1: return _y;
 		case 2: return _z;
 	}
-	throw std::logic("Invalid index");
+	throw std::logic_error("Invalid index");
 }
 
 inline constexpr Real& Vector::operator()(unsigned i) {
@@ -144,7 +144,7 @@ inline constexpr Real& Vector::operator()(unsigned i) {
 		case 1: return _y;
 		case 2: return _z;
 	}
-	throw std::logic("Invalid index");
+	throw std::logic_error("Invalid index");
 }
 
 inline constexpr Vector Vector::operator+(const Vector& vec) const {
