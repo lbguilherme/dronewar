@@ -18,7 +18,6 @@ void Solid::orient() {
 			Vector e2 = triangle.vertices()[2].vector() - triangle.vertices()[0].vector();
 			
 			Matrix mat(-nor, e1, e2);
-			Matrix mat(-face.normal(), e1, e2);
 			Vector solution;
 			try {
 				solution = mat.inverse() * p;
