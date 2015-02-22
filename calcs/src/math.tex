@@ -57,11 +57,11 @@ $$
 
 
 \subsection{Orientation of the solid}
-A triangle $T$ has normal vector $\mathbf{\hat n}$ and a vertex $\mathbf l$. A triangle $B$ has edges $\mathbf e_{ij}$ and $\mathbf e_{ik}$. Let $\mathbf p_0$ be the vertex $\mathbf r_i$ on $B$.
+A triangle $T$ has normal vector $\mathbf{\hat n}$ and there is $\mathbf l\in T$. An edge is defined $\mathbf e_{ij} = \mathbf r_j - \mathbf r_i$. A triangle $B$ has edges $\mathbf e_{ij}$ and $\mathbf e_{ik}$. Let $\mathbf p_0$ be the vertex $\mathbf r_i$ on $B$. 
 $$ \mathbf l + \mathbf{\hat n}t = \mathbf p_0 + \mathbf e_{ij}u + \mathbf e_{ik}v $$
 $$ \mathbf l - \mathbf p_0 =  -\mathbf{\hat n}t + \mathbf e_{ij}u + \mathbf e_{ik}v $$
 
-In matrix notation notation:
+In matrix notation:
 $$ \mathbf l - \mathbf p_0 = 
  \begin{bmatrix}
   -\mathbf{\hat n} & \mathbf e_{ij} & \mathbf e_{ik}
