@@ -133,16 +133,18 @@ inline constexpr const Real& Vector::operator()(unsigned i) const {
 	switch (i) {
 		case 0: return _x;
 		case 1: return _y;
+		case 2: return _z;
 	}
-	return _z;
+	throw std::logic("Invalid index");
 }
 
 inline constexpr Real& Vector::operator()(unsigned i) {
 	switch (i) {
 		case 0: return _x;
 		case 1: return _y;
+		case 2: return _z;
 	}
-	return _z;
+	throw std::logic("Invalid index");
 }
 
 inline constexpr Vector Vector::operator+(const Vector& vec) const {
