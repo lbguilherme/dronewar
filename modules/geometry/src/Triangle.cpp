@@ -34,7 +34,7 @@ Vector Triangle::normal() const {
 }
 
 Vector Triangle::vector() const {
-	return 1.0/3.0 * (_data->_edges[0].vector() + _data->_edges[1].vector() + _data->_edges[2].vector());
+	return 1.0/3.0 * (_data->_vertices[0].vector() + _data->_vertices[1].vector() + _data->_vertices[2].vector());
 }
 
 void Triangle::changeOrientation() {
