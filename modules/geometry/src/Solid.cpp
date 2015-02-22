@@ -31,5 +31,22 @@ void Solid::orient() {
 }
 
 Real Solid::volume() const {
-	throw "not implemented";
+	Real volume = 0;
+	for (Triangle face : triangles()) {
+		Real result = 1;
+		Real in = face.normal().x();
+		
+		Vector e1 = face.vertices()[1].vector() - face.vertices()[0].vector();
+		Vector e2 = face.vertices()[2].vector() - face.vertices()[1].vector();
+		Vector r1 = face.vertices()[0].vector();
+		Vector r2 = face.vertices()[1].vector();
+		
+		result *= (e1 + e2).x();
+		result *= (r1 + r2).x();
+		result /= in * in;
+		
+		volume += result;
+	}
+	
+	return volume;	
 }
