@@ -44,6 +44,7 @@ Real Solid::volume() const {
 		result *= (e1 + e2).x();
 		result *= (r1 + r2).x();
 		result /= in * in;
+		result *= (e1.cross(e2)).length();
 		
 		volume += result;
 	}
