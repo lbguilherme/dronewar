@@ -9,11 +9,11 @@ Vertex::Vertex(VertexData* data) : _data(data) {
 
 }
 
-math::Vector& Vertex::vector() {
+math::Vector& Vertex::position() {
 	return _data->_point;
 }
 
-const math::Vector& Vertex::vector() const {
+const math::Vector& Vertex::position() const {
 	return _data->_point;
 }
 

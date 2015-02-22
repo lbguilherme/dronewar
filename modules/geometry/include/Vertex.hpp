@@ -22,8 +22,8 @@ public:
 	bool operator<(const Vertex& other) const {return _data < other._data;}
 	bool operator==(const Vertex& other) const {return _data == other._data;}
 
-	math::Vector& vector();
-	const math::Vector& vector() const;
+	math::Vector& position();
+	const math::Vector& position() const;
 
 	const std::set<Edge>& edges() const;
 	const std::set<Triangle>& triangles() const;

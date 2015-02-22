@@ -74,7 +74,7 @@ TEST(Solid, BuildCube) {
 
 	Vector center;
 	for (Vertex v : cube.vertices())
-		center += v.vector();
+		center += v.position();
 	center /= cube.vertices().size();
 
 	EXPECT_DOUBLE_EQ(0.5, center.x());
@@ -84,7 +84,7 @@ TEST(Solid, BuildCube) {
 	cube.orient();
 
 	for (Triangle t : cube.triangles()) {
-		Vector pointAway = t.vector() + t.normal();
+		Vector pointAway = t.position() + t.normal();
 		Real dist = (center - pointAway).length();
 		EXPECT_GT(dist, 1) << pointAway.x() << " " << pointAway.y() << " " << pointAway.z();
 	}

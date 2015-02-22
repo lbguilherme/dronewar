@@ -32,7 +32,7 @@ public:
 	math::Vector normal() const;
 	
 	/// Gets the position of the triangle
-	math::Vector vector() const;
+	math::Vector position() const;
 	
 	/// Changes the sign of the orientation vectors
 	void changeOrientation();
