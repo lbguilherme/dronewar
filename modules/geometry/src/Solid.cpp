@@ -10,6 +10,8 @@ void Solid::orient() {
 	
 		unsigned counter = 0;
 		for (Triangle triangle : triangles()) {
+			if (face == triangle) continue;
+		
 			Vector p = face.vector() - triangle.vertices()[0].vector();
 			Vector e1 = triangle.vertices()[1].vector() - triangle.vertices()[0].vector();
 			Vector e2 = triangle.vertices()[2].vector() - triangle.vertices()[0].vector();
