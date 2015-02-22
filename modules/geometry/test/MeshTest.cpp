@@ -51,10 +51,10 @@ TEST(Mesh, BuildCube) {
 	Edge e38 = cube.addEdge(v3, v8);
 	Edge e45 = cube.addEdge(v4, v5);
 
-	// Top
+	// Bottom
 	cube.addTriangle(e12, e23, e13);
 	cube.addTriangle(e13, e34, e14);
-	// Bottom
+	// Top
 	cube.addTriangle(e56, e67, e57);
 	cube.addTriangle(e57, e78, e58);
 	// Right
