@@ -1,19 +1,21 @@
 #include <gtest/gtest.h>
 
 #include <math/Real>
-#include <geometry/Mesh>
+#include <math/Vector>
+#include <geometry/Solid>
 #include <geometry/Vertex>
 #include <geometry/Edge>
 #include <geometry/Triangle>
 
 using math::Real;
-using geometry::Mesh;
+using math::Vector;
+using geometry::Solid;
 using geometry::Vertex;
 using geometry::Edge;
 using geometry::Triangle;
 
-TEST(Mesh, BuildCube) {
-	Mesh cube;
+TEST(Solid, BuildCube) {
+	Solid cube;
 
 	// Cube Vertices
 	Vertex v1 = cube.addVertex({0, 0, 0});
@@ -70,41 +72,22 @@ TEST(Mesh, BuildCube) {
 	cube.addTriangle(e14, e15, e45);
 	cube.addTriangle(e58, e48, e45);
 
-	EXPECT_EQ(8u, cube.vertices().size());
-	EXPECT_EQ(18u, cube.edges().size());
-	EXPECT_EQ(12u, cube.triangles().size());
+	Vector center;
+	for (Vertex v : cube.vertices())
+		center += v.vector();
+	center /= cube.vertices().size();
 
-	for (Edge e : cube.edges())
-		EXPECT_EQ(2u, e.vertices().size());
+	EXPECT_DOUBLE_EQ(0.5, center.x());
+	EXPECT_DOUBLE_EQ(0.5, center.y());
+	EXPECT_DOUBLE_EQ(0.5, center.z());
 
-	EXPECT_EQ(5u, v1.edges().size());
-	EXPECT_EQ(4u, v2.edges().size());
-	EXPECT_EQ(5u, v3.edges().size());
-	EXPECT_EQ(4u, v4.edges().size());
-	EXPECT_EQ(5u, v5.edges().size());
-	EXPECT_EQ(4u, v6.edges().size());
-	EXPECT_EQ(5u, v7.edges().size());
-	EXPECT_EQ(4u, v8.edges().size());
+	cube.orient();
 
-	EXPECT_EQ(5u, v1.triangles().size());
-	EXPECT_EQ(4u, v2.triangles().size());
-	EXPECT_EQ(5u, v3.triangles().size());
-	EXPECT_EQ(4u, v4.triangles().size());
-	EXPECT_EQ(5u, v5.triangles().size());
-	EXPECT_EQ(4u, v6.triangles().size());
-	EXPECT_EQ(5u, v7.triangles().size());
-	EXPECT_EQ(4u, v8.triangles().size());
-
-	for (Edge e : cube.edges()) {
-		Real expected;
-		if (e == e16 || e == e27 || e == e38 || e == e45 || e == e13 || e == e57)
-			expected = sqrt(2);
-		else
-			expected = 1;
-
-		EXPECT_DOUBLE_EQ(expected, e.length());
+	for (Triangle t : cube.triangles()) {
+		Vector pointAway = t.vector() + t.normal();
+		Real dist = (center - pointAway).length();
+		EXPECT_GT(dist, 1) << pointAway.x() << " " << pointAway.y() << " " << pointAway.z();
 	}
 
-	for (Triangle t : cube.triangles())
-		EXPECT_DOUBLE_EQ(0.5, t.area());
+	EXPECT_DOUBLE_EQ(1, cube.volume());
 }

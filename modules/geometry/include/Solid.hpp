@@ -6,6 +6,7 @@
 namespace geometry {
 
 class Solid : public Mesh {
+public:
 
 	/// Orients the solid positevely. Complexity: O(n²)
 	/*!
@@ -17,6 +18,7 @@ class Solid : public Mesh {
 
 	/// Measures the volume of the solid. Complexity: O(n)
 	math::Real volume() const;
+
 };
 
 } // namespace geometry
