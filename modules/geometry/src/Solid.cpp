@@ -13,9 +13,9 @@ void Solid::orient() {
 		for (Triangle triangle : triangles()) {
 			if (face == triangle) continue;
 		
-			Vector p = face.vector() - triangle.vertices()[0].vector();
-			Vector e1 = triangle.vertices()[1].vector() - triangle.vertices()[0].vector();
-			Vector e2 = triangle.vertices()[2].vector() - triangle.vertices()[0].vector();
+			Vector p = face.position() - triangle.vertices()[0].position();
+			Vector e1 = triangle.vertices()[1].position() - triangle.vertices()[0].position();
+			Vector e2 = triangle.vertices()[2].position() - triangle.vertices()[0].position();
 			
 			Matrix mat(-nor, e1, e2);
 			Vector solution;
@@ -42,10 +42,10 @@ Real Solid::volume() const {
 		Real result = 1;
 		Real in = face.normal().x();
 		
-		Vector e1 = face.vertices()[1].vector() - face.vertices()[0].vector();
-		Vector e2 = face.vertices()[2].vector() - face.vertices()[1].vector();
-		Vector r1 = face.vertices()[0].vector();
-		Vector r2 = face.vertices()[1].vector();
+		Vector e1 = face.vertices()[1].position() - face.vertices()[0].position();
+		Vector e2 = face.vertices()[2].position() - face.vertices()[1].position();
+		Vector r1 = face.vertices()[0].position();
+		Vector r2 = face.vertices()[1].position();
 		
 		result *= (e1 + e2).x();
 		result *= (r1 + r2).x();

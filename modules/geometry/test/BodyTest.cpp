@@ -53,10 +53,10 @@ TEST(Solid, BuildCube) {
 	Edge e38 = cube.addEdge(v3, v8);
 	Edge e45 = cube.addEdge(v4, v5);
 
-	// Top
+	// Bottom
 	cube.addTriangle(e12, e23, e13);
 	cube.addTriangle(e13, e34, e14);
-	// Bottom
+	// Top
 	cube.addTriangle(e56, e67, e57);
 	cube.addTriangle(e57, e78, e58);
 	// Right
@@ -74,7 +74,7 @@ TEST(Solid, BuildCube) {
 
 	Vector center;
 	for (Vertex v : cube.vertices())
-		center += v.vector();
+		center += v.position();
 	center /= cube.vertices().size();
 
 	EXPECT_DOUBLE_EQ(0.5, center.x());
@@ -84,7 +84,7 @@ TEST(Solid, BuildCube) {
 	cube.orient();
 
 	for (Triangle t : cube.triangles()) {
-		Vector pointAway = t.vector() + t.normal();
+		Vector pointAway = t.position() + t.normal();
 		Real dist = (center - pointAway).length();
 		EXPECT_GT(dist, 1) << pointAway.x() << " " << pointAway.y() << " " << pointAway.z();
 	}
