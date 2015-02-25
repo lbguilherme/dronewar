@@ -23,6 +23,7 @@ public:
 	Edge addEdge(Vertex v1, Vertex v2);
 	const std::set<Edge>& edges() const;
 
+	Triangle addTriangle(Vertex v1, Vertex v2, Vertex v3);
 	Triangle addTriangle(Edge e1, Edge e2, Edge e3);
 	const std::set<Triangle>& triangles() const;
 

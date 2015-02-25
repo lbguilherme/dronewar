@@ -97,6 +97,12 @@ const std::set<Edge>& Mesh::edges() const {
 	return _edges;
 }
 
+Triangle Mesh::addTriangle(Vertex v1, Vertex v2, Vertex v3) {
+	Edge e1 = addEdge(v1, v2);
+	Edge e2 = addEdge(v2, v3);
+	Edge e3 = addEdge(v1, v3);
+	return addTriangle(e1, e2, e3);
+}
 
 Triangle Mesh::addTriangle(Edge e1, Edge e2, Edge e3) {
 	for (const Triangle& t : e1.triangles()) {

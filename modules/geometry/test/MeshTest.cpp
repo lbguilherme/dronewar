@@ -64,11 +64,11 @@ TEST(Mesh, BuildCube) {
 	cube.addTriangle(e34, e48, e38);
 	cube.addTriangle(e78, e37, e38);
 	// Front
-	cube.addTriangle(e23, e37, e27);
+	cube.addTriangle(v2, v3, v7);
 	cube.addTriangle(e67, e26, e27);
 	// Back
 	cube.addTriangle(e14, e15, e45);
-	cube.addTriangle(e58, e48, e45);
+	cube.addTriangle(v5, v8, v4);
 
 	// Duplicated (shall be ignored)
 	cube.addEdge(v1, v4);
@@ -78,6 +78,7 @@ TEST(Mesh, BuildCube) {
 	cube.addEdge(v5, v8);
 	cube.addTriangle(e15, e45, e14);
 	cube.addTriangle(e58, e45, e48);
+	cube.addTriangle(v1, v4, v5);
 
 	EXPECT_EQ(8u, cube.vertices().size());
 	EXPECT_EQ(18u, cube.edges().size());
