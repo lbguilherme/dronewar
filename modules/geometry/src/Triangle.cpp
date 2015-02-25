@@ -20,11 +20,9 @@ const std::array<Edge, 3>& Triangle::edges() const {
 }
 
 Real Triangle::area() const {
-	Real a = _data->_edges[0].length();
-	Real b = _data->_edges[1].length();
-	Real c = _data->_edges[2].length();
-	Real p = (a+b+c)/2;
-	return sqrt(p * (p-a) * (p-b) * (p-c));
+	Vector a = _data->_edges[0].vector();
+	Vector b = _data->_edges[1].vector();
+	return 1.0 / 2.0 * (b.cross(a)).length();
 }
 
 Vector Triangle::normal() const {
