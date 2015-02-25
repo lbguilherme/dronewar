@@ -1,7 +1,5 @@
 #include <geometry/Ray>
-#include <geometry/RayHit>
 #include <math/Matrix>
-#include <algorithm>
 
 using namespace geometry;
 using namespace math;
@@ -51,23 +49,15 @@ RayHit Ray::castOnTriangle(Triangle triangle) const {
 	return RayHit{*this, solution.x()};
 }
 
-std::set<RayHit> Ray::castOnMesh(const Mesh& mesh) const {
-	std::set<RayHit> hits;
+RayHitSet Ray::castOnMesh(const Mesh& mesh) const {
+	RayHitSet hits;
 	for (Triangle t : mesh.triangles()) {
 		RayHit hit = castOnTriangle(t);
 		if (hit.hasHit())
 			hits.insert(hit);
 	}
 
-	auto cmp = [](const RayHit& a, const RayHit& b){
-		auto dist = std::abs(a.distance() - b.distance());
-		return dist < 0.000001; // TODO
-	};
-
-	auto it = hits.begin();
-	while ((it = std::adjacent_find(it, hits.end(), cmp)) != hits.end()) {
-		hits.erase(it);
-	}
+	hits.removeDuplicates();
 
 	return hits;
 }

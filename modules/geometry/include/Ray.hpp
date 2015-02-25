@@ -6,6 +6,7 @@
 namespace geometry {
 
 class RayHit;
+class RayHitSet;
 
 class Ray {
 public:
@@ -13,7 +14,7 @@ public:
 	Ray(math::Vector origin, math::Vector direction);
 
 	RayHit castOnTriangle(Triangle triangle) const;
-	std::set<RayHit> castOnMesh(const Mesh& mesh) const;
+	RayHitSet castOnMesh(const Mesh& mesh) const;
 
 	math::Vector origin() const;
 	math::Vector direction() const;
@@ -28,3 +29,6 @@ private:
 };
 
 } // namespace geometry
+
+#include <geometry/RayHit>
+#include <geometry/RayHitSet>
