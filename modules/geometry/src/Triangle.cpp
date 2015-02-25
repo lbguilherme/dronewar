@@ -25,6 +25,12 @@ Real Triangle::area() const {
 	return 1.0 / 2.0 * (b.cross(a)).length();
 }
 
+Vector Triangle::vectorArea() const {
+	Vector a = _data->_edges[0].vector();
+	Vector b = _data->_edges[1].vector();
+	return 1.0 / 2.0 * b.cross(a);
+}
+
 Vector Triangle::normal() const {
 	Vector a = _data->_edges[0].vector();
 	Vector b = _data->_edges[1].vector();

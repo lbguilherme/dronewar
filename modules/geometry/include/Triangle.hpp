@@ -28,6 +28,9 @@ public:
 	/// Gets the area of the Triangle
 	math::Real area() const;
 	
+	/// Gets the vector reprenseting the area of the triangle
+	math::Vector vectorArea() const;
+	
 	/// Gets a unit normal vector of the triangle
 	math::Vector normal() const;
 	
