@@ -48,9 +48,7 @@ RayHit Ray::castOnTriangle(Triangle triangle) const {
 	if (w < 0) return RayHit{*this};
 	if (w > 1) return RayHit{*this};
 
-	Vector point = _origin + solution.x() * _direction;
-
-	return RayHit{*this, point};
+	return RayHit{*this, solution.x()};
 }
 
 std::set<RayHit> Ray::castOnMesh(const Mesh& mesh) const {

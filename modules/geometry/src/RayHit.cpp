@@ -9,8 +9,8 @@ RayHit::RayHit(Ray ray)
 
 }
 
-RayHit::RayHit(Ray ray, Vector point)
-	: _ray(ray), _point(point), _hasHit(true) {
+RayHit::RayHit(Ray ray, math::Real distance)
+	: _ray(ray), _distance(distance), _hasHit(true) {
 
 }
 
@@ -20,7 +20,7 @@ bool RayHit::operator<(const RayHit& other) const {
 }
 
 Real RayHit::distance() const {
-	return (_ray.origin() - _point).length();
+	return _distance;
 }
 
 bool RayHit::hasHit() const {
@@ -28,5 +28,5 @@ bool RayHit::hasHit() const {
 }
 
 Vector RayHit::point() const {
-	return _point;
+	return _ray.origin() + _distance * _ray.direction();
 }

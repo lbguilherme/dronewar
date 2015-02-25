@@ -18,12 +18,12 @@ public:
 private:
 
 	RayHit(Ray ray);
-	RayHit(Ray ray, math::Vector point);
+	RayHit(Ray ray, math::Real distance);
 
 private:
 
 	Ray _ray;
-	math::Vector _point;
+	math::Real _distance;
 	bool _hasHit;
 
 };
