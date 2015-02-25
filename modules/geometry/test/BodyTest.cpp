@@ -31,30 +31,30 @@ TEST(Solid, BuildCube) {
 	for (Triangle t : cube.triangles()) {
 		Vector pointAway = t.position() + t.normal();
 		Real dist = (center - pointAway).length();
-		EXPECT_GT(dist, 1) << pointAway.x() << " " << pointAway.y() << " " << pointAway.z();
+		EXPECT_GT(dist, 1);
 	}
 
 	EXPECT_DOUBLE_EQ(1, cube.volume());
 }
 
 TEST(Solid, BuildCube2) {
-	Solid cube = Solid::cube(1);
+	Solid cube = Solid::cube(2);
 
 	Vector center;
 	for (Vertex v : cube.vertices())
 		center += v.position();
 	center /= cube.vertices().size();
 
-	EXPECT_DOUBLE_EQ(0.5, center.x());
-	EXPECT_DOUBLE_EQ(0.5, center.y());
-	EXPECT_DOUBLE_EQ(0.5, center.z());
+	EXPECT_DOUBLE_EQ(1, center.x());
+	EXPECT_DOUBLE_EQ(1, center.y());
+	EXPECT_DOUBLE_EQ(1, center.z());
 
 	cube.orient();
 
 	for (Triangle t : cube.triangles()) {
 		Vector pointAway = t.position() + t.normal();
 		Real dist = (center - pointAway).length();
-		EXPECT_GT(dist, 1) << pointAway.x() << " " << pointAway.y() << " " << pointAway.z();
+		EXPECT_GT(dist, 1);
 	}
 
 	EXPECT_DOUBLE_EQ(8, cube.volume());
