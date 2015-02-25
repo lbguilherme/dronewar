@@ -22,6 +22,12 @@ void Transform::scale(const Vector& scale) {
 	_transform *= sub;
 }
 
+void Transform::translate(const math::Vector& translate) {
+	Matrix44 sub = Matrix44::eye();
+	for (int i = 0; i < 3; ++i) sub(5*i+3) = translate(i);
+	_transform *= sub;
+}
+
 Vector Transform::apply(const Vector& point) {
 	Vector4 p(point, 1);
 	Vector4 result = _transform * p;
