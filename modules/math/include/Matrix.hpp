@@ -100,7 +100,7 @@ inline constexpr Real& Matrix::operator()(unsigned a, unsigned b) {
 
 inline constexpr const Real& Matrix::operator()(unsigned a) const {
 	#ifdef DEBUG
-	if (a > 9) throw std::logic_error("Invalid index");
+	if (a >= 9) throw std::logic_error("Invalid index");
 	#endif
 
 	return _data[a];
@@ -108,7 +108,7 @@ inline constexpr const Real& Matrix::operator()(unsigned a) const {
 
 inline constexpr Real& Matrix::operator()(unsigned a) {
 	#ifdef DEBUG
-	if (a > 9) throw std::logic_error("Invalid index");
+	if (a >= 9) throw std::logic_error("Invalid index");
 	#endif
 
 	return _data[a];
