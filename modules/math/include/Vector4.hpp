@@ -1,6 +1,7 @@
 #pragma once
 
 #include <math/Real>
+#include <math/Vector>
 #include <cmath>
 #include <stdexcept>
 
@@ -11,6 +12,7 @@ class Vector4 {
 public:
 
 	constexpr Vector4();
+	constexpr Vector4(const Vector& vec, Real t);
 	constexpr Vector4(Real x, Real y, Real z, Real t);
 
 	constexpr bool isNan() const;
@@ -69,6 +71,9 @@ public:
 	
 	/// Returns the unit Vector4
 	constexpr Vector4 unit() const;
+	
+	/// Returns a vector of 3 dimensions ignoring parameter t
+	constexpr Vector vector3() const;
 
 private:
 
@@ -86,6 +91,10 @@ constexpr Vector4 operator*(const Real& real, const Vector4& vec) {
 }
 
 inline constexpr Vector4::Vector4() : _x(), _y(), _z(), _t() {
+
+}
+
+inline constexpr Vector4::Vector4(const Vector& vec, Real t) : _x(vec.x()), _y(vec.y()), _z(vec.z()), _t(t) {
 
 }
 
@@ -120,6 +129,10 @@ inline constexpr Vector4 Vector4::cross(const Vector4& vec) const {
 
 inline constexpr Vector4 Vector4::unit() const {
 	return (*this) / length();
+}
+
+inline constexpr Vector Vector4::vector3() const {
+	return {_x, _y, _z};
 }
 
 inline constexpr Real Vector4::x() const {
