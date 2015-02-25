@@ -39,7 +39,7 @@ Real Solid::volume() const {
 	return volume / 2.0;	
 }
 
-const Solid&& Solid::cube(math::Real size) {
+Solid Solid::cube(math::Real size) {
 	Solid cube;
 
 	// Cube Vertices
@@ -97,5 +97,5 @@ const Solid&& Solid::cube(math::Real size) {
 	cube.addTriangle(e14, e15, e45);
 	cube.addTriangle(e58, e48, e45);
 	
-	return std::move(cube);
+	return cube;
 }

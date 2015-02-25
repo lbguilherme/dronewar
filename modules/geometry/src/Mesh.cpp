@@ -13,6 +13,12 @@ Mesh::Mesh() {
 	
 }
 
+Mesh::Mesh(Mesh&& other) {
+	_vertices = std::move(other._vertices);
+	_edges = std::move(other._edges);
+	_triangles = std::move(other._triangles);
+}
+
 Mesh::~Mesh() {
 	for (Vertex v : _vertices)
 		delete v._data;

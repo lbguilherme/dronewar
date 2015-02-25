@@ -20,7 +20,7 @@ public:
 	math::Real volume() const;
 	
 	/// Produces a cube
-	static const Solid&& cube(math::Real size);
+	static Solid cube(math::Real size);
 };
 
 
