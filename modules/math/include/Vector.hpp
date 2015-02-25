@@ -51,6 +51,7 @@ public:
 	constexpr bool operator<(const Vector& vec) const;
 	constexpr bool operator>=(const Vector& vec) const;
 	constexpr bool operator<=(const Vector& vec) const;
+	constexpr bool operator==(const Vector& vec) const;
 	
 	/// The dot product of a vector with another vector
 	constexpr Real dot(const Vector& vec) const;
@@ -253,7 +254,9 @@ inline constexpr bool Vector::operator<=(const Vector& vec) const {
 	return dotself() <= vec.dotself();
 }
 
-
+inline constexpr bool Vector::operator==(const Vector& vec) const {
+	return _x == vec._x && _y == vec._y && _z == vec._z;
+}
 
 } // math namespace
 
