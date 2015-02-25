@@ -13,8 +13,8 @@ class Mesh {
 public:
 
 	Mesh();
-	Mesh(const Mesh&) = delete;
-	Mesh(Mesh&&) = delete;
+	//Mesh(const Mesh&) = delete;
+	//Mesh(Mesh&&) = delete;
 	~Mesh();
 
 	Vertex addVertex(math::Vector point);
