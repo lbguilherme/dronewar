@@ -18,25 +18,16 @@ void Solid::orient() {
 Real Solid::volume() const {
 	Real volume = 0;
 	for (Triangle face : triangles()) {
-		Real result = 1;
-		Real in = face.normal().x() + face.normal().y() + face.normal().z();
-		
 		Vector e1 = face.vertices()[1].position() - face.vertices()[0].position();
 		Vector e2 = face.vertices()[2].position() - face.vertices()[1].position();
 		Vector r1 = face.vertices()[0].position();
 		Vector r2 = face.vertices()[1].position();
 		
-		//result *= (e1 + e2).x() + (e1 + e2).y() + (e1 + e2).z();
-		//result *= (r1 + r2).x() + (r1 + r2).y() + (r1 + r2).z();
-		result *= e1.x() + e2.x() + e1.y() + e2.y() + e1.z() + e2.z();
-		result *= r1.x() + r2.x() + r1.y() + r2.y() + r1.z() + r2.z();
-		result /= in;
-		result *= (e1.cross(e2)).length();
-		
-		volume += result;
+		Vector value = r1 + r2 + (e1 + e2) / 2.0;
+		volume += value.dot(face.vectorArea());
 	}
 	
-	return volume / 2.0;	
+	return volume / 6.0;	
 }
 
 Solid Solid::cube(math::Real size) {
