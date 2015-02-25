@@ -18,7 +18,10 @@ public:
 
 	/// Measures the volume of the solid. Complexity: O(n)
 	math::Real volume() const;
-
+	
+	/// Produces a cube
+	static const Solid&& cube(math::Real size);
 };
+
 
 } // namespace geometry
