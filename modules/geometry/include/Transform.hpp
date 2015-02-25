@@ -22,6 +22,15 @@ public:
 	/// Peform a translation
 	void translate(const math::Vector& translate);
 	
+	/// Rotation arround X axis. Angle in rads.
+	void rotateX(const math::Real& angle);
+	
+	/// Rotation arround Y axis. Angle in rads.
+	void rotateY(const math::Real& angle);
+	
+	/// Rotation arround Z axis. Angle in rads.
+	void rotateZ(const math::Real& angle);
+	
 	/// Clear all transformations stored
 	void clear();
 	
