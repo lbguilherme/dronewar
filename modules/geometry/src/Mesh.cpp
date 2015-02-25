@@ -27,7 +27,7 @@ Mesh::~Mesh() {
 Vertex Mesh::addVertex(math::Vector point) {
 	VertexData* data = nullptr;
 	try {
-		Vertex vertex(data = new VertexData(*this, point));
+		Vertex vertex(data = new VertexData(point));
 		_vertices.insert(vertex);
 		return vertex;
 	}
@@ -52,7 +52,7 @@ const std::set<Vertex>& Mesh::vertices() const {
 Edge Mesh::addEdge(Vertex v1, Vertex v2) {
 	EdgeData* data = nullptr;
 	try {
-		Edge edge(data = new EdgeData(*this, v1, v2));
+		Edge edge(data = new EdgeData(v1, v2));
 		_edges.insert(edge);
 		v1._data->_edges.insert(edge);
 		v2._data->_edges.insert(edge);
@@ -93,7 +93,7 @@ Triangle Mesh::addTriangle(Edge e1, Edge e2, Edge e3) {
 	Vertex v3 = e2.vertices()[0] == e1.vertices()[0] || e2.vertices()[0] == e1.vertices()[1] ? e2.vertices()[1] : e2.vertices()[0];
 	TriangleData* data = nullptr;
 	try {
-		Triangle triangle(data = new TriangleData(*this, e1, e2, e3, v1, v2, v3));
+		Triangle triangle(data = new TriangleData(e1, e2, e3, v1, v2, v3));
 		_triangles.insert(triangle);
 		v1._data->_triangles.insert(triangle);
 		v2._data->_triangles.insert(triangle);

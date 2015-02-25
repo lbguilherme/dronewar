@@ -14,11 +14,10 @@ class VertexData {
 	friend class Mesh;
 private:
 
-	VertexData(Mesh& mesh, math::Vector point) : _mesh(mesh) , _point(point) {}
+	VertexData(math::Vector point) : _point(point) {}
 
 public:
 
-	Mesh& _mesh;
 	math::Vector _point;
 	std::set<Edge> _edges;
 	std::set<Triangle> _triangles;
