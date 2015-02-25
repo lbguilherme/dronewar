@@ -45,7 +45,6 @@ clean:
 
 .PHONY: doc
 doc: prepare
-	@rm -rf doc
 	@doxygen -s
 
 define PROCESS_CPP_MODULE
