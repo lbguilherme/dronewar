@@ -3,6 +3,7 @@
 #include <cmath>
 
 using math::Matrix44;
+using math::Real;
 using math::Vector;
 using math::Vector4;
 using geometry::Transform;
@@ -32,7 +33,7 @@ void Transform::translate(const math::Vector& translate) {
 void Transform::rotateX(const math::Real& angle) {
 	Matrix44 sub = Matrix44::eye();
 	Real c = std::cos(angle);
-	Real s = std::sin(angle).
+	Real s = std::sin(angle);
 	sub(5) = c; sub(6) = -s;
 	sub(9) = s; sub(10) = c;
 	
@@ -42,7 +43,7 @@ void Transform::rotateX(const math::Real& angle) {
 void Transform::rotateY(const math::Real& angle) {
 	Matrix44 sub = Matrix44::eye();
 	Real c = std::cos(angle);
-	Real s = std::sin(angle).
+	Real s = std::sin(angle);
 	sub(0) = c; sub(2) = s;
 	sub(8) = -s; sub(10) = c;
 	
@@ -52,7 +53,7 @@ void Transform::rotateY(const math::Real& angle) {
 void Transform::rotateZ(const math::Real& angle) {
 	Matrix44 sub = Matrix44::eye();
 	Real c = std::cos(angle);
-	Real s = std::sin(angle).
+	Real s = std::sin(angle);
 	sub(0) = c; sub(1) = -s;
 	sub(4) = s; sub(5) = c;
 	
