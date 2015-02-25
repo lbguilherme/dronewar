@@ -1,0 +1,76 @@
+
+
+\section{Mesh}
+\subsection{Ray Cast}
+A ray has direction $\mathbf{\hat n}$ and source $\mathbf l$. An edge is defined $\mathbf e_{ij} = \mathbf r_j - \mathbf r_i$. A triangle $T$ has edges $\mathbf e_{ij}$ and $\mathbf e_{ik}$. Let $\mathbf p_0$ be the vertex $\mathbf r_i$ on $B$. 
+$$ \mathbf l + \mathbf{\hat n}t = \mathbf p_0 + \mathbf e_{ij}u + \mathbf e_{ik}v $$
+$$ \mathbf l - \mathbf p_0 =  -\mathbf{\hat n}t + \mathbf e_{ij}u + \mathbf e_{ik}v $$
+
+In matrix notation:
+$$ \mathbf l - \mathbf p_0 = 
+ \begin{bmatrix}
+  -\mathbf{\hat n} & \mathbf e_{ij} & \mathbf e_{ik}
+ \end{bmatrix}
+ \begin{bmatrix}
+  t \\
+  u \\
+  v
+ \end{bmatrix}
+$$
+
+Therefore: $P = Ax$ and the solution: $x = A^{-1} P$. \\
+
+Once a cyclic permutation is peformed, the component vectors transform:
+$$
+\mathbf r_i + u \mathbf e_{ij} + v \mathbf e_{ik} = \mathbf r_j + u' \mathbf e_{ji} + v' \mathbf e_{jk}
+$$
+$$
+-u' \mathbf e_{ij} + v' \mathbf e_{jk} = \left(u+v-1\right)\mathbf e_{ij} + v \mathbf e_{jk}
+$$
+\newpage
+
+
+% ====================================================================
+
+
+\section{Solid}
+\subsection{Volume of a solid}
+A triangle $T$ in a solid $V$ with boundary $\partial V$ has vertices $\mathbf r_i$. Edges are defined $\mathbf e_{ij} = \mathbf r_j - \mathbf r_i$. The volume of a solid can be calculated using volumetric contributions from each triangle $T_n$.
+$$
+V_n = \iint_{\partial V}\mathbf F\cdot d\mathbf{s} = 
+\iint_{\Delta_n}\mathbf F(\mathbf r(s, t))\cdot\mathbf{\hat n}\left|\frac{\partial\mathbf r}{\partial s}\times\frac{\partial\mathbf r}{\partial t} \right| ds\mbox{ }dt
+$$
+$$
+V_n = \iint_{\Delta_n}\mathbf F(\mathbf r(s, t))\cdot\mathbf{\hat n}A_{tr}\mbox{ }ds\mbox{ }dt =
+\frac{1}{2}\iint_{\Delta_n}\mathbf F(\mathbf r(s, t))\cdot\mathbf A \mbox{ }ds\mbox{ }dt
+$$
+
+Chosing $F$:
+$$
+\sum_i \frac{\partial F_i}{\partial x_i} = 1 \quad\Longleftarrow\quad
+\mathbf F(\mathbf r) = \frac{\mathbf r}{3} \quad\mbox{ for }\quad
+\mathbf F = \sum_i F_i \mathbf e_i
+$$
+
+We can define $\mathbf r(s, t) = \mathbf v_1(t) + \mathbf v_2 (s)$. Reminding only cyclic permutations on $ijk$ are only applied, we define:
+\[
+  \begin{cases}
+   \mathbf v_1(t) = \mathbf r_i + \mathbf e_{ij}t  \\
+   \mathbf v_2(s) = \mathbf r_j + \mathbf e_{jk}s
+  \end{cases}
+  \quad\Longrightarrow\quad
+  \frac{\partial\mathbf r}{\partial t} = \frac{\partial\mathbf v_1}{\partial t} = \mathbf e_{ij}, \quad\quad
+  \frac{\partial\mathbf r}{\partial s} = \frac{\partial\mathbf v_2}{\partial s} = \mathbf e_{jk}
+\]
+
+The integral then resumes:
+$$
+V_n = \frac{1}{6}\iint_{\Delta_n}\left( v_1(t) + v_2(s)\right)\cdot\mathbf A \mbox{ }ds\mbox{ }dt = 
+\left(\mathbf r_i + \mathbf r_j\right)\cdot\frac{\mathbf A}{6} + \frac{\mathbf A}{6}\cdot\int_0^1\int_0^1\left( t \mathbf e_{ij} + s \mathbf e_{jk} \right) \mbox{ }ds\mbox{ }dt
+$$
+
+The volume of a solid is then:
+$$
+V = \frac{1}{6}\cdot\sum_n\mathbf A_n\cdot\left[ \mathbf r_i + \mathbf r_j + \frac{\mathbf e_{ij} + \mathbf e_{jk}}{2}  \right]_n
+$$
+\newpage
