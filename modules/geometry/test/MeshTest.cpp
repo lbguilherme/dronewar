@@ -70,6 +70,15 @@ TEST(Mesh, BuildCube) {
 	cube.addTriangle(e14, e15, e45);
 	cube.addTriangle(e58, e48, e45);
 
+	// Duplicated (shall be ignored)
+	cube.addEdge(v1, v4);
+	cube.addEdge(v2, v7);
+	cube.addEdge(v2, v7);
+	cube.addEdge(v7, v2);
+	cube.addEdge(v5, v8);
+	cube.addTriangle(e15, e45, e14);
+	cube.addTriangle(e58, e45, e48);
+
 	EXPECT_EQ(8u, cube.vertices().size());
 	EXPECT_EQ(18u, cube.edges().size());
 	EXPECT_EQ(12u, cube.triangles().size());

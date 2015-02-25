@@ -56,6 +56,11 @@ const std::set<Vertex>& Mesh::vertices() const {
 }
 
 Edge Mesh::addEdge(Vertex v1, Vertex v2) {
+	for (const Edge& e : v1.edges()) {
+		if (e.vertices()[0] == v2 || e.vertices()[1] == v2)
+			return e;
+	}
+
 	EdgeData* data = nullptr;
 	try {
 		Edge edge(data = new EdgeData(v1, v2));
@@ -94,6 +99,12 @@ const std::set<Edge>& Mesh::edges() const {
 
 
 Triangle Mesh::addTriangle(Edge e1, Edge e2, Edge e3) {
+	for (const Triangle& t : e1.triangles()) {
+		if (t.edges()[0] == e2 || t.edges()[1] == e2 || t.edges()[2] == e2)
+			if (t.edges()[0] == e3 || t.edges()[1] == e3 || t.edges()[2] == e3)
+				return t;
+	}
+
 	Vertex v1 = e1.vertices()[0];
 	Vertex v2 = e1.vertices()[1];
 	Vertex v3 = e2.vertices()[0] == e1.vertices()[0] || e2.vertices()[0] == e1.vertices()[1] ? e2.vertices()[1] : e2.vertices()[0];
