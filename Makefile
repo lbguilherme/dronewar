@@ -46,6 +46,7 @@ clean:
 .PHONY: doc
 doc: prepare
 	@doxygen -s
+	@find doc -type f -iname '*.html' -exec sed -i -r "s/<div class=\"fragment\"(.*?);(.*?)\{/<div class=\"fragment\"\\1;\{/g" {} +;
 
 define PROCESS_CPP_MODULE
 $(eval $@_TASK := $1)
