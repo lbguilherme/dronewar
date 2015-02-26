@@ -7,15 +7,15 @@
 
 namespace math {
 
-template <unsigned N, unsigned M>
+template <unsigned M, unsigned N>
 class Matrix {
 	static_assert(N*M > 0, "Can't make a matrix with no cells");
 public:
 
 	constexpr Matrix();
 
-	constexpr Matrix(const Matrix<N, M>& other);
-	constexpr Matrix(Matrix<N, M>& other);
+	constexpr Matrix(const Matrix<M, N>& other);
+	constexpr Matrix(Matrix<M, N>& other);
 
 	template <typename... Args>
 	constexpr Matrix(const Vector<N>& head, const Args&... tail);
@@ -29,40 +29,40 @@ public:
 	constexpr const Real& operator()(unsigned x) const;
 	constexpr Real& operator()(unsigned x);
 
-	constexpr Matrix<N, M> operator+(const Matrix<N, M>& mat) const;
-	constexpr Matrix<N, M> operator-(const Matrix<N, M>& mat) const;
+	constexpr Matrix<M, N> operator+(const Matrix<M, N>& mat) const;
+	constexpr Matrix<M, N> operator-(const Matrix<M, N>& mat) const;
 	
-	constexpr Matrix<N, M> operator+() const;
-	constexpr Matrix<N, M> operator-() const;
+	constexpr Matrix<M, N> operator+() const;
+	constexpr Matrix<M, N> operator-() const;
 	
-	constexpr Matrix<N, M> operator*(const Real& real) const;
-	constexpr Matrix<N, M> operator/(const Real& real) const;
-	constexpr Matrix<N, M>& operator*=(const Real& real);
-	constexpr Matrix<N, M>& operator/=(const Real& real);
+	constexpr Matrix<M, N> operator*(const Real& real) const;
+	constexpr Matrix<M, N> operator/(const Real& real) const;
+	constexpr Matrix<M, N>& operator*=(const Real& real);
+	constexpr Matrix<M, N>& operator/=(const Real& real);
 	
 	/// Matrix multiplication
 	template <unsigned K>
-	constexpr Matrix<N, K> operator*(const Matrix<M, K>& mat) const;
+	constexpr Matrix<M, K> operator*(const Matrix<N, K>& mat) const;
 
 	constexpr Matrix<N, N>& operator*=(const Matrix<N, N>& mat);
 	
-	/// Determinant of the matrix
-	constexpr Real det() const;
-	
 	/// Transpost of the matrix
 	constexpr Matrix<M, N> transpost() const;
+	
+	/// Determinant of the matrix
+	constexpr Real det() const;
 	
 	/// Inverse of the matrix. Assumes matrix is inversible
 	constexpr Matrix<N, N> inverse() const;
 	
 	/// Returns a null matrix.
-	constexpr static const Matrix<N, M> zeros();
+	constexpr static const Matrix<M, N> zeros();
 	
 	/// Returns a matrix filled with ones.
-	constexpr static const Matrix<N, M> ones();
+	constexpr static const Matrix<M, N> ones();
 	
 	/// Returns identity matrix.
-	constexpr static const Matrix<N, M> eye();
+	constexpr static const Matrix<M, N> eye();
 
 private:
 
@@ -74,56 +74,56 @@ using Matrix2 = Matrix<2, 2>;
 using Matrix3 = Matrix<3, 3>;
 using Matrix4 = Matrix<4, 4>;
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, M>::Matrix() {
-	for (unsigned i = 0; i < N; ++i) {
-		for (unsigned j = 0; j < M; ++j) {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N>::Matrix() {
+	for (unsigned i = 0; i < M; ++i) {
+		for (unsigned j = 0; j < N; ++j) {
 			_v[i][j] = 0;
 		}
 	}
 
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, M>::Matrix(const Matrix<N, M>& other) : _v(other._v) {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N>::Matrix(const Matrix<M, N>& other) : _v(other._v) {
 
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, M>::Matrix(Matrix<N, M>& other) : _v(other._v) {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N>::Matrix(Matrix<M, N>& other) : _v(other._v) {
 
 }
 
-template <unsigned N, unsigned M>
+template <unsigned M, unsigned N>
 template <typename... Args>
-inline constexpr Matrix<N, M>::Matrix(const Vector<N>& head, const Args&... tail) {
+inline constexpr Matrix<M, N>::Matrix(const Vector<N>& head, const Args&... tail) {
 	Vector<N> vecs[] = {head, tail...};
 
-	for (unsigned i = 0; i < N; ++i)
-		for (unsigned j = 0; j < M; ++j)
+	for (unsigned i = 0; i < M; ++i)
+		for (unsigned j = 0; j < N; ++j)
 			_v[i][j] = vecs[j](i);
 }
 
-template <unsigned N, unsigned M>
+template <unsigned M, unsigned N>
 template <typename... Args>
-inline constexpr Matrix<N, M>::Matrix(const Real& head, const Args&... tail) {
+inline constexpr Matrix<M, N>::Matrix(const Real& head, const Args&... tail) {
 	Real reals[] = {head, tail...};
 
-	for (unsigned i = 0; i < N; ++i)
-		for (unsigned j = 0; j < M; ++j)
+	for (unsigned i = 0; i < M; ++i)
+		for (unsigned j = 0; j < N; ++j)
 			_v[i][j] = reals[i*M+j];
 }
 
-template <unsigned N, unsigned M>
-constexpr Matrix<N, M> operator*(const Real& real, const Matrix<N, M>& matrix) {
+template <unsigned M, unsigned N>
+constexpr Matrix<M, N> operator*(const Real& real, const Matrix<M, N>& matrix) {
 	return matrix * real;
 }
 
-template <unsigned N, unsigned M>
-constexpr Vector<M> operator*(const Matrix<N, M>& mat, const Vector<M>& vec) {
+template <unsigned M, unsigned N>
+constexpr Vector<M> operator*(const Matrix<M, N>& mat, const Vector<M>& vec) {
 	Vector<M> result;
-	for (unsigned i = 0; i < N; ++i) {
-		for (unsigned j = 0; j < M; ++j) {
+	for (unsigned i = 0; i < M; ++i) {
+		for (unsigned j = 0; j < N; ++j) {
 			result(i) += mat(i, j) * vec(j);
 		}
 	}
@@ -131,8 +131,8 @@ constexpr Vector<M> operator*(const Matrix<N, M>& mat, const Vector<M>& vec) {
 	return result;
 }
 
-template <unsigned N, unsigned M>
-inline constexpr const Real& Matrix<N, M>::operator()(unsigned i, unsigned j) const {
+template <unsigned M, unsigned N>
+inline constexpr const Real& Matrix<M, N>::operator()(unsigned i, unsigned j) const {
 #ifdef DEBUG
 	if (i >= N || j >= M) throw std::logic_error("Invalid index");
 #endif
@@ -140,8 +140,8 @@ inline constexpr const Real& Matrix<N, M>::operator()(unsigned i, unsigned j) co
 	return _v[i][j];
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Real& Matrix<N, M>::operator()(unsigned i, unsigned j) {
+template <unsigned M, unsigned N>
+inline constexpr Real& Matrix<M, N>::operator()(unsigned i, unsigned j) {
 #ifdef DEBUG
 	if (i >= N || j >= M) throw std::logic_error("Invalid index");
 #endif
@@ -149,8 +149,8 @@ inline constexpr Real& Matrix<N, M>::operator()(unsigned i, unsigned j) {
 	return _v[i][j];
 }
 
-template <unsigned N, unsigned M>
-inline constexpr const Real& Matrix<N, M>::operator()(unsigned x) const {
+template <unsigned M, unsigned N>
+inline constexpr const Real& Matrix<M, N>::operator()(unsigned x) const {
 #ifdef DEBUG
 	if (x >= N*M) throw std::logic_error("Invalid index");
 #endif
@@ -158,8 +158,8 @@ inline constexpr const Real& Matrix<N, M>::operator()(unsigned x) const {
 	return _v[x%M][x/M];
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Real& Matrix<N, M>::operator()(unsigned x) {
+template <unsigned M, unsigned N>
+inline constexpr Real& Matrix<M, N>::operator()(unsigned x) {
 #ifdef DEBUG
 	if (x >= N*M) throw std::logic_error("Invalid index");
 #endif
@@ -167,82 +167,82 @@ inline constexpr Real& Matrix<N, M>::operator()(unsigned x) {
 	return _v[x%M][x/M];
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, M> Matrix<N, M>::operator+(const Matrix<N, M>& mat) const {
-	Matrix<N, M> result;
-	for (unsigned i = 0; i < N; ++i) {
-		for (unsigned j = 0; j < M; ++j) {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::operator+(const Matrix<M, N>& mat) const {
+	Matrix<M, N> result;
+	for (unsigned i = 0; i < M; ++i) {
+		for (unsigned j = 0; j < N; ++j) {
 			result(i, j) += _v[i][j] + mat(i, j);
 		}
 	}
 	return result;
 }	
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, M> Matrix<N, M>::operator-(const Matrix<N, M>& mat) const {
-	Matrix<N, M> result;
-	for (unsigned i = 0; i < N; ++i) {
-		for (unsigned j = 0; j < M; ++j) {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::operator-(const Matrix<M, N>& mat) const {
+	Matrix<M, N> result;
+	for (unsigned i = 0; i < M; ++i) {
+		for (unsigned j = 0; j < N; ++j) {
 			result(i, j) += _v[i][j] - mat(i, j);
 		}
 	}
 	return result;
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, M> Matrix<N, M>::operator+() const {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::operator+() const {
 	return (*this);
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, M> Matrix<N, M>::operator-() const {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::operator-() const {
 	return (*this) * (-1);
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, M> Matrix<N, M>::operator*(const Real& real) const {
-	Matrix<N, M> result;
-	for (unsigned i = 0; i < N; ++i) {
-		for (unsigned j = 0; j < M; ++j) {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::operator*(const Real& real) const {
+	Matrix<M, N> result;
+	for (unsigned i = 0; i < M; ++i) {
+		for (unsigned j = 0; j < N; ++j) {
 			result(i, j) += _v[i][j] * real;
 		}
 	}
 	return result;
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, M> Matrix<N, M>::operator/(const Real& real) const {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::operator/(const Real& real) const {
 #ifdef DEBUG
 	if (real == 0)
 		throw std::logic_error("Can't divide by zero");
 #endif
 
-	Matrix<N, M> result;
-	for (unsigned i = 0; i < N; ++i) {
-		for (unsigned j = 0; j < M; ++j) {
+	Matrix<M, N> result;
+	for (unsigned i = 0; i < M; ++i) {
+		for (unsigned j = 0; j < N; ++j) {
 			result(i, j) += _v[i][j] / real;
 		}
 	}
 	return result;
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, M>& Matrix<N, M>::operator*=(const Real& real) {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N>& Matrix<M, N>::operator*=(const Real& real) {
 	return (*this) = (*this) * real;
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, M>& Matrix<N, M>::operator/=(const Real& real) {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N>& Matrix<M, N>::operator/=(const Real& real) {
 	return (*this) = (*this) / real;
 }
 
-template <unsigned N, unsigned M>
+template <unsigned M, unsigned N>
 template <unsigned K>
-inline constexpr Matrix<N, K> Matrix<N, M>::operator*(const Matrix<M, K>& mat) const {
-	Matrix<N, K> result;
-	for (unsigned i = 0; i < N; ++i) {
-		for (unsigned j = 0; j < M; ++j) {
-			for (unsigned k = 0; k < K; ++k) {
+inline constexpr Matrix<M, K> Matrix<M, N>::operator*(const Matrix<N, K>& mat) const {
+	Matrix<M, K> result;
+	for (unsigned i = 0; i < M; ++i) {
+		for (unsigned k = 0; k < K; ++k) {
+			for (unsigned j = 0; j < N; ++j) {
 				result(i, k) += _v[i][j] * mat(j, k);
 			}
 		}
@@ -250,56 +250,56 @@ inline constexpr Matrix<N, K> Matrix<N, M>::operator*(const Matrix<M, K>& mat) c
 	return result;
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, N>& Matrix<N, M>::operator*=(const Matrix<N, N>& mat) {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<N, N>& Matrix<M, N>::operator*=(const Matrix<N, N>& mat) {
 	static_assert(N == M, "Matrix must be squared for operator*= to work");
 	return (*this) = (*this) * mat;
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Real Matrix<N, M>::det() const {
-	throw "not implemented";
-	return 0;
-}
-
-template <unsigned N, unsigned M>
-inline constexpr Matrix<M, N> Matrix<N, M>::transpost() const {
-	Matrix<N, M> result;
-	for (unsigned i = 0; i < N; ++i) {
-		for (unsigned j = 0; j < M; ++j) {
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::transpost() const {
+	Matrix<M, N> result;
+	for (unsigned i = 0; i < M; ++i) {
+		for (unsigned j = 0; j < N; ++j) {
 			result(j, i) = _v[i][j];
 		}
 	}
 	return result;
 }
 
-template <unsigned N, unsigned M>
-inline constexpr Matrix<N, N> Matrix<N, M>::inverse() const {
+template <unsigned M, unsigned N>
+inline constexpr Real Matrix<M, N>::det() const {
+	throw "not implemented";
+	return 0;
+}
+
+template <unsigned M, unsigned N>
+inline constexpr Matrix<N, N> Matrix<M, N>::inverse() const {
 	static_assert(N == M, "Matrix must be squared for inverse() to work");
 
 	throw "not implemented";
 	return {};
 }
 
-template <unsigned N, unsigned M>
-inline constexpr const Matrix<N, M> Matrix<N, M>::zeros() {
+template <unsigned M, unsigned N>
+inline constexpr const Matrix<M, N> Matrix<M, N>::zeros() {
 	return Matrix();
 }
 
-template <unsigned N, unsigned M>
-inline constexpr const Matrix<N, M> Matrix<N, M>::ones() {
-	Matrix<N, M> result;
-	for (unsigned i = 0; i < N; ++i) {
-		for (unsigned j = 0; j < M; ++j) {
+template <unsigned M, unsigned N>
+inline constexpr const Matrix<M, N> Matrix<M, N>::ones() {
+	Matrix<M, N> result;
+	for (unsigned i = 0; i < M; ++i) {
+		for (unsigned j = 0; j < N; ++j) {
 			result(j, i) = 1;
 		}
 	}
 	return result;
 }
 
-template <unsigned N, unsigned M>
-inline constexpr const Matrix<N, M> Matrix<N, M>::eye() {
-	Matrix<N, M> result;
+template <unsigned M, unsigned N>
+inline constexpr const Matrix<M, N> Matrix<M, N>::eye() {
+	Matrix<M, N> result;
 	for (unsigned x = 0; x < N*M; ++x)
 		result(x) = (x % (M+1) ? 0 : 1);
 	return result;
