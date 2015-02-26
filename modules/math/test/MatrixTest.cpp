@@ -1,17 +1,17 @@
 #include <gtest/gtest.h>
 #include <math/Matrix>
 #include <math/Vector>
+#include <iostream>
 
-using math::Matrix3;
-using math::Vector3;
+using namespace math;
 
-struct MatrixAlgebra : public ::testing::Test {
+struct MatrixAlgebra3 : public ::testing::Test {
 	Matrix3 identity = Matrix3::eye();
 	Matrix3 one = Matrix3::ones();
 	Matrix3 null = Matrix3::zeros();
 };
 
-TEST_F(MatrixAlgebra, Zeros) {
+TEST_F(MatrixAlgebra3, Zeros) {
 	EXPECT_DOUBLE_EQ(0, null(0, 0));
 	EXPECT_DOUBLE_EQ(0, null(0, 1));
 	EXPECT_DOUBLE_EQ(0, null(0, 2));
@@ -25,7 +25,7 @@ TEST_F(MatrixAlgebra, Zeros) {
 	EXPECT_DOUBLE_EQ(0, null(2, 2));
 }
 
-TEST_F(MatrixAlgebra, Ones) {
+TEST_F(MatrixAlgebra3, Ones) {
 	EXPECT_DOUBLE_EQ(1, one(0, 0));
 	EXPECT_DOUBLE_EQ(1, one(0, 1));
 	EXPECT_DOUBLE_EQ(1, one(0, 2));
@@ -39,7 +39,7 @@ TEST_F(MatrixAlgebra, Ones) {
 	EXPECT_DOUBLE_EQ(1, one(2, 2));
 }
 
-TEST_F(MatrixAlgebra, Identity) {
+TEST_F(MatrixAlgebra3, Identity) {
 	EXPECT_DOUBLE_EQ(1, identity(0, 0));
 	EXPECT_DOUBLE_EQ(0, identity(0, 1));
 	EXPECT_DOUBLE_EQ(0, identity(0, 2));
@@ -53,7 +53,7 @@ TEST_F(MatrixAlgebra, Identity) {
 	EXPECT_DOUBLE_EQ(1, identity(2, 2));
 }
 
-TEST_F(MatrixAlgebra, Sum) {
+TEST_F(MatrixAlgebra3, Sum) {
 	Matrix3 mat = identity + one;
 
 	EXPECT_DOUBLE_EQ(2, mat(0, 0));
@@ -69,7 +69,7 @@ TEST_F(MatrixAlgebra, Sum) {
 	EXPECT_DOUBLE_EQ(2, mat(2, 2));
 }
 
-TEST_F(MatrixAlgebra, Multiplication) {
+TEST_F(MatrixAlgebra3, Multiplication) {
 	Matrix3 mat = identity * one;
 	EXPECT_DOUBLE_EQ(1, mat(0, 0));
 	EXPECT_DOUBLE_EQ(1, mat(0, 1));
@@ -111,7 +111,7 @@ TEST_F(MatrixAlgebra, Multiplication) {
 	EXPECT_DOUBLE_EQ(1, mat(2, 2));
 }
 
-TEST_F(MatrixAlgebra, Determinant) {
+TEST_F(MatrixAlgebra3, Determinant) {
 	EXPECT_DOUBLE_EQ(1, identity.det());
 	EXPECT_DOUBLE_EQ(8, (2*identity).det());
 	EXPECT_DOUBLE_EQ(0, one.det());
@@ -119,7 +119,7 @@ TEST_F(MatrixAlgebra, Determinant) {
 	EXPECT_DOUBLE_EQ(0, null.det());
 }
 
-TEST_F(MatrixAlgebra, Inverse) {
+TEST_F(MatrixAlgebra3, Inverse) {
 	Matrix3 idiv = identity.inverse();
 	EXPECT_DOUBLE_EQ(1, idiv(0, 0));
 	EXPECT_DOUBLE_EQ(0, idiv(0, 1));
@@ -132,6 +132,16 @@ TEST_F(MatrixAlgebra, Inverse) {
 	EXPECT_DOUBLE_EQ(0, idiv(2, 0));
 	EXPECT_DOUBLE_EQ(0, idiv(2, 1));
 	EXPECT_DOUBLE_EQ(1, idiv(2, 2));
+}
+
+TEST(MatrixAlgebra, Multiplication) {
+	Matrix<10, 8> mat = 2 * Matrix<10, 5>::ones() * Matrix<5, 8>::ones();
+	
+	for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < 8; ++j) {
+			EXPECT_DOUBLE_EQ(10, mat(i, j));
+		}
+	}
 }
 
 
