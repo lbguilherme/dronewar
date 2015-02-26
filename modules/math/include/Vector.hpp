@@ -94,8 +94,9 @@ using Vector3 = Vector<3>;
 using Vector4 = Vector<4>;
 
 template <unsigned D>
-inline constexpr Vector<D>::Vector() : _v() {
-
+inline constexpr Vector<D>::Vector() {
+	for (unsigned i = 0; i < D; ++i)
+		_v[i] = 0;
 }
 
 template <unsigned D>

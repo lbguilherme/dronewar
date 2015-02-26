@@ -2,13 +2,13 @@
 #include <math/Matrix>
 #include <math/Vector>
 
-using math::Matrix;
+using math::Matrix3;
 using math::Vector3;
 
 struct MatrixAlgebra : public ::testing::Test {
-	Matrix identity = Matrix::eye();
-	Matrix one = Matrix::ones();
-	Matrix null = Matrix::zeros();
+	Matrix3 identity = Matrix3::eye();
+	Matrix3 one = Matrix3::ones();
+	Matrix3 null = Matrix3::zeros();
 };
 
 TEST_F(MatrixAlgebra, Zeros) {
@@ -54,7 +54,7 @@ TEST_F(MatrixAlgebra, Identity) {
 }
 
 TEST_F(MatrixAlgebra, Sum) {
-	Matrix mat = identity + one;
+	Matrix3 mat = identity + one;
 
 	EXPECT_DOUBLE_EQ(2, mat(0, 0));
 	EXPECT_DOUBLE_EQ(1, mat(0, 1));
@@ -70,7 +70,7 @@ TEST_F(MatrixAlgebra, Sum) {
 }
 
 TEST_F(MatrixAlgebra, Multiplication) {
-	Matrix mat = identity * one;
+	Matrix3 mat = identity * one;
 	EXPECT_DOUBLE_EQ(1, mat(0, 0));
 	EXPECT_DOUBLE_EQ(1, mat(0, 1));
 	EXPECT_DOUBLE_EQ(1, mat(0, 2));
@@ -120,7 +120,7 @@ TEST_F(MatrixAlgebra, Determinant) {
 }
 
 TEST_F(MatrixAlgebra, Inverse) {
-	Matrix idiv = identity.inverse();
+	Matrix3 idiv = identity.inverse();
 	EXPECT_DOUBLE_EQ(1, idiv(0, 0));
 	EXPECT_DOUBLE_EQ(0, idiv(0, 1));
 	EXPECT_DOUBLE_EQ(0, idiv(0, 2));
@@ -136,8 +136,8 @@ TEST_F(MatrixAlgebra, Inverse) {
 
 
 struct MatrixVector : public ::testing::Test {
-	Matrix identity = Matrix::eye();
-	Matrix one = Matrix::ones();
+	Matrix3 identity = Matrix3::eye();
+	Matrix3 one = Matrix3::ones();
 	
 	Vector3 i = {1, 0, 0};
 	Vector3 j = {0, 1, 0};
@@ -145,7 +145,7 @@ struct MatrixVector : public ::testing::Test {
 };
 
 TEST_F(MatrixVector, Construction) {
-	Matrix tobuild(i, j, k);
+	Matrix3 tobuild(i, j, k);
 	
 	EXPECT_DOUBLE_EQ(1, tobuild(0, 0));
 	EXPECT_DOUBLE_EQ(0, tobuild(0, 1));

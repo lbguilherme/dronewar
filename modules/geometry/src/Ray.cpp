@@ -27,7 +27,7 @@ RayHit Ray::castOnTriangle(Triangle triangle) const {
 	Vector3 ek = triangle.vertices()[2].position() - triangle.vertices()[0].position();
 
 	Vector3 solution;
-	Matrix mat(-_direction, ej, ek);
+	Matrix3 mat(-_direction, ej, ek);
 
 	try {
 		solution = mat.inverse() * p;

@@ -1,13 +1,13 @@
 #pragma once
 
 #include <math/Real>
-#include <math/Matrix44>
+#include <math/Matrix>
 #include <math/Vector>
 
 namespace geometry {
 
 class Transform {
-	math::Matrix44 _transform;
+	math::Matrix4 _transform;
 
 public:
 

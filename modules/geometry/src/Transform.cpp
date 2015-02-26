@@ -2,7 +2,7 @@
 #include <math/Vector>
 #include <cmath>
 
-using math::Matrix44;
+using math::Matrix4;
 using math::Real;
 using math::Vector3;
 using math::Vector4;
@@ -13,25 +13,25 @@ Transform::Transform() {
 }
 
 void Transform::scale(math::Real scale) {
-	Matrix44 sub = scale * Matrix44::eye();
+	Matrix4 sub = scale * Matrix4::eye();
 	sub(15) = 1;
 	_transform *= sub;
 }
 
 void Transform::scale(const Vector3& scale) {
-	Matrix44 sub = Matrix44::eye();
+	Matrix4 sub = Matrix4::eye();
 	for (int i = 0; i < 3; ++i) sub(5*i) = scale(i);
 	_transform *= sub;
 }
 
 void Transform::translate(const Vector3& translate) {
-	Matrix44 sub = Matrix44::eye();
+	Matrix4 sub = Matrix4::eye();
 	for (int i = 0; i < 3; ++i) sub(5*i+3) = translate(i);
 	_transform *= sub;
 }
 
 void Transform::rotateX(const math::Real& angle) {
-	Matrix44 sub = Matrix44::eye();
+	Matrix4 sub = Matrix4::eye();
 	Real c = std::cos(angle);
 	Real s = std::sin(angle);
 	sub(5) = c; sub(6) = -s;
@@ -41,7 +41,7 @@ void Transform::rotateX(const math::Real& angle) {
 }
 
 void Transform::rotateY(const math::Real& angle) {
-	Matrix44 sub = Matrix44::eye();
+	Matrix4 sub = Matrix4::eye();
 	Real c = std::cos(angle);
 	Real s = std::sin(angle);
 	sub(0) = c; sub(2) = s;
@@ -51,7 +51,7 @@ void Transform::rotateY(const math::Real& angle) {
 }
 
 void Transform::rotateZ(const math::Real& angle) {
-	Matrix44 sub = Matrix44::eye();
+	Matrix4 sub = Matrix4::eye();
 	Real c = std::cos(angle);
 	Real s = std::sin(angle);
 	sub(0) = c; sub(1) = -s;
@@ -67,5 +67,5 @@ Vector3 Transform::apply(const Vector3& point) {
 }
 
 void Transform::clear() {
-	_transform = Matrix44::eye();
+	_transform = Matrix4::eye();
 }
