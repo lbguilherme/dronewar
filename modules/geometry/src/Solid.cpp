@@ -27,7 +27,7 @@ Real Solid::volume() const {
 		volume += value.dot(face.vectorArea());
 	}
 	
-	return volume / 6.0;	
+	return volume / 6.0;
 }
 
 Solid Solid::cube(math::Real size) {
