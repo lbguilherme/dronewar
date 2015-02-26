@@ -3,7 +3,8 @@ MODULES := $(notdir $(wildcard modules/*))
 MAKE_CPP_MODULE := $(MAKE) --no-print-directory -f ../../mk/module.cpp.mk
 
 BUILD := build
-CXX := clang++ -g -stdlib=libc++ -std=c++14 -fdiagnostics-color=auto -DDEBUG
+INC := -I$(BUILD)/include -I$(BUILD)/external/include
+CXX := clang++ -g -std=c++14 -stdlib=libc++ -Wall -Wextra -Wshadow -fdiagnostics-color=auto $(INC) -DDEBUG
 
 all: calcs build
 	@:
