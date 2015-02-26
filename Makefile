@@ -23,6 +23,7 @@ $(BUILD)/testrunner: build build-test
 	@mkdir -p build
 	@$(CXX) $(wildcard $(BUILD)/testobjs/**/*.o) -o $@ $(GTEST_LINK) -L$(BUILD) $(addprefix -l,$(MODULES))
 
+.PHONY: test2
 test2:	build/test2
 	@build/test2
 
