@@ -10,6 +10,7 @@ namespace math {
 
 template <unsigned D>
 class Vector {
+	static_assert(D > 0, "Can't make a vector with no dimentions");
 public:
 
 	constexpr Vector();
