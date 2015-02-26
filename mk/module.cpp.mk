@@ -14,10 +14,7 @@ DEPS := $(patsubst src/%.cpp, $(BUILD)/deps/$(MODULE)/%.d, $(SRCS)) $(patsubst t
 
 LIBRARY := $(BUILD)/lib$(MODULE).a
 
-INC := -I$(BUILD)/include -I$(BUILD)/external/include
-CXX := clang++ -g -std=c++14 -stdlib=libc++ -Wall -Wextra -Wshadow -fdiagnostics-color=auto $(INC) -DDEBUG
-AR := ar rcs
-
+include $(ROOT)/mk/tools.build.mk
 include $(ROOT)/mk/external.gtest.mk
 
 build: prepare check $(LIBRARY)
