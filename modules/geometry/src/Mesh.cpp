@@ -30,7 +30,7 @@ Mesh::~Mesh() {
 		delete t._data;
 }
 
-Vertex Mesh::addVertex(math::Vector point) {
+Vertex Mesh::addVertex(math::Vector3 point) {
 	VertexData* data = nullptr;
 	try {
 		Vertex vertex(data = new VertexData(point));

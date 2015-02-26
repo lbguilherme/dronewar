@@ -11,7 +11,7 @@ public:
 
 	math::Real distance() const;
 	bool hasHit() const;
-	math::Vector point() const;
+	math::Vector3 point() const;
 
 	bool operator<(const RayHit& other) const;
 

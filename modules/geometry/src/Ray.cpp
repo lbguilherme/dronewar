@@ -4,16 +4,16 @@
 using namespace geometry;
 using namespace math;
 
-Ray::Ray(Vector origin, Vector direction)
+Ray::Ray(Vector3 origin, Vector3 direction)
 	: _origin(origin), _direction(direction) {
 
 }
 
-Vector Ray::origin() const {
+Vector3 Ray::origin() const {
 	return _origin;
 }
 
-Vector Ray::direction() const {
+Vector3 Ray::direction() const {
 	return _direction;
 }
 
@@ -22,11 +22,11 @@ bool Ray::operator==(const Ray& other) const {
 }
 
 RayHit Ray::castOnTriangle(Triangle triangle) const {
-	Vector p = _origin - triangle.vertices()[0].position();
-	Vector ej = triangle.vertices()[1].position() - triangle.vertices()[0].position();
-	Vector ek = triangle.vertices()[2].position() - triangle.vertices()[0].position();
+	Vector3 p = _origin - triangle.vertices()[0].position();
+	Vector3 ej = triangle.vertices()[1].position() - triangle.vertices()[0].position();
+	Vector3 ek = triangle.vertices()[2].position() - triangle.vertices()[0].position();
 
-	Vector solution;
+	Vector3 solution;
 	Matrix mat(-_direction, ej, ek);
 
 	try {

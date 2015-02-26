@@ -1,10 +1,10 @@
 #include <geometry/Transform>
-#include <math/Vector4>
+#include <math/Vector>
 #include <cmath>
 
 using math::Matrix44;
 using math::Real;
-using math::Vector;
+using math::Vector3;
 using math::Vector4;
 using geometry::Transform;
 
@@ -18,13 +18,13 @@ void Transform::scale(math::Real scale) {
 	_transform *= sub;
 }
 
-void Transform::scale(const Vector& scale) {
+void Transform::scale(const Vector3& scale) {
 	Matrix44 sub = Matrix44::eye();
 	for (int i = 0; i < 3; ++i) sub(5*i) = scale(i);
 	_transform *= sub;
 }
 
-void Transform::translate(const math::Vector& translate) {
+void Transform::translate(const Vector3& translate) {
 	Matrix44 sub = Matrix44::eye();
 	for (int i = 0; i < 3; ++i) sub(5*i+3) = translate(i);
 	_transform *= sub;
@@ -60,10 +60,10 @@ void Transform::rotateZ(const math::Real& angle) {
 	_transform *= sub;
 }
 
-Vector Transform::apply(const Vector& point) {
+Vector3 Transform::apply(const Vector3& point) {
 	Vector4 p(point, 1);
 	Vector4 result = _transform * p;
-	return result.vector3();
+	return result.subvector<3>();
 }
 
 void Transform::clear() {

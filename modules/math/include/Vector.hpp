@@ -3,26 +3,37 @@
 #include <math/Real>
 #include <cmath>
 #include <stdexcept>
+#include <array>
+#include <algorithm>
 
 namespace math {
 
+template <unsigned D>
 class Vector {
-
 public:
 
 	constexpr Vector();
-	constexpr Vector(Real x, Real y, Real z);
+
+	constexpr Vector(const Vector<D>& other);
+	constexpr Vector(Vector<D>& other);
+
+	template <typename... Args>
+	constexpr Vector(const Args&... args);
+
+	template <unsigned E, typename... Args>
+	constexpr Vector(const Vector<E>& vec, Args&&... args);
 
 	constexpr bool isNan() const;
 
 	constexpr Real x() const;
 	constexpr Real y() const;
 	constexpr Real z() const;
+	constexpr Real t() const;
 	constexpr const Real& operator()(unsigned i) const;
 	constexpr Real& operator()(unsigned i);
 
-	constexpr Vector operator+(const Vector& vec) const;
-	constexpr Vector operator-(const Vector& vec) const;
+	constexpr Vector operator+(const Vector<D>& vec) const;
+	constexpr Vector operator-(const Vector<D>& vec) const;
 	
 	constexpr Vector operator+() const;
 	constexpr Vector operator-() const;
@@ -31,30 +42,30 @@ public:
 	constexpr Vector operator/(const Real& real) const;
 	
 	/// Component-wise multiplication between vectors
-	constexpr Vector operator*(const Vector& vec) const;
+	constexpr Vector operator*(const Vector<D>& vec) const;
 	
 	/// Component-wise division between vectors
-	constexpr Vector operator/(const Vector& vec) const;
+	constexpr Vector operator/(const Vector<D>& vec) const;
 	
 	/// Component-wise multiplication between vectors
-	constexpr Vector& operator*=(const Vector& vec);
+	constexpr Vector<D>& operator*=(const Vector<D>& vec);
 	
 	/// Component-wise division between vectors
-	constexpr Vector& operator/=(const Vector& vec);
+	constexpr Vector<D>& operator/=(const Vector<D>& vec);
 	
-	constexpr Vector& operator+=(const Vector& vec);
-	constexpr Vector& operator-=(const Vector& vec);
-	constexpr Vector& operator*=(const Real& real);
-	constexpr Vector& operator/=(const Real& real);
+	constexpr Vector<D>& operator+=(const Vector<D>& vec);
+	constexpr Vector<D>& operator-=(const Vector<D>& vec);
+	constexpr Vector<D>& operator*=(const Real& real);
+	constexpr Vector<D>& operator/=(const Real& real);
 	
-	constexpr bool operator>(const Vector& vec) const;
-	constexpr bool operator<(const Vector& vec) const;
-	constexpr bool operator>=(const Vector& vec) const;
-	constexpr bool operator<=(const Vector& vec) const;
-	constexpr bool operator==(const Vector& vec) const;
+	constexpr bool operator>(const Vector<D>& vec) const;
+	constexpr bool operator<(const Vector<D>& vec) const;
+	constexpr bool operator>=(const Vector<D>& vec) const;
+	constexpr bool operator<=(const Vector<D>& vec) const;
+	constexpr bool operator==(const Vector<D>& vec) const;
 	
 	/// The dot product of a vector with another vector
-	constexpr Real dot(const Vector& vec) const;
+	constexpr Real dot(const Vector<D>& vec) const;
 	
 	/// Returns the dot product of a vector with itself
 	constexpr Real dotself() const;
@@ -63,200 +74,285 @@ public:
 	Real length() const; // requires sqrt which is not constexpr. How fix?
 	
 	/// Returns the cross product of a vector
-	constexpr Vector cross(const Vector& vec) const;
+	constexpr Vector cross(const Vector<D>& vec) const;
 	
 	/// Returns the unit vector
 	constexpr Vector unit() const;
 
+	template <unsigned E>
+	constexpr Vector<E> subvector() const;
+
 private:
 
-	Real _x;
-	Real _y;
-	Real _z;
+	std::array<Real, D> _v;
 
 };
 
-constexpr Vector operator*(const Real& real, const Vector& vec);
+using Vector2 = Vector<2>;
+using Vector3 = Vector<3>;
+using Vector4 = Vector<4>;
 
-constexpr Vector operator*(const Real& real, const Vector& vec) {
+template <unsigned D>
+inline constexpr Vector<D>::Vector() : _v() {
+
+}
+
+template <unsigned D>
+inline constexpr Vector<D>::Vector(const Vector<D>& other) : _v(other._v) {
+
+}
+
+template <unsigned D>
+inline constexpr Vector<D>::Vector(Vector<D>& other) : _v(other._v) {
+
+}
+
+template <unsigned D>
+template <typename... Args>
+inline constexpr Vector<D>::Vector(const Args&... args) : _v{{Real(args)...}}
+{
+	static_assert(sizeof...(Args) == D, "Invalid number of constructor arguments");
+}
+
+template <unsigned D>
+template <unsigned E, typename... Args>
+inline constexpr Vector<D>::Vector(const Vector<E>& vec, Args&&... args) : _v{}
+{
+	static_assert(sizeof...(Args) == D-E, "Invalid number of constructor arguments");
+	Real pack[] = {Real(args)...};
+
+	for (unsigned i = 0; i < E; ++i)
+		_v[i] = vec(i);
+
+	for (unsigned i = E; i < D; ++i)
+		_v[i] = pack[E-i];
+}
+
+template <unsigned D>
+constexpr Vector<D> operator*(const Real& real, const Vector<D>& vec) {
 	return vec * real;
 }
 
-inline constexpr Vector::Vector() : _x(), _y(), _z() {
-
+template <unsigned D>
+inline constexpr bool Vector<D>::isNan() const {
+	for (unsigned i = 0; i < D; ++i)
+		if (_v[i] != _v[i])
+			return true;
+	return false;
 }
 
-inline constexpr Vector::Vector(Real x, Real y, Real z) : _x(x), _y(y), _z(z) {
-
+template <unsigned D>
+inline constexpr Real Vector<D>::dot(const Vector<D>& vec) const {
+	Real result = 0;
+	for (unsigned i = 0; i < D; ++i)
+		result += _v[i] * vec._v[i];
+	return result;
 }
 
-inline constexpr bool Vector::isNan() const {
-	return _x != _x || _y != _y || _z != _z;
-}
-
-inline constexpr Real Vector::dot(const Vector& vec) const {
-	return _x * vec._x + _y * vec._y + _z * vec._z;
-}
-
-inline constexpr Real Vector::dotself() const {
+template <unsigned D>
+inline constexpr Real Vector<D>::dotself() const {
 	return dot(*this);
 }
 
-inline Real Vector::length() const {
+template <unsigned D>
+inline Real Vector<D>::length() const {
 	return std::sqrt(dot(*this));
 }
 
-inline constexpr Vector Vector::cross(const Vector& vec) const {
+template <unsigned D>
+inline constexpr Vector<D> Vector<D>::cross(const Vector<D>& vec) const {
+	static_assert(D == 3, "Invalid number of dimentions for cross product");
 	return {
-		_y*vec._z - _z * vec._y,
-		_z*vec._x - _x * vec._z,
-		_x*vec._y - _y * vec._x
+		_v[1]*vec._v[2] - _v[2] * vec._v[1],
+		_v[2]*vec._v[0] - _v[0] * vec._v[2],
+		_v[0]*vec._v[1] - _v[1] * vec._v[0]
 	};
 }
 
-inline constexpr Vector Vector::unit() const {
+template <unsigned D>
+inline constexpr Vector<D> Vector<D>::unit() const {
 	return (*this) / length();
 }
 
-inline constexpr Real Vector::x() const {
-	return _x;
+template <unsigned D>
+inline constexpr Real Vector<D>::x() const {
+	static_assert(D >= 1, "Invalid number of dimentions for x component");
+	return _v[0];
 }
 
-inline constexpr Real Vector::y() const {
-	return _y;
+template <unsigned D>
+inline constexpr Real Vector<D>::y() const {
+	static_assert(D >= 2, "Invalid number of dimentions for y component");
+	return _v[1];
 }
 
-inline constexpr Real Vector::z() const {
-	return _z;
+template <unsigned D>
+inline constexpr Real Vector<D>::z() const {
+	static_assert(D >= 3, "Invalid number of dimentions for z component");
+	return _v[2];
 }
 
-inline constexpr const Real& Vector::operator()(unsigned i) const {
-	switch (i) {
-		case 0: return _x;
-		case 1: return _y;
-		case 2: return _z;
-	}
-	throw std::logic_error("Invalid index");
+template <unsigned D>
+inline constexpr Real Vector<D>::t() const {
+	static_assert(D >= 4, "Invalid number of dimentions for t component");
+	return _v[3];
 }
 
-inline constexpr Real& Vector::operator()(unsigned i) {
-	switch (i) {
-		case 0: return _x;
-		case 1: return _y;
-		case 2: return _z;
-	}
-	throw std::logic_error("Invalid index");
+template <unsigned D>
+inline constexpr const Real& Vector<D>::operator()(unsigned i) const {
+#ifdef DEBUG
+	if (i >= D)
+		throw std::logic_error("Invalid index");
+#endif
+
+	return _v[i];
 }
 
-inline constexpr Vector Vector::operator+(const Vector& vec) const {
-	return {_x + vec._x, _y + vec._y, _z + vec._z};
+template <unsigned D>
+inline constexpr Real& Vector<D>::operator()(unsigned i) {
+#ifdef DEBUG
+	if (i >= D)
+		throw std::logic_error("Invalid index");
+#endif
+
+	return _v[i];
 }
 
-inline constexpr Vector Vector::operator-(const Vector& vec) const {
-	return {_x - vec._x, _y - vec._y, _z - vec._z};
+template <unsigned D>
+inline constexpr Vector<D> Vector<D>::operator+(const Vector<D>& vec) const {
+	Vector<D> result;
+	for (unsigned i = 0; i < D; ++i)
+		result._v[i] = _v[i] + vec._v[i];
+	return result;
 }
 
-inline constexpr Vector Vector::operator+() const {
-	return {_x, _y, _z};	// Nice isn't it? Use me! I am anxious to be used.
+template <unsigned D>
+inline constexpr Vector<D> Vector<D>::operator-(const Vector<D>& vec) const {
+	Vector<D> result;
+	for (unsigned i = 0; i < D; ++i)
+		result._v[i] = _v[i] - vec._v[i];
+	return result;
 }
 
-inline constexpr Vector Vector::operator-() const {
-	return {-_x, -_y, -_z};
+template <unsigned D>
+inline constexpr Vector<D> Vector<D>::operator+() const {
+	return (*this);
 }
 
-inline constexpr Vector Vector::operator*(const Vector& vec) const {
-	return {_x * vec._x, _y * vec._y, _z * vec._z};
+template <unsigned D>
+inline constexpr Vector<D> Vector<D>::operator-() const {
+	return (*this) * (-1);
 }
 
-inline constexpr Vector Vector::operator*(const Real& real) const {
-	return {_x * real, _y * real, _z * real};
+template <unsigned D>
+inline constexpr Vector<D> Vector<D>::operator*(const Vector<D>& vec) const {
+	Vector<D> result;
+	for (unsigned i = 0; i < D; ++i)
+		result._v[i] = _v[i] * vec._v[i];
+	return result;
 }
 
-inline constexpr Vector Vector::operator/(const Vector& vec) const {
-	#ifdef DEBUG
-	if (vec.x() == 0 || vec.y() == 0 || vec.z() == 0) throw std::logic_error("Can't divide by zero");
-	#endif
-
-	return {_x / vec._x, _y / vec._y, _z / vec._z};
+template <unsigned D>
+inline constexpr Vector<D> Vector<D>::operator*(const Real& real) const {
+	Vector<D> result;
+	for (unsigned i = 0; i < D; ++i)
+		result._v[i] = _v[i] * real;
+	return result;
 }
 
-inline constexpr Vector Vector::operator/(const Real& real) const {
-	#ifdef DEBUG
-	if (real == 0) throw std::logic_error("Can't divide by zero");
-	#endif
+template <unsigned D>
+inline constexpr Vector<D> Vector<D>::operator/(const Vector<D>& vec) const {
+#ifdef DEBUG
+	for (unsigned i = 0; i < D; ++i)
+		if (vec._v[i] == 0)
+			throw std::logic_error("Can't divide by zero");
+#endif
 
-	return {_x / real, _y / real, _z / real};
+	Vector<D> result;
+	for (unsigned i = 0; i < D; ++i)
+		result._v[i] = _v[i] / vec._v[i];
+	return result;
 }
 
-inline constexpr Vector& Vector::operator+=(const Vector& vec) {
-	_x += vec._x;
-	_y += vec._y;
-	_z += vec._z;
-	return *this;
+template <unsigned D>
+inline constexpr Vector<D> Vector<D>::operator/(const Real& real) const {
+#ifdef DEBUG
+	if (real == 0)
+		throw std::logic_error("Can't divide by zero");
+#endif
+
+	Vector<D> result;
+	for (unsigned i = 0; i < D; ++i)
+		result._v[i] = _v[i] / real;
+	return result;
 }
 
-inline constexpr Vector& Vector::operator-=(const Vector& vec) {
-	_x -= vec._x;
-	_y -= vec._y;
-	_z -= vec._z;
-	return *this;
+template <unsigned D>
+inline constexpr Vector<D>& Vector<D>::operator+=(const Vector<D>& vec) {
+	return (*this) = (*this) + vec;
 }
 
-inline constexpr Vector& Vector::operator*=(const Vector& vec) {
-	_x *= vec._x;
-	_y *= vec._y;
-	_z *= vec._z;
-	return *this;
+template <unsigned D>
+inline constexpr Vector<D>& Vector<D>::operator-=(const Vector<D>& vec) {
+	return (*this) = (*this) - vec;
 }
 
-inline constexpr Vector& Vector::operator/=(const Vector& vec) {
-	#ifdef DEBUG
-	if (vec.x() * vec.y() * vec.z() == 0) throw std::logic_error("Can't divide by zero");
-	#endif
-
-	_x /= vec._x;
-	_y /= vec._y;
-	_z /= vec._z;
-	return *this;
+template <unsigned D>
+inline constexpr Vector<D>& Vector<D>::operator*=(const Vector<D>& vec) {
+	return (*this) = (*this) * vec;
 }
 
-inline constexpr Vector& Vector::operator*=(const Real& real) {
-	_x *= real;
-	_y *= real;
-	_z *= real;
-	return *this;
+template <unsigned D>
+inline constexpr Vector<D>& Vector<D>::operator/=(const Vector<D>& vec) {
+	return (*this) = (*this) / vec;
 }
 
-inline constexpr Vector& Vector::operator/=(const Real& real) {
-	#ifdef DEBUG
-	if (real == 0) throw std::logic_error("Division by zero. Invalid real number");
-	#endif
-
-	_x /= real;
-	_y /= real;
-	_z /= real;
-	return *this;
+template <unsigned D>
+inline constexpr Vector<D>& Vector<D>::operator*=(const Real& real) {
+	return (*this) = (*this) / real;
 }
 
-inline constexpr bool Vector::operator>(const Vector& vec) const {
+template <unsigned D>
+inline constexpr Vector<D>& Vector<D>::operator/=(const Real& real) {
+	return (*this) = (*this) / real;
+}
+
+template <unsigned D>
+inline constexpr bool Vector<D>::operator>(const Vector<D>& vec) const {
 	return dotself() > vec.dotself();
 }
 
-inline constexpr bool Vector::operator<(const Vector& vec) const {
+template <unsigned D>
+inline constexpr bool Vector<D>::operator<(const Vector<D>& vec) const {
 	return dotself() < vec.dotself();
 }
 
-inline constexpr bool Vector::operator>=(const Vector& vec) const {
+template <unsigned D>
+inline constexpr bool Vector<D>::operator>=(const Vector<D>& vec) const {
 	return dotself() >= vec.dotself();
 }
 
-inline constexpr bool Vector::operator<=(const Vector& vec) const {
+template <unsigned D>
+inline constexpr bool Vector<D>::operator<=(const Vector<D>& vec) const {
 	return dotself() <= vec.dotself();
 }
 
-inline constexpr bool Vector::operator==(const Vector& vec) const {
-	return _x == vec._x && _y == vec._y && _z == vec._z;
+template <unsigned D>
+inline constexpr bool Vector<D>::operator==(const Vector<D>& vec) const {
+	for (unsigned i = 0; i < D; ++i)
+		if (_v[i] != vec._v[i])
+			return false;
+	return true;
+}
+
+template <unsigned D>
+template <unsigned E>
+inline constexpr Vector<E> Vector<D>::subvector() const {
+	static_assert(E <= D, "Invalid number of dimentions for subvector");
+	Vector<E> result;
+	for (unsigned i = 0; i < E; ++i)
+		result(i) = _v[i];
+	return result;
 }
 
 } // math namespace
-

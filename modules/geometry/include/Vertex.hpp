@@ -1,10 +1,7 @@
 #pragma once
 
 #include <set>
-
-namespace math {
-class Vector;
-}
+#include <math/Vector>
 
 namespace geometry {
 
@@ -22,8 +19,8 @@ public:
 	bool operator<(const Vertex& other) const {return _data < other._data;}
 	bool operator==(const Vertex& other) const {return _data == other._data;}
 
-	math::Vector& position();
-	const math::Vector& position() const;
+	math::Vector3& position();
+	const math::Vector3& position() const;
 
 	const std::set<Edge>& edges() const;
 	const std::set<Triangle>& triangles() const;

@@ -27,6 +27,6 @@ bool RayHit::hasHit() const {
 	return _hasHit;
 }
 
-Vector RayHit::point() const {
+Vector3 RayHit::point() const {
 	return _ray.origin() + _distance * _ray.direction();
 }

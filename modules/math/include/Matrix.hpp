@@ -11,7 +11,7 @@ class Matrix {
 	
 public:
 	constexpr Matrix();
-	constexpr Matrix(const Vector& a, const Vector& b, const Vector& c);
+	constexpr Matrix(const Vector3& a, const Vector3& b, const Vector3& c);
 
 	constexpr const Real& operator()(unsigned a, unsigned b) const;
 	constexpr Real& operator()(unsigned a, unsigned b);
@@ -54,14 +54,14 @@ public:
 };
 
 constexpr Matrix operator*(const Real& real, const Matrix& matrix);
-constexpr Vector operator*(const Matrix& mat, const Vector& vec);
+constexpr Vector3 operator*(const Matrix& mat, const Vector3& vec);
 
 constexpr Matrix operator*(const Real& real, const Matrix& matrix) {
 	return matrix * real;
 }
 
-constexpr Vector operator*(const Matrix& mat, const Vector& vec) {
-	Vector result;
+constexpr Vector3 operator*(const Matrix& mat, const Vector3& vec) {
+	Vector3 result;
 	for (int i = 0; i < 3; ++i) {
 		for (int j = 0; j < 3; ++j) {
 			result(i) += mat(i, j) * vec(j);
@@ -75,7 +75,7 @@ inline constexpr Matrix::Matrix() : _data{0} {
 
 }
 
-inline constexpr Matrix::Matrix(const Vector& a, const Vector& b, const Vector& c) : 
+inline constexpr Matrix::Matrix(const Vector3 &a, const Vector3 &b, const Vector3 &c) :
 	_data{
 		a(0), b(0), c(0),
 		a(1), b(1), c(1),

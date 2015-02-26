@@ -8,7 +8,7 @@
 #include <geometry/Triangle>
 
 using math::Real;
-using math::Vector;
+using math::Vector3;
 using geometry::Solid;
 using geometry::Vertex;
 using geometry::Edge;
@@ -17,7 +17,7 @@ using geometry::Triangle;
 TEST(Solid, BuildCube) {
 	Solid cube = Solid::cube(1);
 
-	Vector center;
+	Vector3 center;
 	for (Vertex v : cube.vertices())
 		center += v.position();
 	center /= cube.vertices().size();
@@ -29,7 +29,7 @@ TEST(Solid, BuildCube) {
 	cube.orient();
 
 	for (Triangle t : cube.triangles()) {
-		Vector pointAway = t.position() + t.normal();
+		Vector3 pointAway = t.position() + t.normal();
 		Real dist = (center - pointAway).length();
 		EXPECT_GT(dist, 1);
 	}
@@ -40,7 +40,7 @@ TEST(Solid, BuildCube) {
 TEST(Solid, BuildCube2) {
 	Solid cube = Solid::cube(2);
 
-	Vector center;
+	Vector3 center;
 	for (Vertex v : cube.vertices())
 		center += v.position();
 	center /= cube.vertices().size();
@@ -52,7 +52,7 @@ TEST(Solid, BuildCube2) {
 	cube.orient();
 
 	for (Triangle t : cube.triangles()) {
-		Vector pointAway = t.position() + t.normal();
+		Vector3 pointAway = t.position() + t.normal();
 		Real dist = (center - pointAway).length();
 		EXPECT_GT(dist, 1);
 	}

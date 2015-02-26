@@ -29,13 +29,13 @@ public:
 	math::Real area() const;
 	
 	/// Gets the vector reprenseting the area of the triangle
-	math::Vector vectorArea() const;
+	math::Vector3 vectorArea() const;
 	
 	/// Gets a unit normal vector of the triangle
-	math::Vector normal() const;
+	math::Vector3 normal() const;
 	
 	/// Gets the position of the triangle
-	math::Vector position() const;
+	math::Vector3 position() const;
 	
 	/// Changes the sign of the orientation vectors
 	void changeOrientation();

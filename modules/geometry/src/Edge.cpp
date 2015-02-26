@@ -18,7 +18,7 @@ const std::set<Triangle>& Edge::triangles() const {
 	return _data->_triangles;
 }
 
-Vector Edge::vector() const {
+Vector3 Edge::vector() const {
 	return _data->_vertices[1].position() - _data->_vertices[0].position();
 }
 

@@ -26,7 +26,7 @@ public:
 	const std::set<Triangle>& triangles() const;
 
 	/// Gets the vector reprenseting the Edge
-	math::Vector vector() const;
+	math::Vector3 vector() const;
 
 	/// Gets the length of the Edge
 	math::Real length() const;

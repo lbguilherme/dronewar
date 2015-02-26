@@ -17,7 +17,7 @@ public:
 	Mesh(Mesh&& other);
 	~Mesh();
 
-	Vertex addVertex(math::Vector point);
+	Vertex addVertex(math::Vector3 point);
 	const std::set<Vertex>& vertices() const;
 
 	Edge addEdge(Vertex v1, Vertex v2);

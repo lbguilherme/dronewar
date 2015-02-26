@@ -20,24 +20,24 @@ const std::array<Edge, 3>& Triangle::edges() const {
 }
 
 Real Triangle::area() const {
-	Vector a = _data->_edges[0].vector();
-	Vector b = _data->_edges[1].vector();
+	Vector3 a = _data->_edges[0].vector();
+	Vector3 b = _data->_edges[1].vector();
 	return 1.0 / 2.0 * (b.cross(a)).length();
 }
 
-Vector Triangle::vectorArea() const {
-	Vector a = _data->_edges[0].vector();
-	Vector b = _data->_edges[1].vector();
+Vector3 Triangle::vectorArea() const {
+	Vector3 a = _data->_edges[0].vector();
+	Vector3 b = _data->_edges[1].vector();
 	return 1.0 / 2.0 * b.cross(a);
 }
 
-Vector Triangle::normal() const {
-	Vector a = _data->_edges[0].vector();
-	Vector b = _data->_edges[1].vector();
+Vector3 Triangle::normal() const {
+	Vector3 a = _data->_edges[0].vector();
+	Vector3 b = _data->_edges[1].vector();
 	return (b.cross(a)).unit();
 }
 
-Vector Triangle::position() const {
+Vector3 Triangle::position() const {
 	return 1.0/3.0 * (_data->_vertices[0].position() + _data->_vertices[1].position() + _data->_vertices[2].position());
 }
 

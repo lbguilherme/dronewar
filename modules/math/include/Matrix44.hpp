@@ -1,7 +1,7 @@
 #pragma once
 
 #include <math/Real>
-#include <math/Vector4>
+#include <math/Vector>
 #include <stdexcept>
 
 namespace math {

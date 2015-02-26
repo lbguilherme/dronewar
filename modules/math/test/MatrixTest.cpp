@@ -1,8 +1,9 @@
 #include <gtest/gtest.h>
 #include <math/Matrix>
 #include <math/Vector>
+
 using math::Matrix;
-using math::Vector;
+using math::Vector3;
 
 struct MatrixAlgebra : public ::testing::Test {
 	Matrix identity = Matrix::eye();
@@ -138,9 +139,9 @@ struct MatrixVector : public ::testing::Test {
 	Matrix identity = Matrix::eye();
 	Matrix one = Matrix::ones();
 	
-	Vector i = {1, 0, 0};
-	Vector j = {0, 1, 0};
-	Vector k = {0, 0, 1};
+	Vector3 i = {1, 0, 0};
+	Vector3 j = {0, 1, 0};
+	Vector3 k = {0, 0, 1};
 };
 
 TEST_F(MatrixVector, Construction) {
@@ -160,7 +161,7 @@ TEST_F(MatrixVector, Construction) {
 }
 
 TEST_F(MatrixVector, Multiplication) {
-	Vector test;
+	Vector3 test;
 	
 	test = 2 * one * i;
 	EXPECT_DOUBLE_EQ(2, test(0));

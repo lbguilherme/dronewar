@@ -11,20 +11,20 @@ class RayHitSet;
 class Ray {
 public:
 
-	Ray(math::Vector origin, math::Vector direction);
+	Ray(math::Vector3 origin, math::Vector3 direction);
 
 	RayHit castOnTriangle(Triangle triangle) const;
 	RayHitSet castOnMesh(const Mesh& mesh) const;
 
-	math::Vector origin() const;
-	math::Vector direction() const;
+	math::Vector3 origin() const;
+	math::Vector3 direction() const;
 
 	bool operator==(const Ray& other) const;
 
 private:
 
-	math::Vector _origin;
-	math::Vector _direction;
+	math::Vector3 _origin;
+	math::Vector3 _direction;
 
 };
 

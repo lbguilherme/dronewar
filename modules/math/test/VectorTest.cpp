@@ -1,23 +1,23 @@
 #include <gtest/gtest.h>
 #include <math/Vector>
 
-using math::Vector;
+using math::Vector3;
 
 TEST(Vector, LengthComputation) {
-	Vector v = {3, 4, 0};
+	Vector3 v = {3, 4, 0};
 	EXPECT_DOUBLE_EQ(5, v.length());
 	EXPECT_DOUBLE_EQ(5, (-v).length());
 }
 
 struct VectorAlgebra : public ::testing::Test {
-	Vector i = {1, 0, 0};
-	Vector j = {0, 1, 0};
-	Vector k = {0, 0, 1};
+	Vector3 i = {1, 0, 0};
+	Vector3 j = {0, 1, 0};
+	Vector3 k = {0, 0, 1};
 };
 
 TEST_F(VectorAlgebra, Equality) {
-	Vector a = 2*i - 3*j + 5*k;
-	Vector b = a;
+	Vector3 a = 2*i - 3*j + 5*k;
+	Vector3 b = a;
 
 	EXPECT_DOUBLE_EQ(2, a.x());
 	EXPECT_DOUBLE_EQ(-3, a.y());
@@ -29,9 +29,9 @@ TEST_F(VectorAlgebra, Equality) {
 }
 
 TEST_F(VectorAlgebra, Sum) {
-	Vector a = 2*i - 3*j + 5*k;
-	Vector b = a;
-	Vector c = i+j-k;
+	Vector3 a = 2*i - 3*j + 5*k;
+	Vector3 b = a;
+	Vector3 c = i+j-k;
 
 	EXPECT_DOUBLE_EQ(0, (a-b).x());
 	EXPECT_DOUBLE_EQ(0, (a-b).y());
@@ -52,9 +52,9 @@ TEST_F(VectorAlgebra, Sum) {
 }
 
 TEST_F(VectorAlgebra, Multiply) {
-	Vector a = 2*i - 3*j + 5*k;
-	Vector b = a;
-	Vector c = i+j-k;
+	Vector3 a = 2*i - 3*j + 5*k;
+	Vector3 b = a;
+	Vector3 c = i+j-k;
 
 	EXPECT_DOUBLE_EQ(4, (a*b).x());
 	EXPECT_DOUBLE_EQ(9, (a*b).y());
