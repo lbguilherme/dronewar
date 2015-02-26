@@ -1,16 +1,15 @@
 #include <gtest/gtest.h>
+#include <sstream>
 
 #include <math/Real>
 #include <geometry/Mesh>
+#include <geometry/Solid>
 #include <geometry/Vertex>
 #include <geometry/Edge>
 #include <geometry/Triangle>
 
-using math::Real;
-using geometry::Mesh;
-using geometry::Vertex;
-using geometry::Edge;
-using geometry::Triangle;
+using namespace math;
+using namespace geometry;
 
 TEST(Mesh, BuildCube) {
 	Mesh cube;
@@ -117,4 +116,18 @@ TEST(Mesh, BuildCube) {
 
 	for (Triangle t : cube.triangles())
 		EXPECT_DOUBLE_EQ(0.5, t.area());
+}
+
+TEST(Mesh, ReadWrite) {
+	Solid cubeSolid = Solid::cube(5);
+	Mesh& cube = cubeSolid;
+
+	std::stringstream data;
+	cube.write(data);
+
+	Mesh cube2 = Mesh::read(data);
+
+	EXPECT_EQ(cube.vertices().size(), cube2.vertices().size());
+	EXPECT_EQ(cube.edges().size(), cube2.edges().size());
+	EXPECT_EQ(cube.triangles().size(), cube2.triangles().size());
 }

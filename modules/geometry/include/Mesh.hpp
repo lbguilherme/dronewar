@@ -27,6 +27,9 @@ public:
 	Triangle addTriangle(Edge e1, Edge e2, Edge e3);
 	const std::set<Triangle>& triangles() const;
 
+	void write(std::ostream& out) const;
+	static Mesh read(std::istream &in);
+
 private:
 
 	std::set<Vertex> _vertices;

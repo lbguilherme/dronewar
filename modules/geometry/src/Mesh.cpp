@@ -1,4 +1,8 @@
 #include <stdexcept>
+#include <map>
+#include <vector>
+#include <iostream>
+#include <sstream>
 
 #include <geometry/Mesh>
 #include <geometry/Vertex>
@@ -7,6 +11,7 @@
 #include "EdgeData.hpp"
 #include "TriangleData.hpp"
 
+using namespace math;
 using namespace geometry;
 
 Mesh::Mesh() {
@@ -30,7 +35,7 @@ Mesh::~Mesh() {
 		delete t._data;
 }
 
-Vertex Mesh::addVertex(math::Vector3 point) {
+Vertex Mesh::addVertex(Vector3 point) {
 	VertexData* data = nullptr;
 	try {
 		Vertex vertex(data = new VertexData(point));
@@ -171,4 +176,59 @@ Triangle Mesh::addTriangle(Edge e1, Edge e2, Edge e3) {
 
 const std::set<Triangle>& Mesh::triangles() const {
 	return _triangles;
+}
+
+void Mesh::write(std::ostream& out) const {
+	std::vector<Vertex> vs;
+	std::map<Vertex, unsigned> vindex;
+
+	for (const Triangle& t : _triangles) {
+		for (const Vertex& v : t.vertices()) {
+			if (vindex.find(v) == vindex.end()) {
+				vindex[v] = vs.size();
+				vs.push_back(v);
+			}
+		}
+	}
+
+	out << "# Vertices\n";
+	for (const Vertex& v : vs) {
+		out << "v " << v.position().x() << " " << v.position().y() << " " << v.position().z() << "\n";
+	}
+
+	out << "\n# Triangles\n";
+
+	for (const Triangle& t : _triangles) {
+		out << "t";
+		for (const Vertex& v : t.vertices()) {
+			out << " " << vindex[v];
+		}
+		out << "\n";
+	}
+}
+
+Mesh Mesh::read(std::istream& in) {
+	Mesh mesh;
+	std::vector<Vertex> vs;
+
+	while (!in.eof()) {
+		char line[128];
+		in.getline(line, sizeof(line));
+		std::stringstream ss(line);
+
+		std::string command;
+		ss >> command;
+
+		if (command == "v") {
+			Vector3 pos;
+			ss >> pos(0) >> pos(1) >> pos(2);
+			vs.push_back(mesh.addVertex(pos));
+		} else if (command == "t") {
+			unsigned ids[3];
+			ss >> ids[0] >> ids[1] >> ids[2];
+			mesh.addTriangle(vs[ids[0]], vs[ids[1]], vs[ids[2]]);
+		}
+	}
+
+	return mesh;
 }
