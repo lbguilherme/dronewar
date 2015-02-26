@@ -47,7 +47,10 @@ public:
 	constexpr Matrix<N, N>& operator*=(const Matrix<N, N>& mat);
 	
 	/// Transpost of the matrix
-	constexpr Matrix<M, N> transpost() const;
+	constexpr Matrix<N, M> transpost() const;
+	
+	/// Creates a reduced matrix of echelon form, from line-equivalent operations
+	constexpr Matrix<M, N> rref() const;
 	
 	/// Determinant of the matrix
 	constexpr Real det() const;
@@ -63,10 +66,12 @@ public:
 	
 	/// Returns identity matrix.
 	constexpr static const Matrix<M, N> eye();
+	
+	void swapline(unsigned a, unsigned b);
 
 private:
 
-	std::array<std::array<Real, M>, N> _v;
+	std::array<std::array<Real, N>, M> _v;
 
 };
 
@@ -107,11 +112,11 @@ inline constexpr Matrix<M, N>::Matrix(const Vector<N>& head, const Args&... tail
 template <unsigned M, unsigned N>
 template <typename... Args>
 inline constexpr Matrix<M, N>::Matrix(const Real& head, const Args&... tail) {
-	Real reals[] = {head, tail...};
+	Real reals[] = {Real(head), Real(tail)...};
 
 	for (unsigned i = 0; i < M; ++i)
 		for (unsigned j = 0; j < N; ++j)
-			_v[i][j] = reals[i*M+j];
+			_v[i][j] = reals[i*N+j];
 }
 
 template <unsigned M, unsigned N>
@@ -134,7 +139,7 @@ constexpr Vector<M> operator*(const Matrix<M, N>& mat, const Vector<M>& vec) {
 template <unsigned M, unsigned N>
 inline constexpr const Real& Matrix<M, N>::operator()(unsigned i, unsigned j) const {
 #ifdef DEBUG
-	if (i >= N || j >= M) throw std::logic_error("Invalid index");
+	if (i >= M || j >= N) throw std::logic_error("Invalid index");
 #endif
 	
 	return _v[i][j];
@@ -143,7 +148,7 @@ inline constexpr const Real& Matrix<M, N>::operator()(unsigned i, unsigned j) co
 template <unsigned M, unsigned N>
 inline constexpr Real& Matrix<M, N>::operator()(unsigned i, unsigned j) {
 #ifdef DEBUG
-	if (i >= N || j >= M) throw std::logic_error("Invalid index");
+	if (i >= M || j >= N) throw std::logic_error("Invalid index");
 #endif
 
 	return _v[i][j];
@@ -155,7 +160,7 @@ inline constexpr const Real& Matrix<M, N>::operator()(unsigned x) const {
 	if (x >= N*M) throw std::logic_error("Invalid index");
 #endif
 
-	return _v[x%M][x/M];
+	return _v[x%N][x/N];
 }
 
 template <unsigned M, unsigned N>
@@ -164,7 +169,7 @@ inline constexpr Real& Matrix<M, N>::operator()(unsigned x) {
 	if (x >= N*M) throw std::logic_error("Invalid index");
 #endif
 
-	return _v[x%M][x/M];
+	return _v[x%N][x/N];
 }
 
 template <unsigned M, unsigned N>
@@ -257,13 +262,55 @@ inline constexpr Matrix<N, N>& Matrix<M, N>::operator*=(const Matrix<N, N>& mat)
 }
 
 template <unsigned M, unsigned N>
-inline constexpr Matrix<M, N> Matrix<M, N>::transpost() const {
-	Matrix<M, N> result;
+inline constexpr Matrix<N, M> Matrix<M, N>::transpost() const {
+	Matrix<N, M> result;
 	for (unsigned i = 0; i < M; ++i) {
 		for (unsigned j = 0; j < N; ++j) {
 			result(j, i) = _v[i][j];
 		}
 	}
+	return result;
+}
+
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::rref() const {
+	Matrix<M, N> result = *this;
+	
+	// Iterate until run out of (rows or cols).
+	for (unsigned k = 0; k < M-1 or k < N-1; ++k) {
+		
+		// Pivot indicator
+		bool null = false;
+		
+		// Check if main pivot is zero. If it is, fix it!
+		if (result(k, N-k-1) == 0) {
+			null = true;
+			for (unsigned i = k+1; i < M; ++i) {
+				if (result(i, N-k-1) != 0) {
+					result.swapline(k, i);
+					null = false;
+					break;
+				}
+			}
+		}
+		
+		// No pivot found. Go on...
+		if (null) continue;
+	
+		for (unsigned i = k+1; i < M; ++i) {
+
+			// Already reduced. Move on.
+			if (result(i, N-k-1) == 0) continue;
+			
+			// Reduce the matrix
+			Real value = result(k, N-k-1) / result(i, N-k-1);
+			for (unsigned j = 0; j < N; ++j) {
+				result(i, j) *= value;
+				result(i, j) -= result(k, j);
+			}
+		}
+	}
+	
 	return result;
 }
 
@@ -275,7 +322,7 @@ inline constexpr Real Matrix<M, N>::det() const {
 
 template <unsigned M, unsigned N>
 inline constexpr Matrix<N, N> Matrix<M, N>::inverse() const {
-	static_assert(N == M, "Matrix must be squared for inverse() to work");
+	static_assert(M == N, "Matrix must be squared for inverse() to work");
 
 	throw "not implemented";
 	return {};
@@ -291,7 +338,7 @@ inline constexpr const Matrix<M, N> Matrix<M, N>::ones() {
 	Matrix<M, N> result;
 	for (unsigned i = 0; i < M; ++i) {
 		for (unsigned j = 0; j < N; ++j) {
-			result(j, i) = 1;
+			result(i, j) = 1;
 		}
 	}
 	return result;
@@ -300,9 +347,15 @@ inline constexpr const Matrix<M, N> Matrix<M, N>::ones() {
 template <unsigned M, unsigned N>
 inline constexpr const Matrix<M, N> Matrix<M, N>::eye() {
 	Matrix<M, N> result;
-	for (unsigned x = 0; x < N*M; ++x)
-		result(x) = (x % (M+1) ? 0 : 1);
+	for (unsigned x = 0; x < M*N; ++x)
+		result(x) = (x % (N+1) ? 0 : 1);
 	return result;
+}
+
+template <unsigned M, unsigned N>
+void Matrix<M, N>::swapline(unsigned a, unsigned b) {
+	for (unsigned j = 0; j < N; ++j) 
+		std::swap(_v[a][j], _v[b][j]);
 }
 
 }  // math namespace
