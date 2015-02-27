@@ -59,7 +59,7 @@ TEST(Solid, OrientationUniformScaleCube) {
 	EXPECT_DOUBLE_EQ(8, cube.volume());
 }
 
-TEST(Solid, ShapeVolumeTesting) {
+TEST(Solid, ShapeVolume) {
 	Solid cube = Solid::cube();
 	cube.orient();
 	
@@ -68,6 +68,31 @@ TEST(Solid, ShapeVolumeTesting) {
 	transform.rotateX(cte::tau / 8);
 	transform.rotateZ(cte::tau / 8);
 	cube.apply(transform);
+	
+	Vector3 center = cube.center();
+	EXPECT_TRUE(std::abs(center.x()) < 1e-8) << center.x();
+	EXPECT_TRUE(std::abs(center.y()) < 1e-8) << center.y();
+	EXPECT_TRUE(std::abs(center.z()) < 1e-8) << center.z();
+	
+	for (Triangle t : cube.triangles()) {
+		Vector3 pointAway = t.position() + t.normal();
+		Real dist = (center - pointAway).length();
+		EXPECT_GT(dist, 1);
+	}
+	
+	EXPECT_DOUBLE_EQ(6, cube.volume());
+}
+
+TEST(Solid, ShapeOrientation) {
+	Solid cube = Solid::cube();
+	
+	Transform transform;
+	transform.scale({1, 2, 3});
+	transform.rotateX(cte::tau / 8);
+	transform.rotateZ(cte::tau / 8);
+	cube.apply(transform);
+	
+	cube.orient();
 	
 	Vector3 center = cube.center();
 	EXPECT_TRUE(std::abs(center.x()) < 1e-8) << center.x();
