@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include <math/Real>
+#include <math/cte>
 #include <geometry/Mesh>
 #include <geometry/Solid>
 #include <geometry/Vertex>
@@ -149,6 +150,26 @@ TEST(Mesh, TransformUniformScale) {
 		bool right = false;
 		if (e.length() == 2) right = true;
 		if (e.length() == 2*sqrt(2)) right = true;
+		
+		EXPECT_TRUE(right) << e.length();
+	}
+}
+
+TEST(Mesh, TransformRotation) {
+	Solid cube = Solid::cube();
+	
+	Transform transform;
+	transform.rotateZ(cte::tau / 8);
+	transform.rotateY(cte::tau / 8);
+	transform.rotateX(cte::tau / 8);
+	transform.rotateY(cte::tau / 8);
+	transform.rotateZ(cte::tau / 8);
+	cube.apply(transform);
+	
+	for (Edge e : cube.edges()) {
+		bool right = false;
+		if (std::abs(e.length() - 1) < 1e-8) right = true;
+		if (std::abs(e.length() - sqrt(2)) < 1e-8) right = true;
 		
 		EXPECT_TRUE(right) << e.length();
 	}
