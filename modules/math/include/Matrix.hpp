@@ -502,12 +502,22 @@ inline constexpr Real Matrix<M, N>::det() const {
 	return result;
 }
 
+
 template <unsigned M, unsigned N>
 inline constexpr Matrix<N, N> Matrix<M, N>::inverse() const {
 	static_assert(M == N, "Matrix must be squared for inverse() to work");
 	
-	throw "not implemented";
-	return {};
+	Real d = det();
+	if (d == 0) throw std::logic_error("Matrix is non invertible");
+	
+	Matrix<M, M> identity = Matrix<M,M>::eye();
+	Matrix<M, M> firstReduced = rref(identity, ReductionType::LowerLeft);
+	Matrix<M, M> secondReduced = firstReduced.rref(identity, ReductionType::UpperRight);
+	for (unsigned i = 0; i < M; ++i) {
+		for (unsigned j = 0; j < N; ++j) identity(i, j) /= secondReduced(i, i);
+	}
+	
+	return identity;
 }
 
 template <unsigned M, unsigned N>
