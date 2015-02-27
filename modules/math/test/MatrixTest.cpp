@@ -132,6 +132,20 @@ TEST_F(MatrixAlgebra3, Inverse) {
 	EXPECT_DOUBLE_EQ(0, idiv(2, 0));
 	EXPECT_DOUBLE_EQ(0, idiv(2, 1));
 	EXPECT_DOUBLE_EQ(1, idiv(2, 2));
+	
+	Matrix3 other = {1, 1, 1,   1, 2, 2,   2, 2, 1};
+	idiv = other.inverse();
+	EXPECT_DOUBLE_EQ(2, idiv(0, 0));
+	EXPECT_DOUBLE_EQ(-1, idiv(0, 1));
+	EXPECT_DOUBLE_EQ(0, idiv(0, 2));
+	
+	EXPECT_DOUBLE_EQ(-3, idiv(1, 0));
+	EXPECT_DOUBLE_EQ(1, idiv(1, 1));
+	EXPECT_DOUBLE_EQ(1, idiv(1, 2));
+	
+	EXPECT_DOUBLE_EQ(2, idiv(2, 0));
+	EXPECT_DOUBLE_EQ(0, idiv(2, 1));
+	EXPECT_DOUBLE_EQ(-1, idiv(2, 2));
 }
 
 TEST(MatrixAlgebra, Multiplication) {
