@@ -4,9 +4,12 @@
 #include <math/Vector>
 #include <stdexcept>
 #include <array>
+#include <utility>
+#include <type_traits>
 
 namespace math {
 
+enum class ReductionType;
 template <unsigned M, unsigned N>
 class Matrix {
 	static_assert(N*M > 0, "Can't make a matrix with no cells");
@@ -50,7 +53,13 @@ public:
 	constexpr Matrix<N, M> transpost() const;
 	
 	/// Creates a reduced matrix of echelon form, from line-equivalent operations
-	constexpr Matrix<M, N> rref() const;
+	template <typename ReductionHelper>
+	constexpr Matrix<M, N> rref(ReductionHelper&& reductionHelper, ReductionType type) const;
+	constexpr Matrix<M, N> rref(ReductionType type) const;
+	constexpr Matrix<M, N> rref(Real& real, ReductionType type) const;
+	constexpr Matrix<M, N> rref(Vector<M>& vec, ReductionType type) const;
+	constexpr Matrix<M, N> rref(Matrix<M, N>& mat, ReductionType type) const;
+	
 	
 	/// Determinant of the matrix
 	constexpr Real det() const;
@@ -68,6 +77,8 @@ public:
 	constexpr static const Matrix<M, N> eye();
 	
 	void swapline(unsigned a, unsigned b);
+	
+	
 
 private:
 
@@ -272,9 +283,76 @@ inline constexpr Matrix<N, M> Matrix<M, N>::transpost() const {
 	return result;
 }
 
+namespace internal {
+	template <unsigned M, unsigned N>
+	struct ReductionHelperWithMatrix {
+		Matrix<M, N>& mat;
+		
+		void applyLineSwap(unsigned a, unsigned b) {mat.swapline(a, b);}
+		void applySubtractLines(unsigned a, unsigned b) {
+			for (unsigned j = 0; j < N; ++j) mat(a, j) -= mat(b, j);
+		}
+		
+		void applyScalar(unsigned a, Real s) {
+			for (unsigned j = 0; j < N; ++j) mat(a, j) *= s;
+		}
+	};
+	
+	template <unsigned M>
+	struct ReductionHelperWithVector {
+		Vector<M>& vec;
+		void applyLineSwap(unsigned a, unsigned b) {vec.swapline(a, b);}
+		void applySubtractLines(unsigned a, unsigned b) {vec(a) -= vec(b);}
+		void applyScalar(unsigned a, Real s) {vec(a) *= s;}
+	};
+	
+	struct ReductionHelperWithReal {
+		Real& real;
+		
+		void applyLineSwap(unsigned, unsigned) { real *= (-1);}
+		void applySubtractLines(unsigned, unsigned) {}
+		void applyScalar(unsigned, Real s) {real *= s;}
+	};
+	
+	struct ReductionHelperWithNothing {
+		void applyLineSwap(unsigned, unsigned) {}
+		void applySubtractLines(unsigned, unsigned) {}
+		void applyScalar(unsigned, Real) {}
+	};
+	
+	
+} // internal
+
+enum class ReductionType {
+	UpperLeft, UpperRight,
+	LowerLeft, LowerRight
+};
+
 template <unsigned M, unsigned N>
-inline constexpr Matrix<M, N> Matrix<M, N>::rref() const {
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionType type) const {
+	return rref(internal::ReductionHelperWithNothing{}, type);
+}
+
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(Real& real, ReductionType type) const {
+	return rref(internal::ReductionHelperWithReal{real}, type);
+}
+
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(Vector<M>& vec, ReductionType type) const {
+	return rref(internal::ReductionHelperWithVector<M>{vec}, type);
+}
+
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(Matrix<M, N>& mat, ReductionType type) const {
+	return rref(internal::ReductionHelperWithMatrix<M, N>{mat}, type);
+}
+
+template <unsigned M, unsigned N>
+template <typename ReductionHelper>
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelper, ReductionType type) const {
 	Matrix<M, N> result = *this;
+	internal::ReductionHelperWithMatrix<M, N> helper{result};
 	
 	// Iterate until run out of (rows or cols).
 	for (unsigned k = 0; k < M-1 or k < N-1; ++k) {
@@ -283,11 +361,28 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref() const {
 		bool null = false;
 		
 		// Check if main pivot is zero. If it is, fix it!
-		if (result(k, N-k-1) == 0) {
+		Real pivot = 0;
+		switch (type) {
+			case ReductionType::LowerRight: pivot = result(k, N-k-1); break;
+			case ReductionType::LowerLeft:  pivot = result(k, k); break;
+			case ReductionType::UpperRight: pivot = result(N-k-1, k); break;
+			case ReductionType::UpperLeft:  pivot = result(N-k-1, N-k-1); break;
+		}
+		
+		if (pivot == 0) {
 			null = true;
 			for (unsigned i = k+1; i < M; ++i) {
-				if (result(i, N-k-1) != 0) {
-					result.swapline(k, i);
+				Real cell = 0;
+				switch (type) {
+					case ReductionType::LowerRight: cell = result(i, N-k-1); break;
+					case ReductionType::LowerLeft:  cell = result(i, k); break;
+					case ReductionType::UpperRight: pivot = result(N-i-1, k); break;
+					case ReductionType::UpperLeft:  pivot = result(N-i-1, N-k-1); break;
+				}
+			
+				if (cell != 0) {
+					reductionHelper.applyLineSwap(k, i);
+					helper.applyLineSwap(k, i);
 					null = false;
 					break;
 				}
@@ -298,26 +393,41 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref() const {
 		if (null) continue;
 	
 		for (unsigned i = k+1; i < M; ++i) {
+		
+			Real cell = 0;
+			switch (type) {
+				case ReductionType::LowerRight: cell = result(i, N-k-1); break;
+				case ReductionType::LowerLeft:  cell = result(i, k); break;
+				case ReductionType::UpperRight: pivot = result(N-i-1, k); break;
+				case ReductionType::UpperLeft:  pivot = result(N-i-1, N-k-1); break;
+			}
 
 			// Already reduced. Move on.
-			if (result(i, N-k-1) == 0) continue;
+			if (cell == 0) continue;
 			
 			// Reduce the matrix
-			Real value = result(k, N-k-1) / result(i, N-k-1);
-			for (unsigned j = 0; j < N; ++j) {
-				result(i, j) *= value;
-				result(i, j) -= result(k, j);
-			}
+			Real value = pivot / cell;
+			
+			reductionHelper.applyScalar(i, value);
+			reductionHelper.applySubtractLines(i, k);
+			
+			helper.applyScalar(i, value);
+			helper.applySubtractLines(i, k);
 		}
 	}
 	
 	return result;
 }
 
+
 template <unsigned M, unsigned N>
 inline constexpr Real Matrix<M, N>::det() const {
-	throw "not implemented";
-	return 0;
+	static_assert(M == N, "Matrix must be squared for det() to work");
+
+	Real result = 1;
+	Matrix<M, M> reduced = rref(result, ReductionType::LowerLeft);
+	for (unsigned i = 0; i < M; ++i) result *= reduced(i, i);
+	return result;
 }
 
 template <unsigned M, unsigned N>
