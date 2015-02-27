@@ -18,12 +18,12 @@ using geometry::Transform;
 
 TEST(Solid, BuildCube) {
 	Solid cube = Solid::cube();
+	
+	Transform transform;
+	transform.translate({0.5, 0.5, 0.5});
+	cube.apply(transform);
 
-	Vector3 center;
-	for (Vertex v : cube.vertices())
-		center += v.position();
-	center /= cube.vertices().size();
-
+	Vector3 center = cube.center();
 	EXPECT_DOUBLE_EQ(0.5, center.x());
 	EXPECT_DOUBLE_EQ(0.5, center.y());
 	EXPECT_DOUBLE_EQ(0.5, center.z());
@@ -44,6 +44,7 @@ TEST(Solid, BuildCube2) {
 	
 	Transform transform;
 	transform.scale(2);
+	transform.translate({0.5, 0.5, 0.5});
 	cube.apply(transform);
 
 	Vector3 center;
