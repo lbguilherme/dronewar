@@ -120,11 +120,11 @@ TEST(Mesh, BuildCube) {
 }
 
 TEST(Mesh, ReadWrite) {
-	Solid cube = Solid::cube();
+	Solid cubeSolid = Solid::cube();
 	
 	Transform transform;
 	transform.scale(5);
-	cube.apply(transform);
+	cubeSolid.apply(transform);
 	
 	Mesh& cube = cubeSolid;
 
