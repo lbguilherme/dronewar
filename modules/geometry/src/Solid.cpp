@@ -30,18 +30,18 @@ Real Solid::volume() const {
 	return volume / 6.0;
 }
 
-Solid Solid::cube(math::Real size) {
+Solid Solid::cube() {
 	Solid cube;
 
 	// Cube Vertices
 	Vertex v1 = cube.addVertex({0, 0, 0});
-	Vertex v2 = cube.addVertex({0, 0, size});
-	Vertex v3 = cube.addVertex({0, size, size});
-	Vertex v4 = cube.addVertex({0, size, 0});
-	Vertex v5 = cube.addVertex({size, 0, 0});
-	Vertex v6 = cube.addVertex({size, 0, size});
-	Vertex v7 = cube.addVertex({size, size, size});
-	Vertex v8 = cube.addVertex({size, size, 0});
+	Vertex v2 = cube.addVertex({0, 0, 1});
+	Vertex v3 = cube.addVertex({0, 1, 1});
+	Vertex v4 = cube.addVertex({0, 1, 0});
+	Vertex v5 = cube.addVertex({1, 0, 0});
+	Vertex v6 = cube.addVertex({1, 0, 1});
+	Vertex v7 = cube.addVertex({1, 1, 1});
+	Vertex v8 = cube.addVertex({1, 1, 0});
 
 	// Base
 	Edge e12 = cube.addEdge(v1, v2);

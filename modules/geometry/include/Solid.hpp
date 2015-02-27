@@ -19,8 +19,8 @@ public:
 	/// Measures the volume of the solid. Complexity: O(n)
 	math::Real volume() const;
 	
-	/// Produces a cube
-	static Solid cube(math::Real size);
+	/// Produces a unit cube
+	static Solid cube();
 };
 
 
