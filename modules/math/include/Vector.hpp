@@ -82,6 +82,8 @@ public:
 
 	template <unsigned E>
 	constexpr Vector<E> subvector() const;
+	
+	void swapline(unsigned a, unsigned b);
 
 private:
 
@@ -355,6 +357,11 @@ inline constexpr Vector<E> Vector<D>::subvector() const {
 	for (unsigned i = 0; i < E; ++i)
 		result(i) = _v[i];
 	return result;
+}
+
+template <unsigned D>
+void Vector<D>::swapline(unsigned a, unsigned b) {
+	std::swap(_v[a], _v[b]);
 }
 
 } // math namespace
