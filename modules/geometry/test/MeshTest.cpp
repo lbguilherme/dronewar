@@ -174,3 +174,19 @@ TEST(Mesh, TransformRotation) {
 		EXPECT_TRUE(right) << e.length();
 	}
 }
+
+TEST(Mesh, TransformTranslate) {
+	Solid cube = Solid::cube();
+	
+	Transform transform;
+	transform.translate({0.5, 0.5, 0.5});
+	cube.apply(transform);
+	
+	for (Edge e : cube.edges()) {
+		bool right = false;
+		if (std::abs(e.length() - 1) < 1e-8) right = true;
+		if (std::abs(e.length() - sqrt(2)) < 1e-8) right = true;
+		
+		EXPECT_TRUE(right) << e.length();
+	}
+}
