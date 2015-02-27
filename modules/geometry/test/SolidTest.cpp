@@ -6,6 +6,7 @@
 #include <geometry/Vertex>
 #include <geometry/Edge>
 #include <geometry/Triangle>
+#include <geometry/Transform>
 
 using math::Real;
 using math::Vector3;
@@ -13,9 +14,10 @@ using geometry::Solid;
 using geometry::Vertex;
 using geometry::Edge;
 using geometry::Triangle;
+using geometry::Transform;
 
 TEST(Solid, BuildCube) {
-	Solid cube = Solid::cube(1);
+	Solid cube = Solid::cube();
 
 	Vector3 center;
 	for (Vertex v : cube.vertices())
@@ -38,7 +40,11 @@ TEST(Solid, BuildCube) {
 }
 
 TEST(Solid, BuildCube2) {
-	Solid cube = Solid::cube(2);
+	Solid cube = Solid::cube();
+	
+	Transform transform;
+	transform.scale(2);
+	cube.apply(transform);
 
 	Vector3 center;
 	for (Vertex v : cube.vertices())
