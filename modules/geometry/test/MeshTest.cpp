@@ -120,7 +120,12 @@ TEST(Mesh, BuildCube) {
 }
 
 TEST(Mesh, ReadWrite) {
-	Solid cubeSolid = Solid::cube(5);
+	Solid cube = Solid::cube();
+	
+	Transform transform;
+	transform.scale(5);
+	cube.apply(transform);
+	
 	Mesh& cube = cubeSolid;
 
 	std::stringstream data;
@@ -133,8 +138,8 @@ TEST(Mesh, ReadWrite) {
 	EXPECT_EQ(cube.triangles().size(), cube2.triangles().size());
 }
 
-TEST(Mesh, TransformScale) {
-	Solid cube = Solid::cube(1);
+TEST(Mesh, TransformUniformScale) {
+	Solid cube = Solid::cube();
 	
 	Transform transform;
 	transform.scale(2);
