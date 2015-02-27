@@ -26,7 +26,7 @@ void Transform::scale(const Vector3& scale) {
 
 void Transform::translate(const Vector3& translate) {
 	Matrix4 sub = Matrix4::eye();
-	for (int i = 0; i < 3; ++i) sub(5*i+3) = translate(i);
+	for (int i = 0; i < 3; ++i) sub(4*i+3) = translate(i);
 	_transform *= sub;
 }
 
