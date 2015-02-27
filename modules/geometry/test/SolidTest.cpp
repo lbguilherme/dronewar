@@ -16,7 +16,7 @@ using geometry::Edge;
 using geometry::Triangle;
 using geometry::Transform;
 
-TEST(Solid, BuildCube) {
+TEST(Solid, OrientationUnitCube) {
 	Solid cube = Solid::cube();
 	
 	Transform transform;
@@ -39,7 +39,7 @@ TEST(Solid, BuildCube) {
 	EXPECT_DOUBLE_EQ(1, cube.volume());
 }
 
-TEST(Solid, BuildCube2) {
+TEST(Solid, OrientationUniformScaleCube) {
 	Solid cube = Solid::cube();
 	
 	Transform transform;
@@ -47,11 +47,7 @@ TEST(Solid, BuildCube2) {
 	transform.translate({0.5, 0.5, 0.5});
 	cube.apply(transform);
 
-	Vector3 center;
-	for (Vertex v : cube.vertices())
-		center += v.position();
-	center /= cube.vertices().size();
-
+	Vector3 center = cube.center();
 	EXPECT_DOUBLE_EQ(1, center.x());
 	EXPECT_DOUBLE_EQ(1, center.y());
 	EXPECT_DOUBLE_EQ(1, center.z());
