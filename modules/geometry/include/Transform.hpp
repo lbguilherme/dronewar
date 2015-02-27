@@ -35,7 +35,7 @@ public:
 	void clear();
 	
 	/// Application of the transformation in a point
-	math::Vector3 apply(const math::Vector3& point);
+	math::Vector3 apply(const math::Vector3& point) const;
 };
 
 } // geometry namespace

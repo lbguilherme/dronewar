@@ -60,7 +60,7 @@ void Transform::rotateZ(const math::Real& angle) {
 	_transform *= sub;
 }
 
-Vector3 Transform::apply(const Vector3& point) {
+Vector3 Transform::apply(const Vector3& point) const {
 	Vector4 p(point, 1);
 	Vector4 result = _transform * p;
 	return result.subvector<3>();
