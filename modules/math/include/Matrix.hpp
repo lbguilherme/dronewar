@@ -9,6 +9,7 @@
 
 namespace math {
 
+enum class ReductionType;
 template <unsigned M, unsigned N>
 class Matrix {
 	static_assert(N*M > 0, "Can't make a matrix with no cells");
@@ -53,11 +54,12 @@ public:
 	
 	/// Creates a reduced matrix of echelon form, from line-equivalent operations
 	template <typename ReductionHelper>
-	constexpr Matrix<M, N> rref(ReductionHelper&& reductionHelper) const;
-	constexpr Matrix<M, N> rref() const;
-	constexpr Matrix<M, N> rref(Real& real) const;
-	constexpr Matrix<M, N> rref(Vector<M>& vec) const;
-	constexpr Matrix<M, N> rref(Matrix<M, N>& mat) const;
+	constexpr Matrix<M, N> rref(ReductionHelper&& reductionHelper, ReductionType type) const;
+	constexpr Matrix<M, N> rref(ReductionType type) const;
+	constexpr Matrix<M, N> rref(Real& real, ReductionType type) const;
+	constexpr Matrix<M, N> rref(Vector<M>& vec, ReductionType type) const;
+	constexpr Matrix<M, N> rref(Matrix<M, N>& mat, ReductionType type) const;
+	
 	
 	/// Determinant of the matrix
 	constexpr Real det() const;
@@ -321,29 +323,34 @@ namespace internal {
 	
 } // internal
 
+enum class ReductionType {
+	LowerRight,
+	LowerLeft
+};
+
 template <unsigned M, unsigned N>
-inline constexpr Matrix<M, N> Matrix<M, N>::rref() const {
-	return rref(internal::ReductionHelperWithNothing{});
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionType type) const {
+	return rref(internal::ReductionHelperWithNothing{}, type);
 }
 
 template <unsigned M, unsigned N>
-inline constexpr Matrix<M, N> Matrix<M, N>::rref(Real& real) const {
-	return rref(internal::ReductionHelperWithReal{real});
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(Real& real, ReductionType type) const {
+	return rref(internal::ReductionHelperWithReal{real}, type);
 }
 
 template <unsigned M, unsigned N>
-inline constexpr Matrix<M, N> Matrix<M, N>::rref(Vector<M>& vec) const {
-	return rref(internal::ReductionHelperWithVector<M>{vec});
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(Vector<M>& vec, ReductionType type) const {
+	return rref(internal::ReductionHelperWithVector<M>{vec}, type);
 }
 
 template <unsigned M, unsigned N>
-inline constexpr Matrix<M, N> Matrix<M, N>::rref(Matrix<M, N>& mat) const {
-	return rref(internal::ReductionHelperWithMatrix<M, N>{mat});
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(Matrix<M, N>& mat, ReductionType type) const {
+	return rref(internal::ReductionHelperWithMatrix<M, N>{mat}, type);
 }
 
 template <unsigned M, unsigned N>
 template <typename ReductionHelper>
-inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelper) const {
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelper, ReductionType type) const {
 	Matrix<M, N> result = *this;
 	internal::ReductionHelperWithMatrix<M, N> helper{result};
 	
@@ -354,10 +361,22 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 		bool null = false;
 		
 		// Check if main pivot is zero. If it is, fix it!
-		if (result(k, N-k-1) == 0) {
+		Real pivot = 0;
+		switch (type) {
+			case ReductionType::LowerRight: pivot = result(k, N-k-1); break;
+			case ReductionType::LowerLeft:  pivot = result(k, k); break;
+		}
+		
+		if (pivot == 0) {
 			null = true;
 			for (unsigned i = k+1; i < M; ++i) {
-				if (result(i, N-k-1) != 0) {
+				Real cell = 0;
+				switch (type) {
+					case ReductionType::LowerRight: cell = result(i, N-k-1); break;
+					case ReductionType::LowerLeft:  cell = result(i, k); break;
+				}
+			
+				if (cell != 0) {
 					reductionHelper.applyLineSwap(k, i);
 					helper.applyLineSwap(k, i);
 					null = false;
@@ -370,12 +389,18 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 		if (null) continue;
 	
 		for (unsigned i = k+1; i < M; ++i) {
+		
+			Real cell = 0;
+			switch (type) {
+				case ReductionType::LowerRight: cell = result(i, N-k-1); break;
+				case ReductionType::LowerLeft:  cell = result(i, k); break;
+			}
 
 			// Already reduced. Move on.
-			if (result(i, N-k-1) == 0) continue;
+			if (cell == 0) continue;
 			
 			// Reduce the matrix
-			Real value = result(k, N-k-1) / result(i, N-k-1);
+			Real value = pivot / cell;
 			
 			reductionHelper.applyScalar(i, value);
 			reductionHelper.applySubtractLines(i, k);
@@ -385,7 +410,7 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 		}
 	}
 	
-	return helper.mat;
+	return result;
 }
 
 
@@ -393,10 +418,8 @@ template <unsigned M, unsigned N>
 inline constexpr Real Matrix<M, N>::det() const {
 	static_assert(M == N, "Matrix must be squared for det() to work");
 
-	Real result = 1;
-	Matrix<M, M> reduced = rref(result);
-	for (unsigned i = 0; i < M; ++i) result *= reduced(i, i);
-	return result;
+	throw "not implemented";
+	return {};
 }
 
 template <unsigned M, unsigned N>
