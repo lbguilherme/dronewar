@@ -427,27 +427,33 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 		
 		// Check if main pivot is zero. If it is, fix it!
 		Real pivot = 0;
+		unsigned ip = 0;
+		unsigned jp = 0;
 		switch (type) {
-			case ReductionType::LowerRight: pivot = result(k, N-k-1); break;
-			case ReductionType::LowerLeft:  pivot = result(k, k); break;
-			case ReductionType::UpperRight: pivot = result(N-k-1, N-k-1); break;
-			case ReductionType::UpperLeft:  pivot = result(N-k-1, k); break;
+			case ReductionType::LowerRight: ip = k; jp = N-k-1; break;
+			case ReductionType::LowerLeft:  ip = k; jp = k; break;
+			case ReductionType::UpperRight: ip = N-k-1; jp = N-k-1; break;
+			case ReductionType::UpperLeft:  ip = N-k-1; jp = k; break;
 		}
+		pivot = result(ip, jp);
 		
 		if (pivot == 0) {
 			null = true;
 			for (unsigned i = k+1; i < M; ++i) {
 				Real cell = 0;
+				unsigned ic = 0;
+				unsigned jc = 0;
 				switch (type) {
-					case ReductionType::LowerRight: cell = result(i, N-k-1); break;
-					case ReductionType::LowerLeft:  cell = result(i, k); break;
-					case ReductionType::UpperRight: pivot = result(N-i-1, N-k-1); break;
-					case ReductionType::UpperLeft:  pivot = result(N-i-1, k); break;
+					case ReductionType::LowerRight: ic = i; jc = N-k-1; break;
+					case ReductionType::LowerLeft:  ic = i; jc = k; break;
+					case ReductionType::UpperRight: ic = N-i-1; jc = N-k-1; break;
+					case ReductionType::UpperLeft:  ic = N-i-1; jc = k; break;
 				}
+				cell = result(ic, jc);
 				
 				if (cell != 0) {
-					reductionHelper.applyLineSwap(k, i);
-					helper.applyLineSwap(k, i);
+					reductionHelper.applyLineSwap(ip, ic);
+					helper.applyLineSwap(ip, ic);
 					null = false;
 					break;
 				}
@@ -458,14 +464,16 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 		if (null) continue;
 	
 		for (unsigned i = k+1; i < M; ++i) {
-		
 			Real cell = 0;
+			unsigned ic = 0;
+			unsigned jc = 0;
 			switch (type) {
-				case ReductionType::LowerRight: cell = result(i, N-k-1); break;
-				case ReductionType::LowerLeft:  cell = result(i, k); break;
-				case ReductionType::UpperRight: pivot = result(N-i-1, N-k-1); break;
-				case ReductionType::UpperLeft:  pivot = result(N-i-1, k); break;
+				case ReductionType::LowerRight: ic = i; jc = N-k-1; break;
+				case ReductionType::LowerLeft:  ic = i; jc = k; break;
+				case ReductionType::UpperRight: ic = N-i-1; jc = N-k-1; break;
+				case ReductionType::UpperLeft:  ic = N-i-1; jc = k; break;
 			}
+			cell = result(ic, jc);
 
 			// Already reduced. Move on.
 			if (cell == 0) continue;
@@ -473,11 +481,11 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 			// Reduce the matrix
 			Real value = pivot / cell;
 			
-			reductionHelper.applyScalar(i, value);
-			reductionHelper.applySubtractLines(i, k);
+			reductionHelper.applyScalar(ic, value);
+			reductionHelper.applySubtractLines(ic, ip);
 			
-			helper.applyScalar(i, value);
-			helper.applySubtractLines(i, k);
+			helper.applyScalar(ic, value);
+			helper.applySubtractLines(ic, ip);
 		}
 	}
 	
