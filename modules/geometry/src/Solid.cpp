@@ -30,6 +30,17 @@ Real Solid::volume() const {
 	return volume / 6.0;
 }
 
+Vector3 Solid::center() const {
+	Vector3 center;
+	for (const Vertex& v : vertices()) center += v.position();
+	return center / vertices().size();
+}
+
+void Solid::centralize() {
+	Vector3 c = center();
+	for (Vertex v : vertices()) v.position() -= c;
+}
+
 Solid Solid::cube() {
 	Solid cube;
 

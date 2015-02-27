@@ -19,6 +19,12 @@ public:
 	/// Measures the volume of the solid. Complexity: O(n)
 	math::Real volume() const;
 	
+	/// Calculates the center of the solid
+	math::Vector3 center() const;
+	
+	/// Centralizes the Solid. Ie, its center will be at origin
+	void centralize();
+	
 	/// Produces a unit cube
 	static Solid cube();
 };
