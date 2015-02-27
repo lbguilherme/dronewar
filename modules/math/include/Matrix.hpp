@@ -4,6 +4,8 @@
 #include <math/Vector>
 #include <stdexcept>
 #include <array>
+#include <utility>
+#include <type_traits>
 
 namespace math {
 
@@ -50,7 +52,12 @@ public:
 	constexpr Matrix<N, M> transpost() const;
 	
 	/// Creates a reduced matrix of echelon form, from line-equivalent operations
+	template <typename ReductionHelper>
+	constexpr Matrix<M, N> rref(ReductionHelper&& reductionHelper) const;
 	constexpr Matrix<M, N> rref() const;
+	constexpr Matrix<M, N> rref(Real& real) const;
+	constexpr Matrix<M, N> rref(Vector<M>& vec) const;
+	constexpr Matrix<M, N> rref(Matrix<M, N>& mat) const;
 	
 	/// Determinant of the matrix
 	constexpr Real det() const;
@@ -68,6 +75,8 @@ public:
 	constexpr static const Matrix<M, N> eye();
 	
 	void swapline(unsigned a, unsigned b);
+	
+	
 
 private:
 
@@ -272,9 +281,71 @@ inline constexpr Matrix<N, M> Matrix<M, N>::transpost() const {
 	return result;
 }
 
+namespace internal {
+	template <unsigned M, unsigned N>
+	struct ReductionHelperWithMatrix {
+		Matrix<M, N>& mat;
+		
+		void applyLineSwap(unsigned a, unsigned b) {mat.swapline(a, b);}
+		void applySubtractLines(unsigned a, unsigned b) {
+			for (unsigned j = 0; j < N; ++j) mat(a, j) -= mat(b, j);
+		}
+		
+		void applyScalar(unsigned a, Real s) {
+			for (unsigned j = 0; j < N; ++j) mat(a, j) *= s;
+		}
+	};
+	
+	template <unsigned M>
+	struct ReductionHelperWithVector {
+		Vector<M>& vec;
+		void applyLineSwap(unsigned a, unsigned b) {vec.swapline(a, b);}
+		void applySubtractLines(unsigned a, unsigned b) {vec(a) -= vec(b);}
+		void applyScalar(unsigned a, Real s) {vec(a) *= s;}
+	};
+	
+	struct ReductionHelperWithReal {
+		Real& real;
+		
+		void applyLineSwap(unsigned, unsigned) { real *= (-1);}
+		void applySubtractLines(unsigned, unsigned) {}
+		void applyScalar(unsigned, Real s) {real *= s;}
+	};
+	
+	struct ReductionHelperWithNothing {
+		void applyLineSwap(unsigned, unsigned) {}
+		void applySubtractLines(unsigned, unsigned) {}
+		void applyScalar(unsigned, Real) {}
+	};
+	
+	
+} // internal
+
 template <unsigned M, unsigned N>
 inline constexpr Matrix<M, N> Matrix<M, N>::rref() const {
+	return rref(internal::ReductionHelperWithNothing{});
+}
+
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(Real& real) const {
+	return rref(internal::ReductionHelperWithReal{real});
+}
+
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(Vector<M>& vec) const {
+	return rref(internal::ReductionHelperWithVector<M>{vec});
+}
+
+template <unsigned M, unsigned N>
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(Matrix<M, N>& mat) const {
+	return rref(internal::ReductionHelperWithMatrix<M, N>{mat});
+}
+
+template <unsigned M, unsigned N>
+template <typename ReductionHelper>
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelper) const {
 	Matrix<M, N> result = *this;
+	internal::ReductionHelperWithMatrix<M, N> helper{result};
 	
 	// Iterate until run out of (rows or cols).
 	for (unsigned k = 0; k < M-1 or k < N-1; ++k) {
@@ -287,7 +358,8 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref() const {
 			null = true;
 			for (unsigned i = k+1; i < M; ++i) {
 				if (result(i, N-k-1) != 0) {
-					result.swapline(k, i);
+					reductionHelper.applyLineSwap(k, i);
+					helper.applyLineSwap(k, i);
 					null = false;
 					break;
 				}
@@ -304,20 +376,27 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref() const {
 			
 			// Reduce the matrix
 			Real value = result(k, N-k-1) / result(i, N-k-1);
-			for (unsigned j = 0; j < N; ++j) {
-				result(i, j) *= value;
-				result(i, j) -= result(k, j);
-			}
+			
+			reductionHelper.applyScalar(i, value);
+			reductionHelper.applySubtractLines(i, k);
+			
+			helper.applyScalar(i, value);
+			helper.applySubtractLines(i, k);
 		}
 	}
 	
-	return result;
+	return helper.mat;
 }
+
 
 template <unsigned M, unsigned N>
 inline constexpr Real Matrix<M, N>::det() const {
-	throw "not implemented";
-	return 0;
+	static_assert(M == N, "Matrix must be squared for det() to work");
+
+	Real result = 1;
+	Matrix<M, M> reduced = rref(result);
+	for (unsigned i = 0; i < M; ++i) result *= reduced(i, i);
+	return result;
 }
 
 template <unsigned M, unsigned N>
