@@ -179,18 +179,18 @@ TEST(Mesh, TransformTranslate) {
 	Solid cube = Solid::cube();
 	Vector3 center = cube.center();
 	
-	EXPECT_DOUBLE_EQ(0.5, center.x());
-	EXPECT_DOUBLE_EQ(0.5, center.y());
-	EXPECT_DOUBLE_EQ(0.5, center.z());
+	EXPECT_DOUBLE_EQ(0, center.x());
+	EXPECT_DOUBLE_EQ(0, center.y());
+	EXPECT_DOUBLE_EQ(0, center.z());
 	
 	Transform transform;
 	transform.translate({0.5, 0.5, 0.5});
 	cube.apply(transform);
 	
 	center = cube.center();
-	EXPECT_DOUBLE_EQ(1, center.x());
-	EXPECT_DOUBLE_EQ(1, center.y());
-	EXPECT_DOUBLE_EQ(1, center.z());
+	EXPECT_DOUBLE_EQ(0.5, center.x());
+	EXPECT_DOUBLE_EQ(0.5, center.y());
+	EXPECT_DOUBLE_EQ(0.5, center.z());
 	
 	for (Edge e : cube.edges()) {
 		bool right = false;
