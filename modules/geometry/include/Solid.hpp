@@ -27,6 +27,9 @@ public:
 	
 	/// Produces a unit cube
 	static Solid cube();
+	
+	/// Produces a unit pyramid
+	static Solid pyramid(unsigned sides);
 };
 
 

@@ -2,6 +2,7 @@
 #include <geometry/Ray>
 #include <geometry/RayHit>
 #include <math/Matrix>
+#include <cmath>
 
 using namespace math;
 using namespace geometry;
@@ -39,6 +40,41 @@ Vector3 Solid::center() const {
 void Solid::centralize() {
 	Vector3 c = center();
 	for (Vertex v : vertices()) v.position() -= c;
+}
+
+Solid Solid::pyramid(unsigned sides) {
+	if (sides < 3) throw std::logic_error("Invalid number of sides");
+	
+	Solid pyramid;
+	
+	if (sides == 3) {
+		// Base vertex
+		Vertex v1 = pyramid.addVertex({0, 0, 0});
+		Vertex v2 = pyramid.addVertex({0.5, sqrt(3) / 2.0, 0});
+		Vertex v3 = pyramid.addVertex({1, 0, 0});
+		
+		// Base edge
+		Edge e12 = pyramid.addEdge(v1, v2);
+		Edge e23 = pyramid.addEdge(v2, v3);
+		Edge e13 = pyramid.addEdge(v1, v3);
+		
+		// Top vertex
+		Vertex top = pyramid.addVertex({1/2, 1/3, sqrt(1 - 1/4 - 1/9)});
+		Edge e14 = pyramid.addEdge(v1, top);
+		Edge e24 = pyramid.addEdge(v2, top);
+		Edge e34 = pyramid.addEdge(v3, top);
+		
+		// Triangles
+		pyramid.addTriangle(e12, e23, e13);
+		pyramid.addTriangle(e13, e34, e14);
+		pyramid.addTriangle(e12, e24, e14);
+		pyramid.addTriangle(e23, e34, e24);
+		
+		pyramid.centralize();
+		return pyramid;
+	}
+	
+	else throw "Not implemented";
 }
 
 Solid Solid::cube() {
