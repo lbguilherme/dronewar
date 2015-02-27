@@ -324,8 +324,8 @@ namespace internal {
 } // internal
 
 enum class ReductionType {
-	LowerRight,
-	LowerLeft
+	UpperLeft, UpperRight,
+	LowerLeft, LowerRight
 };
 
 template <unsigned M, unsigned N>
@@ -365,6 +365,8 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 		switch (type) {
 			case ReductionType::LowerRight: pivot = result(k, N-k-1); break;
 			case ReductionType::LowerLeft:  pivot = result(k, k); break;
+			case ReductionType::UpperRight: pivot = result(N-k-1, k); break;
+			case ReductionType::UpperLeft:  pivot = result(N-k-1, N-k-1); break;
 		}
 		
 		if (pivot == 0) {
@@ -374,6 +376,8 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 				switch (type) {
 					case ReductionType::LowerRight: cell = result(i, N-k-1); break;
 					case ReductionType::LowerLeft:  cell = result(i, k); break;
+					case ReductionType::UpperRight: pivot = result(N-i-1, k); break;
+					case ReductionType::UpperLeft:  pivot = result(N-i-1, N-k-1); break;
 				}
 			
 				if (cell != 0) {
@@ -394,6 +398,8 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 			switch (type) {
 				case ReductionType::LowerRight: cell = result(i, N-k-1); break;
 				case ReductionType::LowerLeft:  cell = result(i, k); break;
+				case ReductionType::UpperRight: pivot = result(N-i-1, k); break;
+				case ReductionType::UpperLeft:  pivot = result(N-i-1, N-k-1); break;
 			}
 
 			// Already reduced. Move on.
