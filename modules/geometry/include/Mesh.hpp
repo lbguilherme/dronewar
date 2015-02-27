@@ -6,6 +6,7 @@
 #include <geometry/Vertex>
 #include <geometry/Edge>
 #include <geometry/Triangle>
+#include <geometry/Transform>
 
 namespace geometry {
 
@@ -89,6 +90,9 @@ public:
 	/// Refer to the Triangle documentation for details.
 	/// \note This function is exception-safe. If any exception happens, Mesh will remain unchanged.
 	Triangle addTriangle(Edge e1, Edge e2, Edge e3);
+	
+	/// Applies a transformation in the mesh
+	void apply(const Transform& transform);
 
 	/// \brief Write all mesh data into a stream.
 	///

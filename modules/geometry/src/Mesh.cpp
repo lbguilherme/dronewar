@@ -178,6 +178,13 @@ const std::set<Triangle>& Mesh::triangles() const {
 	return _triangles;
 }
 
+void Mesh::apply(const Transform& transform) {
+	for (Vertex v : _vertices) {
+		Vector3 pos = v.position();
+		v.position() = transform.apply(pos);
+	}
+}
+
 void Mesh::write(std::ostream& out) const {
 	std::vector<Vertex> vs;
 	std::map<Vertex, unsigned> vindex;
