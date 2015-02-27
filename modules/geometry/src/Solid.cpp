@@ -99,5 +99,6 @@ Solid Solid::cube() {
 	cube.addTriangle(e14, e15, e45);
 	cube.addTriangle(e58, e48, e45);
 	
+	cube.centralize();
 	return cube;
 }
