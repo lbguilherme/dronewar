@@ -418,8 +418,10 @@ template <unsigned M, unsigned N>
 inline constexpr Real Matrix<M, N>::det() const {
 	static_assert(M == N, "Matrix must be squared for det() to work");
 
-	throw "not implemented";
-	return {};
+	Real result = 1;
+	Matrix<M, M> reduced = rref(result, ReductionType::LowerLeft);
+	for (unsigned i = 0; i < M; ++i) result *= reduced(i, i);
+	return result;
 }
 
 template <unsigned M, unsigned N>
