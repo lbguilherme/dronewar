@@ -7,6 +7,7 @@
 #include <geometry/Vertex>
 #include <geometry/Edge>
 #include <geometry/Triangle>
+#include <geometry/Transform>
 
 using namespace math;
 using namespace geometry;
@@ -130,4 +131,20 @@ TEST(Mesh, ReadWrite) {
 	EXPECT_EQ(cube.vertices().size(), cube2.vertices().size());
 	EXPECT_EQ(cube.edges().size(), cube2.edges().size());
 	EXPECT_EQ(cube.triangles().size(), cube2.triangles().size());
+}
+
+TEST(Mesh, TransformScale) {
+	Solid cube = Solid::cube(1);
+	
+	Transform transform;
+	transform.scale(2);
+	cube.apply(transform);
+	
+	for (Edge e : cube.edges()) {
+		bool right = false;
+		if (e.length() == 2) right = true;
+		if (e.length() == 2*sqrt(2)) right = true;
+		
+		EXPECT_TRUE(right) << e.length();
+	}
 }
