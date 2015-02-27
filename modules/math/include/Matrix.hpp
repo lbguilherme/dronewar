@@ -140,7 +140,7 @@ constexpr Matrix<M, N> operator*(const Real& real, const Matrix<M, N>& matrix) {
 }
 
 template <unsigned M, unsigned N>
-constexpr Vector<M> operator*(const Matrix<M, N>& mat, const Vector<M>& vec) {
+constexpr Vector<M> operator*(const Matrix<M, N>& mat, const Vector<N>& vec) {
 	Vector<M> result;
 	for (unsigned i = 0; i < M; ++i) {
 		for (unsigned j = 0; j < N; ++j) {
@@ -175,7 +175,7 @@ inline constexpr const Real& Matrix<M, N>::operator()(unsigned x) const {
 	if (x >= N*M) throw std::logic_error("Invalid index");
 #endif
 
-	return _v[x%N][x/N];
+	return _v[x/N][x%N];
 }
 
 template <unsigned M, unsigned N>
@@ -184,7 +184,7 @@ inline constexpr Real& Matrix<M, N>::operator()(unsigned x) {
 	if (x >= N*M) throw std::logic_error("Invalid index");
 #endif
 
-	return _v[x%N][x/N];
+	return _v[x/N][x%N];
 }
 
 template <unsigned M, unsigned N>
