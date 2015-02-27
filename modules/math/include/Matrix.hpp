@@ -53,6 +53,7 @@ public:
 	constexpr Matrix<N, M> transpost() const;
 	
 	/// Creates a reduced matrix of echelon form, from line-equivalent operations
+	
 	template <typename ReductionHelper>
 	constexpr Matrix<M, N> rref(ReductionHelper&& reductionHelper, ReductionType type) const;
 	constexpr Matrix<M, N> rref(ReductionType type) const;
@@ -60,7 +61,10 @@ public:
 	constexpr Matrix<M, N> rref(Vector<M>& vec, ReductionType type) const;
 	constexpr Matrix<M, N> rref(Matrix<M, N>& mat, ReductionType type) const;
 	
-	
+	/*
+	template <typename... Args>
+	constexpr Matrix<M, N> rref(ReductionType type, Args&... args) const;
+	*/
 	/// Determinant of the matrix
 	constexpr Real det() const;
 	
@@ -320,6 +324,57 @@ namespace internal {
 		void applyScalar(unsigned, Real) {}
 	};
 	
+	template <typename... T>
+	struct ReductionHelperMerger;
+	
+	template <typename Helper, typename... Others>
+	struct ReductionHelperMerger<Helper, Others...> {
+		Helper& h1;
+		ReductionHelperMerger<Others...>& h2;
+		void applyLineSwap(unsigned a, unsigned b) {h1.applyLineSwap(a, b); h2.applyLineSwap(a, b);}
+		void applySubtractLines(unsigned a, unsigned b) {h1.applySubtractLines(a, b); h2.applySubtractLines(a, b);}
+		void applyScalar(unsigned a, Real s) {h1.applyScalar(a, s); h2.applyScalar(a, s);}
+	};
+	
+	template <>
+	struct ReductionHelperMerger<> {
+		void applyLineSwap(unsigned, unsigned) {}
+		void applySubtractLines(unsigned, unsigned) {}
+		void applyScalar(unsigned, Real) {}
+	};
+	
+	template <typename... T>
+	struct ReductionHelperGetter;
+	
+	template <typename Head, typename... T>
+	struct ReductionHelperGetter<Head, T...> {
+		static auto get(Head& head, T&... x) {
+			return ReductionHelperMerger<decltype(ReductionHelperGetter<Head>::get(head)), decltype(ReductionHelperGetter<T>::get(x))...>
+				{ReductionHelperGetter<Head>::get(head), ReductionHelperGetter<Head>::get(x)...};
+		}
+	};
+	
+	template <>
+	struct ReductionHelperGetter<> {
+		static ReductionHelperWithNothing get() { return {}; }
+	};
+	
+	template <>
+	struct ReductionHelperGetter<Real> {
+		static ReductionHelperWithReal get(Real& x) { return {x}; }
+	};
+	
+	template <unsigned M>
+	struct ReductionHelperGetter<Vector<M>> {
+		static ReductionHelperWithVector<M> get(Vector<M>& x) { return {x}; }
+	};
+	
+	template <unsigned M, unsigned N>
+	struct ReductionHelperGetter<Matrix<M, N>> {
+		static ReductionHelperWithMatrix<M, N> get(Matrix<M, N>& x) { return {x}; }
+	};
+	
+	
 	
 } // internal
 
@@ -327,6 +382,7 @@ enum class ReductionType {
 	UpperLeft, UpperRight,
 	LowerLeft, LowerRight
 };
+
 
 template <unsigned M, unsigned N>
 inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionType type) const {
@@ -348,9 +404,18 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(Matrix<M, N>& mat, ReductionTyp
 	return rref(internal::ReductionHelperWithMatrix<M, N>{mat}, type);
 }
 
+/*
+template <unsigned M, unsigned N>
+template <typename... Args>
+inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionType type, Args&... args) const {
+	Matrix<M, N> result = *this;
+	//auto helper = internal::ReductionHelperGetter<Matrix<M, N>, Args...>::get(result, args...);*/
+
+
 template <unsigned M, unsigned N>
 template <typename ReductionHelper>
 inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelper, ReductionType type) const {
+	
 	Matrix<M, N> result = *this;
 	internal::ReductionHelperWithMatrix<M, N> helper{result};
 	
@@ -365,8 +430,8 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 		switch (type) {
 			case ReductionType::LowerRight: pivot = result(k, N-k-1); break;
 			case ReductionType::LowerLeft:  pivot = result(k, k); break;
-			case ReductionType::UpperRight: pivot = result(N-k-1, k); break;
-			case ReductionType::UpperLeft:  pivot = result(N-k-1, N-k-1); break;
+			case ReductionType::UpperRight: pivot = result(N-k-1, N-k-1); break;
+			case ReductionType::UpperLeft:  pivot = result(N-k-1, k); break;
 		}
 		
 		if (pivot == 0) {
@@ -376,10 +441,10 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 				switch (type) {
 					case ReductionType::LowerRight: cell = result(i, N-k-1); break;
 					case ReductionType::LowerLeft:  cell = result(i, k); break;
-					case ReductionType::UpperRight: pivot = result(N-i-1, k); break;
-					case ReductionType::UpperLeft:  pivot = result(N-i-1, N-k-1); break;
+					case ReductionType::UpperRight: pivot = result(N-i-1, N-k-1); break;
+					case ReductionType::UpperLeft:  pivot = result(N-i-1, k); break;
 				}
-			
+				
 				if (cell != 0) {
 					reductionHelper.applyLineSwap(k, i);
 					helper.applyLineSwap(k, i);
@@ -398,8 +463,8 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 			switch (type) {
 				case ReductionType::LowerRight: cell = result(i, N-k-1); break;
 				case ReductionType::LowerLeft:  cell = result(i, k); break;
-				case ReductionType::UpperRight: pivot = result(N-i-1, k); break;
-				case ReductionType::UpperLeft:  pivot = result(N-i-1, N-k-1); break;
+				case ReductionType::UpperRight: pivot = result(N-i-1, N-k-1); break;
+				case ReductionType::UpperLeft:  pivot = result(N-i-1, k); break;
 			}
 
 			// Already reduced. Move on.
@@ -419,7 +484,6 @@ inline constexpr Matrix<M, N> Matrix<M, N>::rref(ReductionHelper&& reductionHelp
 	return result;
 }
 
-
 template <unsigned M, unsigned N>
 inline constexpr Real Matrix<M, N>::det() const {
 	static_assert(M == N, "Matrix must be squared for det() to work");
@@ -433,7 +497,7 @@ inline constexpr Real Matrix<M, N>::det() const {
 template <unsigned M, unsigned N>
 inline constexpr Matrix<N, N> Matrix<M, N>::inverse() const {
 	static_assert(M == N, "Matrix must be squared for inverse() to work");
-
+	
 	throw "not implemented";
 	return {};
 }
