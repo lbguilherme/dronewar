@@ -11,7 +11,9 @@ RayHit::RayHit(Ray ray)
 
 RayHit::RayHit(Ray ray, math::Real distance)
 	: _ray(ray), _distance(distance), _hasHit(true) {
-
+	if (distance < 0.000001) { // FIXME
+		_hasHit = false;
+	}
 }
 
 bool RayHit::operator<(const RayHit& other) const {

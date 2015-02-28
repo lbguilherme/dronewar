@@ -11,7 +11,7 @@ using namespace geometry;
 void Solid::orient() {
 	for (Triangle face : triangles()) {
 		Ray ray{face.position(), face.normal()};
-		if (ray.castOnMesh(*this).size() % 2 == 0)
+		if (ray.castOnMesh(*this).size() % 2 == 1)
 			face.changeOrientation();
 	}
 }
