@@ -2,6 +2,7 @@
 #include <geometry/Ray>
 #include <geometry/RayHit>
 #include <math/Matrix>
+
 #include <cmath>
 
 using namespace math;
@@ -42,36 +43,36 @@ void Solid::centralize() {
 	for (Vertex v : vertices()) v.position() -= c;
 }
 
-Solid Solid::pyramid(unsigned sides) {
+Solid Solid::cone(unsigned sides) {
 	if (sides < 3) throw std::logic_error("Invalid number of sides");
 	
-	Solid pyramid;
+	Solid cone;
 	
 	if (sides == 3) {
 		// Base vertex
-		Vertex v1 = pyramid.addVertex({0, 0, 0});
-		Vertex v2 = pyramid.addVertex({0.5, sqrt(3) / 2.0, 0});
-		Vertex v3 = pyramid.addVertex({1, 0, 0});
+		Vertex v1 = cone.addVertex({0, 0, 0});
+		Vertex v2 = cone.addVertex({0.5, sqrt(3) / 2.0, 0});
+		Vertex v3 = cone.addVertex({1, 0, 0});
 		
 		// Base edge
-		Edge e12 = pyramid.addEdge(v1, v2);
-		Edge e23 = pyramid.addEdge(v2, v3);
-		Edge e13 = pyramid.addEdge(v1, v3);
+		Edge e12 = cone.addEdge(v1, v2);
+		Edge e23 = cone.addEdge(v2, v3);
+		Edge e13 = cone.addEdge(v1, v3);
 		
 		// Top vertex
-		Vertex top = pyramid.addVertex({1/2, 1/3, sqrt(1 - 1/4 - 1/9)});
-		Edge e14 = pyramid.addEdge(v1, top);
-		Edge e24 = pyramid.addEdge(v2, top);
-		Edge e34 = pyramid.addEdge(v3, top);
+		Vertex top = cone.addVertex({1/2, 1/3, sqrt(1 - 1/4 - 1/9)});
+		Edge e14 = cone.addEdge(v1, top);
+		Edge e24 = cone.addEdge(v2, top);
+		Edge e34 = cone.addEdge(v3, top);
 		
 		// Triangles
-		pyramid.addTriangle(e12, e23, e13);
-		pyramid.addTriangle(e13, e34, e14);
-		pyramid.addTriangle(e12, e24, e14);
-		pyramid.addTriangle(e23, e34, e24);
+		cone.addTriangle(e12, e23, e13);
+		cone.addTriangle(e13, e34, e14);
+		cone.addTriangle(e12, e24, e14);
+		cone.addTriangle(e23, e34, e24);
 		
-		pyramid.centralize();
-		return pyramid;
+		cone.centralize();
+		return cone;
 	}
 	
 	else throw "Not implemented";
