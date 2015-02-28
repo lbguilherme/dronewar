@@ -16,7 +16,10 @@ public:
 	*/
 	void orient();
 
-	/// Measures the volume of the solid. Complexity: O(n)
+	/// \brief Measures the volume of the solid. Complexity: O(n)
+	///
+	/// It assumes the solid has been sucessfully oriented.
+	/// If solid is not oriented and this function is called, its Undefined Behaviour.
 	math::Real volume() const;
 	
 	/// Calculates the center of the solid
@@ -25,11 +28,15 @@ public:
 	/// Centralizes the Solid. Ie, its center will be at origin
 	void centralize();
 	
-	/// Produces a unit cube
+	/// \brief Produces a unit cube
+	///
+	/// Unit cube: All edges sizes of all cube faces equals to 1
 	static Solid cube();
 	
-	/// Produces a unit pyramid
-	static Solid pyramid(unsigned sides);
+	/// \brief Produces a unit pyramid
+	///
+	/// Unit pyramid: The base perimeter equals 1, and the height equals 1.
+	static Solid cone(unsigned sides);
 };
 
 
