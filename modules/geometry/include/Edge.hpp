@@ -18,9 +18,12 @@ class Edge {
 
 public:
 
+	Edge() : Edge(0) {}
 	Edge(EdgeData* data);
 	bool operator<(const Edge& other) const {return _data < other._data;}
 	bool operator==(const Edge& other) const {return _data == other._data;}
+
+	bool isNull() { return _data == nullptr; }
 
 	const std::array<Vertex, 2>& vertices() const;
 	const std::set<Triangle>& triangles() const;

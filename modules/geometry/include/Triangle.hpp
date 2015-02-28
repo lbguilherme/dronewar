@@ -18,9 +18,12 @@ class Triangle {
 
 public:
 
+	Triangle() : Triangle(0) {}
 	Triangle(TriangleData* data);
 	bool operator<(const Triangle& other) const {return _data < other._data;}
 	bool operator==(const Triangle& other) const {return _data == other._data;}
+
+	bool isNull() { return _data == nullptr; }
 
 	const std::array<Vertex, 3>& vertices() const;
 	const std::array<Edge, 3>& edges() const;

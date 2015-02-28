@@ -15,9 +15,12 @@ class Vertex {
 
 public:
 
+	Vertex() : Vertex(0) {}
 	Vertex(VertexData* data);
 	bool operator<(const Vertex& other) const {return _data < other._data;}
 	bool operator==(const Vertex& other) const {return _data == other._data;}
+
+	bool isNull() { return _data == nullptr; }
 
 	math::Vector3& position();
 	const math::Vector3& position() const;
