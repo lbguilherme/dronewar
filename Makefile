@@ -5,6 +5,7 @@ MAKE_CPP_MODULE := $(MAKE) --no-print-directory -f ../../mk/module.cpp.mk
 BUILD := build
 
 all: calcs build
+	@echo BOO!
 	@:
 
 include mk/tools.build.mk
